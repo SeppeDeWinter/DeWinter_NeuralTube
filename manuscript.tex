@@ -24,7 +24,7 @@
 
 %%%  Insert title below; leave date empty.
 
-\title{Title is a maximum of 145 characters, including spaces, and avoids the use of jargon and uncommon abbreviations}
+\title{Deciphering enhancer rules underlying early human neuronal and neural crest development.}
 \date{}
 
 %%%  Author first and last names should be spelled 
@@ -57,11 +57,8 @@
 %%%  must be a corresponding author. Additional 
 %%%  authors may also serve as corresponding authors.
 
-\author[1,5,\orcidlink{0000-0000-0000-0000}]{First Last}
-\author[1,2,5]{First Middle Last}
-\author[2,3]{First M.M. Last}
-\author[3,*]{First Last, Jr.}
-\author[3,4,6,7,8,**]{F. Middle Last}
+\author[1,2,3,\orcidlink{0000-0001-7907-1247}]{Seppe De Winter}
+\author[1,2,3,*,\orcidlink{0000-0002-8006-0315}]{Stein Aerts}
 
 
 %%%  Institutional affiliations should contain the 
@@ -69,20 +66,13 @@
 %%%  subunit(s), institution, city, state/region (if 
 %%%  applicable), and country. 
 
-\affil[1]{University A, London SW7 2AZ, UK}
-\affil[2]{Department B, University B, Toronto, ON M5S 3H6, Canada}
-\affil[3]{Division C, Department C, University C, Cambridge, MA, USA}
-
-\affil[4]{Present address: 123 Sesame Street, New York, NY, USA}
-\affil[5]{These authors contributed equally}
-\affil[6]{Senior author}
-\affil[7]{Twitter: @CorrespondingAuthor}
-\affil[8]{Lead contact}
+\affil[1]{VIB Center of AI \& computational Biology, Leuven, Belgium}
+\affil[2]{VIB-KU Leuven Center for Brain and Disease Research, Leuven, Belgium}
+\affil[3]{KU Leuven Department of Human Genetics, Leuven, Belgium}
 
 %%%  List only one email address per corresponding author.
 
-\affil[*]{Correspondence: first.last.jr@university.edu}
-\affil[**]{Correspondence: f.middle.last@university.edu}
+\affil[*]{Correspondence: stein.aerts@kuleuven.be}
 
 
 \begin{document}
@@ -91,7 +81,7 @@
 
 \section*{SUMMARY}
 
-The summary (abstract) should consist of a single paragraph of 150 words or fewer.
+%%% The summary (abstract) should consist of a single paragraph of 150 words or fewer.
 
 \section*{KEYWORDS}
 
@@ -101,51 +91,99 @@ The summary (abstract) should consist of a single paragraph of 150 words or fewe
 %%%  in the final article metadata. Please note that 
 %%%  for some journals, keywords are chosen by the editors.
 
-cell, press, LaTeX, template 
-
 \section*{INTRODUCTION}
 
-No subheadings, please. Use of abbreviations should be kept to a minimum, and nonstandard abbreviations should be defined when first used in the text.
+%%% No subheadings, please. Use of abbreviations should be kept to a minimum, and nonstandard abbreviations should be
+%%% defined when first used in the text.
 
 \section*{RESULTS}
 
-The results may be divided with subheadings. In our view, good subheadings convey information about the findings, so we encourage you to be specific. For example, "Factor X requires factor Y to function in process Z" is better than "Analysis of factors X and Y by approach Q." We recommend that you use similar language in your figure titles for clarity and structural harmony. Please do not use numbered subheadings. For some formats, ``results and discussion" may be combined under a single heading. 
+\subsection*{Human neural tube organoids recapitulate early neuronal and neural crest development}
+We made use of human neural tube organoids (hNTOs) to model early human neuronal and neural crest development. To this
+end we embedded single cells from two induced pluripotent stem cell (iPSC) lines (Sigma and BJ1) and one embryonic stem
+cell line (ESC; H9) into separate synthetic poly-ethylene glycol (PEG) based extracellular matrices. These were
+incubated for 11 days and we supplemented the medium with retinoic acid (RA) and Smoothened agonist (SAG) from day 3
+until day 5 (\textbf{Fig. 1a}). These conditions were previously shown to generate multiple neuronal progenitor and
+neural crest states (REF). In order to characterize the organoid-derived cell types to a greater level of detail at both
+transcriptomic as well as chromatin accessibility level we performed 10x single-cell multiomics (combined scATAC-seq and
+scRNA-seq) at four time points of differentiation (day 4-5, day 6-7, day 8-9 and day 10-110; \textbf{Fig. 1a}),
+resulting in 22,862 high quality cells (\textbf{Fig. 1b}). Note, that similar transcriptomic and chromatin accessibility
+states were obtained from all three cell lines (\textbf{FIGURE SUPPLEMENT}) demonstrating the robustness of the
+organoid system.\par
+To evaluate the biological relevance of the cell types and states obtained from the organoid, we performed 10x single
+cell multiome on the head of a single four weeks post conception human embryo, resulting in 25,785 high quality cells (
+\textbf{Fig. 1c}). We annotated both the organoid and embryo cells based on the expression of marker genes
+(\textbf{TABLE SUPPLEMENT}). In both systems we could identify neuronal progenitor cells, early differentiating neurons,
+neural crest cells, facial mesenchyme cells and early differentiating peripheral neurons (\textbf{Fig. 1b-c}).
+Additionally, in the organoid only we could identify a pluripotent stem cell population (\textbf{Fig. 1b}) and in the
+embryo only we could identify an endothelial, perivascular macrophage (PVM) / microglia (MIC) and otic placode
+population (\textbf{Fig. 1c}).\par
+Next, we sub-clustered the neuronal progenitor, early neuron, and neural crest cell types (\textbf{Fig. 1d-f}). Both
+organoid and embryo neuronal progenitors show a gradient of different cell states reflecting dorso-ventral patterning as
+is evident from the expression of dorso-ventral marker TFs (REF): from ventral to dorsal ARX, NKX2-2, PAX6, IRX3, ZIC1 and
+GDF7 (\textbf{Fig. 1d}). In both the organoid and embryo system we obtained multiple early neuronal differentiation states.
+A cluster that still expresses the neuronal progenitor marker SOX2, cells that express the early neuronal induction
+marker ASCL1 and distinct clusters marked by the expression of GAD1, UNCX and GATA2 (\textbf{Fig. 1e}). Finally,
+focusing on the neural crest cells, in both the organoid and the embryo we obtained a population of pre-migratory neural
+crest (GRHL2 expression and absence of ZEB2 expression), migratory neural crest (SOX10 and ZEB2 expression), facial
+mesenchyme cells (TWIST1 expression) and early differentiation peripheral neurons (NEUROD1 expression). In the embryo,
+but not in the organoid, we observed an additional population of cells marked by the expression of SOX10 and PAX2
+reflecting the otic placode (\textbf{Fig. 1f}).\par
+Given that we performed single-cell multiome on the entire head of the four weeks post conception embryo we also
+assessed the expression of anterior-posterior marker TFs. While the organoid cells had either an anterior forebrain
+(SIX3) or anterior spinal cord (HOXB3) identity, we observed a gradient of anterior-to-posterior identities in the
+embryo cells marked by the expression of anterior-posterior marker TF (REF): from anterior to posterior SIX3, EMX2,
+FOXG1, BARHL1, EN1 and HOXB3 (\textbf{Fig. 1g}).\par
+Cell cycle arrest is an important hallmark of the start of neuronal differentiation (REF), for this reason we scored
+both organoid and embryo cells for the expression of marker genes of the G1, G2M and S phase of the cell cycle and
+quantified the fraction of cells in each phase stratified by the main cell types (\textbf{Fig. 1h}). From this it is
+clear that both early differentiation peripheral neurons and to a greater extend early differentiating neurons of the
+central nervous system are in cell cycle arrest, while the other cell types are still cycling (\textbf{Fig. 1h}).\par
+Finally, to assess whether the organoid-derived cell types and states are also similar to the embryo-derived cell types
+and states on a chromatin accessibility level we identified sets of co-accessible regions in the organoid model using
+topic modeling. We focused on topics (i.e., sets of co-accessible regions) that were enriched for marker TF motifs and
+calculated the average expression of marker genes for each cell group where these regions were co-accessible, for both
+organoid and embryo cells. We observed similar patterns of marker gene expression for the same cell state (defined by
+the topic) across the organoid and embryo (\textbf{Fig. 1i}) with an average Pearson correlation coefficient of \textbf{X.X}
+across identical states (\textbf{FIGURE SUPPLEMENT}).
 
-\subsection*{Figures}
+\noindent\includegraphics[width=1.0\linewidth]{figures/main/Figure_1.png}
 
-For initial submissions, figures and their titles and legends can be run-in with the text. For final submissions, the image files must be uploaded as separate files, one complete file per figure. The figure titles and legends should be placed toward the end of the main text, after the declaration of interests. Our typesetters will place the figures and their titles and legends appropriately based on your in-text citations.
+\subsection*{Figure 1. A brief title that describes the entire figure without citing specific panels}
 
-\subsection*{Citations}
+\textbf{a}, Schematic. \textbf{b-c}, UMAP based on gene expression profiles of organoid (\textbf{b}) and embryo
+(\textbf{c}) cells colored by cell type identify. \textbf{d-f}, UMAP based on gene expression profiles of organoid (top)
+and embryo (bottom) cells types showing sub-clusters of neuronal progenitors (\textbf{d}), early differentiating neurons
+(\textbf{e}) and neural crest (\textbf{f}) along with expression of indicated genes in red-green-blue color scale.
+\textbf{g}, UMAP based on gene expression profiles of organoid (top; UMAP axis 1 and 2 shown) and embryo (bottom; UMAP
+axis 2 and 3 shown) for neuronal progenitor subcluster along with the expression of indicated genes in red-green-blue
+color scale. \textbf{h}, UMAP based on gene expression profiles in organoid (top left) and embryo (top right) colored by
+cell cycle phase identity and quantification of percentage of each cell for each cell cycle phase stratified by cell
+type in the organoid (bottom left) and embryo (bottom right). \textbf{i}, Average gene expression level in
+$log_{2}(CPM)$
+(dot color) and fraction of cells expressing the gene (dot size) per cell state, defined by topic modeling, for organoid
+cells (top) and embryo cells (middle) and motif enrichment level as normalized enrichment score (NES; dot color) and
+number of regions enriched for the motif (dot size) per topic (x-axis) and motif (y-axis; bottom). PVM/MIC: perivascular
+microphage/microglia.
 
-To cite/link to display items (figures and tables) and/or sections of the manuscript, simply write, for example, ``(Figure 1)" or ``see discussion." Our team will do the rest. Please note that we do not number sections or subsections.
+\subsection*{
+  DeepNeuralTube: a sequence-to-function model revealing the enhancer code underlying early neuronal and neural crest 
+  development
+}
 
-To cite references, you may use the cite command, e.g., ``Recent articles in \textit{Matter} and \textit{Cell} \cite{wang2020conformational,king2002,cates1984statics}  have shown ..." or  ``Many interesting discoveries have been reported, \cite{radzihovsky1995new,kapoor2022leakage,hantke2018my,alcock2006} which ..." 
+\noindent\includegraphics[width=1.0\linewidth]{figures/main/Figure_2.png}
 
-\subsection*{Equations}
-
-Simple formulae should appear in line with the text whenever possible. You can write inline math by enclosing it between \verb|\(| and \verb|\)|, as in this example: \(x^2 + y^2 = z^2\). You can also enclose it between dollar signs (\texttt{\$}), as in this example: $E=mc^2$.
-
-Larger, more complex formulae may appear on a new line, either by enclosing them between \verb|\[| and \verb|\]| or by using the \verb|displaymath| environment:
-
-\[ x^n + y^n = z^n \]
-
-\begin{displaymath}
-\sqrt{x^2+1}
-\end{displaymath}
-
-If any equations or formulae need to be referred to or cited again later in the text, use the \verb|equation| environment to number them. Later, you can cite these as "Equation 1," "Equation 2," etc.
-
-\begin{equation}
-f(x) = \sum_{i=0}^{n} \frac{a_i}{1+x}
-\end{equation}
+\subsection*{Figure 2. }
 
 \section*{DISCUSSION}
 
-The discussion should explain the significance of the results and place them into a broader context. Subheadings are permitted.
+%%% The discussion should explain the significance of the results and place them into a broader context.
+%%% Subheadings are permitted.
 
 \subsection*{Limitations of the study}
 
-A "limitations" or "limitations of the study" subsection in the discussion is encouraged and may be required for some journals and some article formats.
+%%% A "limitations" or "limitations of the study" subsection in the discussion is encouraged and may be required for some
+%%% journals and some article formats.
 
 \newpage
 
@@ -324,20 +362,6 @@ During the preparation of this work, the author(s) used [NAME OF TOOL OR SERVICE
 %%%  Please review the figure guidelines before 
 %%%  submitting your final materials: 
 %%%  https://www.cell.com/figureguidelines.
-
-\noindent\includegraphics[width=0.85\linewidth]{Figure1.jpg}
-
-\subsection*{Figure 1. A brief title that describes the entire figure without citing specific panels}
-
-The figure legend can be all one paragraph and describe the images (A), graphs (B), and plots (C), etc., together.
-\newline
-(A) Or each panel or group of panels can be described separately, as shown here and below.
-\newline
-(B) Graph of X, Y, and Z.
-\newline
-(C and D) If panels are grouped like this, please explicitly describe each panel, e.g., “Images showing SEM (C) and TEM (D).”
-\newline
-Please define all scale and error bars, and please review the Cell Press figure guidelines before submission: \href{https://www.cell.com/figureguidelines}{https://www.cell.com/figureguidelines}. Example figure created by Cassie Comeau, Cell Press.
 
 \newpage
 
