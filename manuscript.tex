@@ -132,8 +132,7 @@ reflecting the otic placode (\textbf{Fig. 1f}).\par
 Given that we performed single-cell multiome on the entire head of the four weeks post conception embryo we also
 assessed the expression of anterior-posterior marker TFs. While the organoid cells had either an anterior forebrain
 (SIX3) or anterior spinal cord (HOXB3) identity, we observed a gradient of anterior-to-posterior identities in the
-embryo cells marked by the expression of anterior-posterior marker TF (REF): from anterior to posterior SIX3, EMX2,
-FOXG1, BARHL1, EN1 and HOXB3 (\textbf{Fig. 1g}).\par
+embryo (REF): from anterior to posterior expression of SIX3, EMX2, FOXG1, BARHL1, EN1 and HOXB3 (\textbf{Fig. 1g}).\par
 Cell cycle arrest is an important hallmark of the start of neuronal differentiation (REF), for this reason we scored
 both organoid and embryo cells for the expression of marker genes of the G1, G2M and S phase of the cell cycle and
 quantified the fraction of cells in each phase stratified by the main cell types (\textbf{Fig. 1h}). From this it is
@@ -149,7 +148,7 @@ across identical states (\textbf{FIGURE SUPPLEMENT}).
 
 \noindent\includegraphics[width=1.0\linewidth]{figures/main/Figure_1.png}
 
-\subsection*{Figure 1. A brief title that describes the entire figure without citing specific panels}
+\subsection*{Figure 1. Human neural tube organoids recapitulate early neuronal and neural crest development}
 
 \textbf{a}, Schematic. \textbf{b-c}, UMAP based on gene expression profiles of organoid (\textbf{b}) and embryo
 (\textbf{c}) cells colored by cell type identify. \textbf{d-f}, UMAP based on gene expression profiles of organoid (top)
@@ -167,9 +166,50 @@ number of regions enriched for the motif (dot size) per topic (x-axis) and motif
 microphage/microglia.
 
 \subsection*{
-  DeepNeuralTube: a sequence-to-function model revealing the enhancer code underlying early neuronal and neural crest 
+  DeepNeuralTube: sequence-to-function models that reveal the enhancer code underlying early neuronal and neural crest 
   development
 }
+
+To gain insight into the sequence characteristics underlying cell type-specific activity of neural tube, neural crest
+and derived cell type enhancers, we trained two sequence-to-function model convolutional neural networks:
+"$DeepNeuralTube_{organoid}$" and "$DeepNeuralTube_{embryo}$". The models use DNA sequence, of genomic regions, as input and
+classify the regions based on their cell type- or state-specific chromatin accessibility (in a multi-label multi-class
+fashion; \textbf(Fig. 2a)). The classes of the models are defined based on topic modeling. To get a fine-grained
+definition of cell states, we performed topic modeling separately for the subset of neuronal progenitors, neural crest
+(incl. facial mesenchyme and peripheral neurons) and early differentiating neurons for both the organoid cells (to
+train $DeepNeuralTube_{organoid}$) and embryo cells (to train $DeepNeuralTube_{embryo}$). To validate the ability of the models to
+predict cell type-specific enhancer \textit{activity}, we tested their performance on enhancers from the VISTA enhancer
+browser (\textbf{REF}). Relevant for this study, this database contains enhancers active in the neural tube (n=349) and
+facial mesenchyme (n=143). Neural tube enhancers could be classified with an area under the receiver-operator curve
+(auROC) of 0.75 and 0.80 using resp. $DeepNeuralTube_{organoid}$ and $DeepNeuralTube_{embryo}$ (\textbf{Fig. 2b}; and
+area under the precision-recall curve (auPR) of 0.21 resp. 0.29 (\textbf{FIGURE SUPPLEMENT})), facial mesenchyme
+enhancers with an auROC of 0.78 and 0.79 using resp. $DeepNeuralTube_{organoid}$ and $DeepNeuralTube_{embryo}$
+(\textbf{Fig. 2c}; and auPR of 0.17 for both models (\textbf{FIGURE SUPPLEMENT})). Of note, a fraction of neural tube
+enhancers (x.x \%) are predicted to be specific to pre-migratory neural crest by both models.\par
+Next, we wanted to assess the explainability of the models. Concretely we wanted to test whether the model learned known
+TF binding motifs as features. For this, we performed motif enrichment analysis on all regions for each topic and
+calculated gradients, for each model, on the top 1,000 regions (as predicted by the model) for each topic followed by
+TF-MoDISco (\textbf{REF}) to find \textit{de novo} motifs used by the models. For both known motifs and \textit{de novo}
+motifs we calculated pairwise similarities using TOMTOM (\textbf{REF}) followed by clustering, resulting in 56 motif
+clusters (\textbf{Fig. 2d}). Of note, most clusters contain known-motifs enriched in both organoid regions and embryo
+(\textbf{Fig. 2e}) regions with the exception of cluster 13 which is organoid specific (AP1 motif; \textbf{SUPPLEMENTAL TABLE}) and cluster
+26 which is embryo specific (CG-rich motif; \textbf{SUPPLEMENTAL TABLE}). Most clusters (\textbf{Fig. 2f-g} and
+\textbf{SUPPLEMENTAL FIGURE}) contain at least one motif learned \textit{de novo} by the organoid and/or embryo model.
+Thus, $DeepNeuralTube_{organoid}$ and $DeepNeuralTube_{embryo}$ use known-motifs as features to classify regions based
+on cell type-specific chromatin accessibility.\par
+As an illustrative example, we investigated an enhancer located in one of the introns of GLI3 (hs111.0; \textbf{SUPPLEMENTAL
+FIGURE}). This region has neural tube specific activity in E11.5 mouse embryos (\textbf{Fig. 2h}). Both
+$DeepNeuralTube_{organoid}$ and $DeepNeuralTube_{embryo}$ explain this region similarly (Pearson correlation of x) and
+highlight the importance of multiple SOX TFBS (\textbf{Fig. 2h}). A version of this enhancer where 5\% of the
+nucleotides are changed (hs111.1) does not have neural tube specific enhancer activity and both
+models predict that this loss of activity is due to the loss of a sinlge SOX TFBS (\textbf{Fig. 2h}).\par
+Finally, to also investigate the performance of the models on migratory neural crest, a cell type for which there are no
+validated enhancers in the Vista enhancer browser, we selected a genomic region that is specifically accessible in the
+migratory neural crest cell type of the organoid (\textbf{SUPPLEMENTAL FIGURE}). Both models predict this region
+to be specific to the migratory neural crest class (\textbf{SUPPLEMENTAL FIGURE}) and nucleotide importance scores
+reveal TFBS for a SOX monomer, a SOX dimer and AP2 (\textbf{Fig. 2i}). We tested the enhancer activity of this region
+using a reporter assay in chicken embryos. Indeed the enhancer was specifically active in migratory neural crest 24
+hours after injection in an HH4 embryo (\textbf{Fig. 2i}).
 
 \noindent\includegraphics[width=1.0\linewidth]{figures/main/Figure_2.png}
 
