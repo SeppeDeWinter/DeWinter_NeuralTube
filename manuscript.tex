@@ -213,7 +213,74 @@ hours after injection in an HH4 embryo (\textbf{Fig. 2i}).
 
 \noindent\includegraphics[width=1.0\linewidth]{figures/main/Figure_2.png}
 
-\subsection*{Figure 2. }
+\subsection*{Figure 2. DeepNeuralTube: an accurate sequence-to-function model revealing neuro-developmental enhancer
+code.}
+\textbf{a}, Schematic. \textbf{b} receiver-operator curves for identifying neural tube (left) and facial mesenchyme the
+$DeepNeuralTube_{organoid}$ and $DeepNeuralTube_{embryo}$. \textbf{c-e}, UMAP of TomTom [REF] motif-to-motif similarities
+using both \textit{de novo} motifs from DeepNeuralTube and known enriched motifs. Each dot is a motif. Motifs are
+colored by: cluster identity (\textbf{c}), model of origin (\textbf{d}; only showing \textit{de novo} motifs in this
+case) and whether the motif is found \textit{de novo} (Deep Learning) or by motif enrichment (cisTarget; \textbf{e}).
+\textbf{f}, Example representative motifs from clusters in b, showing motifs from motif enrichment (left) and found
+\textit{de novo} (right). \textbf{g}, contribution score for reference and mutant version of Vista enhancer hs111
+for $DeepNeuralTube_{organoid}$ (top two panels) and $DeepNeuralTube_{embryo}$ (bottom two panels) and enhancer-reporter
+assay for reference and mutant version of hs111 (right two panels) [REF]. \textbf{h}, contribution score for
+$DeepNeuralTube_{organoid}$ (top) and $DeepNeuralTube_{embryo}$ (bottom) of a genomic enhancer human neural crest
+enhancer (chr ...; hg38) and enhancer-reporter assay in chicken embryo (HH4; right). Green is enhancer signal, pink is
+constitutive enhancer that serves as electroporation control.
+
+\subsection*{
+  Deciphering the enhancer code underlying dorso-ventral patterning of neuronal progenitors
+}
+Focusing on neuronal progenitors, we identified topics representing cells and regions of different dorso-ventral
+identities in both the organoid and the embryo data (\textbf{Fig. 3a}). From ventral to dorsal this is topic 36, 38, 33,
+54 and 48 in the organoid data and topic 34, 38, 79, 88 and 58 in the embryo data. As an example we first investigated
+two enhancers of \textit{SHH} that are strongly conserved and specific to the floorplate [\textbf{REF}]; SFPE1 and SFPE2.
+\textit{SHH} is most strongly expressed in the most ventral topic (33 and 34 resp. in the organoids and the embryo; \textbf{Fig. 3b}).
+SFPE1 is located upstream of \textit{SHH} and SFPE2 in its second intron. Both enhancers are indeed most accessible in the cells
+belonging to the ventral topic, in both the organoid and embryo data (\textbf{Fig. 3c}). Explaining the accessibility of both
+enhancers using DeepNeuralTube reveals two FOX (one partial), one SOX and two RFX (one partial) binding sites in SFPE1
+and two FOX and a TEAD binding site in SFPE2 (\textbf{Fig. 3d}).\par
+
+To investigate the enhancer code underlying dorso-ventral patterning of neuronal progenitors further, we calculated
+contribution scores on the top 1,000 regions of each organoid and embryo dorso-ventral topic using respectively $DeepNeuralTube_{organoid}$ and $DeepNeuralTube_{embryo}$. We then used TF-MoDISco\cite{shrikumar2020tfmodisco} to find reoccurring seqlets for each topic (patterns) and we clustered patterns based on pairwise motif similarities (SUPPLEMENTAL FIG). Next, we calculated the average contribution for all identified instances per cluster and for each topic resulting in a dorso-ventral enhancer code table (\textbf{Fig. 3e}). Both $DeepNeuralTube_{organoid}$ and $DeepNeuralTube_{embryo}$ found similar patterns
+underlying the different dorso-ventral states and the importance of the instances of these patterns is highly correlated across both
+models (CORR COEF; \textbf{Fig. 3e}). For the most ventral state (organoid topic 33 and embryo topic 34) a combination of FOX, TEAD
+and RFX instances is important (\textbf{Fig. 3e-f}) and the importance of these instances correlates with the expression of respectively \textit{FOXA2}, \textit{TEAD1} and \textit{RFX4} in both the organoid and embryo cells (\textbf{Fig. 3g}). In subsequent more dorsal neuronal progenitor domains we observe importance of NKX instances, correlating with \textit{NKX2-2} expression (\textbf{(Fig. 3e- g)}); PAX instances, correlating with \textit{PAX6} expression (\textbf{Fig. 3e-g}) and ZIC instances, correlating with \textit{ZIC1} expression (\textbf{Fig. 3e-g}). For all dorso-ventral progenitor domains, except the most ventral one (and the most dorsal one in the embryo), SOX instances are important which correlates with \textit{SOX2} expression. Similarly, ZEB instances have a negative importance to the accessibility of regions in dorso-ventral domains except the most ventral one (\textbf{Fig. 3e}). Finally, we calculated the Jaccard index of genomic regions based on the presence of an instance of each identified pattern to investigate which patterns often co-occur in the same regions (\textbf{Fig. 3h}). FOXA2, TEAD1 and RFX4 instances often co-occur in the same genomic region while instances of other patterns seem to be present in separate regions (\textbf{Fig. 3h}).\par
+
+It has been reported that FOXA2 is a pioneer factor. Indeed, when centering on FOXA2 instances in both the organoid and
+embryo data we observe a strong footprint when looking at Tn5 cut-sites (\textbf{Fig. 3i} and SUPPLEMENTAL FIG). We then
+asked if there is any difference between regions that are generally bound by FOXA2 in any cell state that expresses this
+TF and regions, bound by FOXA2, that are specific to the floorplate. For this purpose, we downloaded FOXA2 ChIP-seq
+peaks in HepG2 and A549 and intersected these with floorplate peaks containing FOXA2 instances. Those floorplate peaks
+that overlapped with both ChIP-seq datasets we classified as regions that are generally bound by FOXA2 and those that
+did not we classified as floorplate specific. Next, we quantified both the number of FOXA2 instances per region and the
+affinity of each individual instance (making use of the FOXA2 motif score calculated using
+FIMO\cite{grant2011fimo,schreiber2025tangermeme}) hypothesizing that the overall affinity of regions that are generally
+bound by FOXA2 is higher than floorplate specific regions either because these general regions have more instances or
+the affinity of individual instances is higher. Indeed, FOXA2 target regions that are specific to the floorplate mostly
+have a single FOXA2 instance while FOXA2 target regions that are general tend to have more instances (\textbf{Fig. 3j}).
+Furthermore, in case there is but a single FOXA2 instance in a general FOXA2 target the affinity of this instance tends
+to be higher (\textbf{Fig. 3k}). Generating a \textit{de novo} motif from general and specific FOXA2 target regions that
+have a single instance, we observe that FOXA2 instances in regions that are general tend to be of the form
+\textit{TGTTT\underline{AC}} while those instances in specific regions tend to be of the form \textit{TGTTT} (\textbf{Fig. 3l}).
+
+
+\noindent\includegraphics[width=1.0\linewidth]{figures/main/Figure_3.png}
+
+\subsection*{
+  Figure 3. Deciphering the enhancer code underlying dorso-ventral patterning of neuronal progenitors.
+}
+\textbf{a}, UMAP of organoid (top) and embryo (bottom) neuronal progenitors colored by cell-topic probabilities in RGB color scales of dorso-ventral topics. \textbf{b}, Boxplots of the expression of \textit{SHH} in organoid (top) and embryo (bottom) across different dorso-ventral topics ($n_{topic 33}$ = X, $n_{topic 38}$ = X, $n_{topic 36}$ = X, $n_{topic 54}$ = , and $n_{topic 48}$ = for organoid cells; and $n_{topic 34}$ = X, $n_{topic 38}$ = X, $n_{topic 79}$ = X, $n_{topic 88}$ = , and $n_{topic 58}$ = for embryo cells). \textbf{c}, Chromatin accessibility in organoid (top) and embryo (bottom) across dorso-ventral topics for locus chr:...-...; hg38. SFPE2 and SFPE1 is highlighted. \textbf{d}, Nucleotide contribution scores for SFPE2 (left) and SFPE1 (right) for organoid topic 33 (top) and embryo topic 34 (bottom). \textbf{e}, Code table showing average contribution score of pattern instances for each dorso-ventral topic. Contribution scores for $DeepNeuralTube_{organoid}$ are not outlined. Contribution scores for $DeepNeuralTube_{embryo}$ are outlined and negated. \textbf{f}, Heatmap showing the maximum normalized contribution score for each region (y-axis) and pattern (x-axis). \textbf{g}, Heatmap showing scaled expression of transcription factors corresponding to identified patterns in organoid (left) and embryo (right) dorso-ventral topics. \textbf{h}, Heatmap showing Jaccard index of regions based on the presence of instances of the identified patterns. \textbf{i}, Scaled average and normalized number of cut sites (black, top) and contribution score (red, top) across genomic regions with a FOXA2 instance and heatmap showing normalized number of cut sites (bottom) for individual regions with a FOXA2 instance. Signal is centered on the FOXA2 instance start position. \textbf{j}, Bar chart showing the fraction of genomic regions that has a given number of FOXA2 instances for FOXA2 regions that overlap with HepG2 or A549 FOXA2 ChIp-seq signal (general; bottom) and those regions that don't overlap (specific; top). \textbf{k}, Boxplot (ADD NUMEBRS) showing $-log_10(p value)$ of FOXA2 motif hits calculated using FIMO\cite{grant2011fimo,schreiber2025tangermeme} for general regions (bottom) and specific regions (top) stratified by the number of FOXA2 instance per region. \textbf{l}, \textit{de novo} motif for regions with a single FOXA2 instance that are specific (left, top) or general (right, top) and heatmap color coded by nucleotide identity for individual regions for both specific (left, bottom) and general (right, bottom) regions that have a single FOXA2 instance. 
+
+\noindent\includegraphics[width=1.0\linewidth]{figures/main/Figure_4.png}
+
+\subsection*{Figure 4. }
+
+\noindent\includegraphics[width=1.0\linewidth]{figures/main/Figure_5.png}
+
+\subsection*{Figure 5. }
+
+
 
 \section*{DISCUSSION}
 

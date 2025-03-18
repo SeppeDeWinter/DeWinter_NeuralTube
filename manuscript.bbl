@@ -1,0 +1,56 @@
+\begin{thebibliography}{4}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\providecommand{\href}[2]{#2}
+\providecommand{\path}[1]{#1}
+\providecommand{\DOIprefix}{doi: }
+\providecommand{\ArXivprefix}{arXiv: }
+\providecommand{\URLprefix}{URL: }
+\providecommand{\Pubmedprefix}{pmid: }
+\providecommand{\doi}[1]{\href{http://dx.doi.org/#1}{\path{#1}}}
+\providecommand{\Pubmed}[1]{\href{pmid:#1}{\path{#1}}}
+\providecommand{\BIBand}{and}
+\providecommand{\bibinfo}[2]{#2}
+\ifx\xfnm\undefined \def\xfnm[#1]{\unskip,\space#1}\fi
+\makeatletter\def\@biblabel#1{#1.}\makeatother
+%Type = Article
+\bibitem[{Shrikumar et~al.(2020)Shrikumar, Tian, Žiga Avsec, Shcherbina,
+  Banerjee, Sharmin, Nair and Kundaje}]{shrikumar2020tfmodisco}
+\bibinfo{author}{Shrikumar, A.}, \bibinfo{author}{Tian, K.},
+  \bibinfo{author}{Žiga Avsec}, \bibinfo{author}{Shcherbina, A.},
+  \bibinfo{author}{Banerjee, A.}, \bibinfo{author}{Sharmin, M.},
+  \bibinfo{author}{Nair, S.}, and \bibinfo{author}{Kundaje, A.}
+  (\bibinfo{year}{2020}). \bibinfo{title}{Technical note on transcription
+  factor motif discovery from importance scores (tf-modisco) version 0.5.6.5}.
+\newblock \bibinfo{journal}{arXiv}. \URLprefix
+  \url{https://arxiv.org/abs/1811.00416}.
+  \DOIprefix\doi{https://doi.org/10.48550/arXiv.1811.00416}.
+  \href{http://arxiv.org/abs/1811.00416}{\tt arXiv:1811.00416}.
+%Type = Article
+\bibitem[{Grant et~al.(2011)Grant, Bailey and Noble}]{grant2011fimo}
+\bibinfo{author}{Grant, C.E.}, \bibinfo{author}{Bailey, T.L.}, and
+  \bibinfo{author}{Noble, W.S.} (\bibinfo{year}{2011}). \bibinfo{title}{Fimo:
+  scanning for occurrences of a given motif}.
+\newblock \bibinfo{journal}{Bioinformatics} \emph{\bibinfo{volume}{27}},
+  \bibinfo{pages}{1017--1018}. \URLprefix
+  \url{https://doi.org/10.1093/bioinformatics/btr064}.
+  \DOIprefix\doi{10.1093/bioinformatics/btr064}.
+  \href{http://arxiv.org/abs/https://academic.oup.com/bioinformatics/article-pdf/27/7/1017/48868245/bioinformatics
+  \_27\_7\_1017.pdf}{\tt
+  arXiv:https://academic.oup.com/bioinformatics/article-pdf/27/7/1017/48868245/bioinformatics
+  \_27\_7\_1017.pdf}.
+%Type = Misc
+\bibitem[{Schreiber"(2025)}]{schreiber2025tangermeme}
+\bibinfo{author}{Schreiber", J.} (\bibinfo{year}{2025}).
+\newblock \bibinfo{title}{"tangermeme"}. .
+\newblock \URLprefix \url{https://github.com/jmschrei/tangermeme}.
+%Type = Misc
+\bibitem[{Rizos(2023)}]{georgios_rizos_2023_10253149}
+\bibinfo{author}{Rizos, G.} (\bibinfo{year}{2023}).
+\newblock \bibinfo{title}{Code for the article ``{Propagating Variational Model
+  Uncertainty for Bioacoustic Call Label Smoothing}''}.
+  \bibinfo{publisher}{Zenodo}.
+\newblock \bibinfo{note}{\href{https://doi.org/10.5281/zenodo.10253149}{
+  https://doi.org/10.5281/zenodo.10253149}}.
+
+\end{thebibliography}
