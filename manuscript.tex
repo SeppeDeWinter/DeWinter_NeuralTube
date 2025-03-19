@@ -144,7 +144,7 @@ topic modeling. We focused on topics (i.e., sets of co-accessible regions) that 
 calculated the average expression of marker genes for each cell group where these regions were co-accessible, for both
 organoid and embryo cells. We observed similar patterns of marker gene expression for the same cell state (defined by
 the topic) across the organoid and embryo (\textbf{Fig. 1i}) with an average Pearson correlation coefficient of \textbf{X.X}
-across identical states (\textbf{FIGURE SUPPLEMENT}).
+across identical states (\textbf{FIGURE SUPPLEMENT}).\par
 
 \noindent\includegraphics[width=1.0\linewidth]{figures/main/Figure_1.png}
 
@@ -209,7 +209,7 @@ migratory neural crest cell type of the organoid (\textbf{SUPPLEMENTAL FIGURE}).
 to be specific to the migratory neural crest class (\textbf{SUPPLEMENTAL FIGURE}) and nucleotide importance scores
 reveal TFBS for a SOX monomer, a SOX dimer and AP2 (\textbf{Fig. 2i}). We tested the enhancer activity of this region
 using a reporter assay in chicken embryos. Indeed the enhancer was specifically active in migratory neural crest 24
-hours after injection in an HH4 embryo (\textbf{Fig. 2i}).
+hours after injection in an HH4 embryo (\textbf{Fig. 2i}).\par
 
 \noindent\includegraphics[width=1.0\linewidth]{figures/main/Figure_2.png}
 
@@ -262,7 +262,7 @@ have a single FOXA2 instance while FOXA2 target regions that are general tend to
 Furthermore, in case there is but a single FOXA2 instance in a general FOXA2 target the affinity of this instance tends
 to be higher (\textbf{Fig. 3k}). Generating a \textit{de novo} motif from general and specific FOXA2 target regions that
 have a single instance, we observe that FOXA2 instances in regions that are general tend to be of the form
-\textit{TGTTT\underline{AC}} while those instances in specific regions tend to be of the form \textit{TGTTT} (\textbf{Fig. 3l}).
+\textit{TGTTT\underline{AC}} while those instances in specific regions tend to be of the form \textit{TGTTT} (\textbf{Fig. 3l}).\par
 
 
 \noindent\includegraphics[width=1.0\linewidth]{figures/main/Figure_3.png}
@@ -272,9 +272,39 @@ have a single instance, we observe that FOXA2 instances in regions that are gene
 }
 \textbf{a}, UMAP of organoid (top) and embryo (bottom) neuronal progenitors colored by cell-topic probabilities in RGB color scales of dorso-ventral topics. \textbf{b}, Boxplots of the expression of \textit{SHH} in organoid (top) and embryo (bottom) across different dorso-ventral topics ($n_{topic 33}$ = X, $n_{topic 38}$ = X, $n_{topic 36}$ = X, $n_{topic 54}$ = , and $n_{topic 48}$ = for organoid cells; and $n_{topic 34}$ = X, $n_{topic 38}$ = X, $n_{topic 79}$ = X, $n_{topic 88}$ = , and $n_{topic 58}$ = for embryo cells). \textbf{c}, Chromatin accessibility in organoid (top) and embryo (bottom) across dorso-ventral topics for locus chr:...-...; hg38. SFPE2 and SFPE1 is highlighted. \textbf{d}, Nucleotide contribution scores for SFPE2 (left) and SFPE1 (right) for organoid topic 33 (top) and embryo topic 34 (bottom). \textbf{e}, Code table showing average contribution score of pattern instances for each dorso-ventral topic. Contribution scores for $DeepNeuralTube_{organoid}$ are not outlined. Contribution scores for $DeepNeuralTube_{embryo}$ are outlined and negated. \textbf{f}, Heatmap showing the maximum normalized contribution score for each region (y-axis) and pattern (x-axis). \textbf{g}, Heatmap showing scaled expression of transcription factors corresponding to identified patterns in organoid (left) and embryo (right) dorso-ventral topics. \textbf{h}, Heatmap showing Jaccard index of regions based on the presence of instances of the identified patterns. \textbf{i}, Scaled average and normalized number of cut sites (black, top) and contribution score (red, top) across genomic regions with a FOXA2 instance and heatmap showing normalized number of cut sites (bottom) for individual regions with a FOXA2 instance. Signal is centered on the FOXA2 instance start position. \textbf{j}, Bar chart showing the fraction of genomic regions that has a given number of FOXA2 instances for FOXA2 regions that overlap with HepG2 or A549 FOXA2 ChIp-seq signal (general; bottom) and those regions that don't overlap (specific; top). \textbf{k}, Boxplot (ADD NUMEBRS) showing $-log_10(p value)$ of FOXA2 motif hits calculated using FIMO\cite{grant2011fimo,schreiber2025tangermeme} for general regions (bottom) and specific regions (top) stratified by the number of FOXA2 instance per region. \textbf{l}, \textit{de novo} motif for regions with a single FOXA2 instance that are specific (left, top) or general (right, top) and heatmap color coded by nucleotide identity for individual regions for both specific (left, bottom) and general (right, bottom) regions that have a single FOXA2 instance. 
 
+\subsection*{
+  Anterior-posterior patterning in neuronal progenitors is regulated by different homeodomain transcription factors that
+  each recognize a distinct binding site.
+}
+
+Given that we observed cell states from different AP domains in the neuronal progenitors from the embryo (but not
+organoid; see \textbf{Fig. 1}) we decided to study the gene regulatory code underlying this patterning further. We
+identified seven topics corresponding to different AP domains, from anterior to posterior this is Topic 61, Topic 59,
+Topic 31, Topic 62, Topic 70, Topic 52 and Topic 71 (\textbf{Fig. 4a}). We first asked if the AP-program is distinct
+from the DV program. In other words, is AP patterning encoded in the same or in different genomic regions as in those in
+which DV patterning is encoded? For this purpose, we calculated the pairwise correlation between region-topic
+probabilities of all AP and DV topics (\textbf{Fig. 4b}). From this it is clear that both AP and DV patterning as well
+as each of their sub-domains are mostly encoded in distinct genomic regions, with the exception of AP Topic 59 and 31
+that correlate with the region-topic probability of DV Topic 38 (which corresponds to cells expressing \textit{NKX2-2}; \textbf{Fig. 4b})\par
+
+$DeepNeuralTube_{embryo}$ was able to distinguish the different AP domains but grouped topics of similar domains
+together (i.e., Topic 59, 31 and 62; Topic 52 and 71), resulting in four distinct AP domains (\textbf{Fig.4 c-d}). By
+explaining the predictions of $DeepNeuralTube_{embryo}$ on the regions of those domains we found four distinct
+homeodomain TF binding motifs, one for each domain (\textbf{Fig. 4e}). From anterior to posterior this is \textit{TAATTA}, \textit{GGATTA}, \textit{TCATGWTGANTGA} and \textit{CATYMATCA} corresponding with the expression of respectively \textit{SIX3}, \textit{EMX2}, \textit{FOXG1}, \textit{BARHL1}, \textit{EN1} and \textit{HOXB3} [ADD GENE EXPRESSION HEATMAP!]. Finally, SOX2 instances are present in regions of all AP domains (\textbf{Fig. 4e}).\par
+
+Focusing on the two most anterior domains, two similar homeodomain TF binding motifs seem to underlie the differential
+accessibility of those domains. Both have the core homeobox motif: \textit{TAAT} but one is flanked by the nucleotides \textit{TAG} while the other is flanked by the nucleotides \textit{CCCT}. We were surprised that this slight difference in the two motifs would be enough for encoding two separate AP domains. To test this hypothesis, we first did a substitution experiment where we replaced all instances of \textit{CTAAT\underline{TAG}} with \textit{CTAAT\underline{CCCT}} in regions of the most anterior domain and vice versa (\textbf{Fig. 4f}). Indeed, $DeepNeuralTube_{embryo}$ predicts an anterior-to-posterior shift of accessibility of those regions after the \textit{CTAAT\underline{TAG}} to \textit{CTAAT\underline{CCCT}} substitution and vice versa a posterior-to-anterior shift of accessibility after the \textit{CTAAT\underline{TAG}} with \textit{CTAAT\underline{CCCT}} to  \textit{CTAAT\underline{TAG}} substitution (\textbf{Fig. 4f}). Next, we designed enhancers from scratch by embedding either the  \textit{CTAAT\underline{TAG}} or \textit{CTAAT\underline{CCCT}} motif\cite{taskiran2024synthetic, kempynck2025crested} and using respectively Topic 61 and Topic 31 as target class (\textbf{Fig. 4g}). [SWITCH PANELS]. Embedding of two instances of either motif was sufficient to reach predicted chromatin accessibility levels of equivalent ranges to the predicted chromatin accessibility levels of genomic regions (\textbf{Fig. 4g}). Next, to eliminate potential model bias we repeated the same experiment but optimized for the opposite class. This is, we optimized for Topic 31 by embedding the \textit{CTAAT\underline{TAG}} motif optimized for Topic 61 by embedding the \textit{CTAAT\underline{CCCT}} motif (\textbf{Fig. 4h}). In this case, the synthetic design failed to converge for the target class but instead regions with high prediction score for the AP domain that corresponds to the motif used for embedding were generated. This is embedding of the \textit{CTAAT\underline{TAG}} motif still generated regions with high prediction score for Topic 61 and embedding of the \textit{CTAAT\underline{CCCT}} motif generated regions with high prediction score for Topic 31 (\textbf{Fig. 4h}).\par
+
+From these results it seems that a relatively simplistic code using two distinct motifs is sufficient to distinguish between the two utmost neuronal progenitor AP domains. Encouraged by this finding, we trained a logistic regression model to classify genomic regions of those two domains in either Topic 61 or Topic 31 using as features only the motif scores of the two motifs identified above (\textbf{Fig. 4i}). Surprisingly, this very simple classifier reached high performance with area under the ROC of X and area under the precision recall curve of X (\textbf{Fig. 4i}).\par
+
+
 \noindent\includegraphics[width=1.0\linewidth]{figures/main/Figure_4.png}
 
-\subsection*{Figure 4. }
+\subsection*{
+Figure 4. A simple enhancer code underlies anterior-posterior patterning in neuronal progenitors.
+}
+\textbf{a}, UMAP of embryo neuronal progenitors colored by cell-topic probabilities in RGB color scales for
+anterior-posterior topics. \textbf{b}, Heatmap showing pairwise pearson correlation coefficients of region-topic probabilities for dorso-ventral and anterior-posterior topics. \textbf{c}, Heatmap showing region-topic probabilities for the top 3,000 regions per topic (y-axis) and each anterior-posterior topic (x-axis). \textbf{d}, Heatmap showing prediction scores of $DeepNeuralTube_{embryo}$ on the topic 3,000 regions per topic (y-axis) for each anterior-posterior topics (x-axis).\textbf{e}, Heatmap showing the log of the number of seqlets for each identified pattern (y-axis) for all anterior-posterior topics (x-axis).\textbf{f}, Boxplot showing prediction score before (wt) and after (alt) substituting all instances of \textit{CTAATTAG} with \textit{CTAATCCCT} (top) or substituting all instances of \textit{CTAATCCCT} with \textit{CTAATTAG} (bottom) in the topic 3,000 regions of either Topic 61 or Topic 31. \textbf{g}, Boxplot showing prediction scores for all anterior-posterior topics after embedding 0 to 5 instances of \textit{CTAATTAG} while optimizing their location for Topic 61 (top) and after embedding 0 to 5 instances of \textit{CTAATCCCT} while optimzing their location for Topic 31 (bottom); n = 200. \textbf{h}, Boxplot showing prediction scores for all anterior-posterior topics after embedding 0 to 5 instances of \textit{CTAATTAG} while optimizing their location for Topic 31 (top) and after embedding 0 to 5 instances of \textit{CTAATCCCT} while optimzing their location for Topic 61 (bottom); n = 200. .\textbf{i}, receiver-operator curve (ROC) (top) and precision-recall curve (bottom) for logistic regression classifier classifying genomic regions as either Topic 61 or Topic 31 based on motif scores for \textit{CTAATTAG} and \textit{CTAATCCCT} motifs.
 
 \noindent\includegraphics[width=1.0\linewidth]{figures/main/Figure_5.png}
 

@@ -1,4 +1,4 @@
-\begin{thebibliography}{4}
+\begin{thebibliography}{6}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \providecommand{\href}[2]{#2}
@@ -22,10 +22,9 @@
   \bibinfo{author}{Nair, S.}, and \bibinfo{author}{Kundaje, A.}
   (\bibinfo{year}{2020}). \bibinfo{title}{Technical note on transcription
   factor motif discovery from importance scores (tf-modisco) version 0.5.6.5}.
-\newblock \bibinfo{journal}{arXiv}. \URLprefix
-  \url{https://arxiv.org/abs/1811.00416}.
-  \DOIprefix\doi{https://doi.org/10.48550/arXiv.1811.00416}.
-  \href{http://arxiv.org/abs/1811.00416}{\tt arXiv:1811.00416}.
+\newblock \bibinfo{journal}{Preprint at arXiv}.
+\newblock \bibinfo{note}{\href{https://doi.org/10.48550/arXiv.1811.00416}{
+  https://doi.org/10.48550/arXiv.1811.00416}}.
 %Type = Article
 \bibitem[{Grant et~al.(2011)Grant, Bailey and Noble}]{grant2011fimo}
 \bibinfo{author}{Grant, C.E.}, \bibinfo{author}{Bailey, T.L.}, and
@@ -44,6 +43,34 @@
 \bibinfo{author}{Schreiber", J.} (\bibinfo{year}{2025}).
 \newblock \bibinfo{title}{"tangermeme"}. .
 \newblock \URLprefix \url{https://github.com/jmschrei/tangermeme}.
+%Type = Article
+\bibitem[{Taskiran et~al.(2024)Taskiran, Spanier, Dickmänken, Kempynck,
+  Pančíková, Ekşi, Hulselmans, Ismail, Theunis, Vandepoel, Christiaens,
+  Mauduit and Aerts}]{taskiran2024synthetic}
+\bibinfo{author}{Taskiran, I.I.}, \bibinfo{author}{Spanier, K.I.},
+  \bibinfo{author}{Dickmänken, H.}, \bibinfo{author}{Kempynck, N.},
+  \bibinfo{author}{Pančíková, A.}, \bibinfo{author}{Ekşi, E.C.},
+  \bibinfo{author}{Hulselmans, G.}, \bibinfo{author}{Ismail, J.N.},
+  \bibinfo{author}{Theunis, K.}, \bibinfo{author}{Vandepoel, R.},
+  \bibinfo{author}{Christiaens, V.}, \bibinfo{author}{Mauduit, D.}, and
+  \bibinfo{author}{Aerts, S.} (\bibinfo{year}{2024}).
+  \bibinfo{title}{Cell-type-directed design of synthetic enhancers}.
+\newblock \bibinfo{journal}{Nature} \emph{\bibinfo{volume}{626}},
+  \bibinfo{pages}{212--220}. \DOIprefix\doi{10.1038/s41586-023-06936-2}.
+%Type = Article
+\bibitem[{Kempynck et~al.(2025)Kempynck, Winter, Blaauw, Konstantakos,
+  Dieltiens, Ekşi, Bercier, Taskiran, Hulselmans, Spanier and
+  Valerie~Christiaens}]{kempynck2025crested}
+\bibinfo{author}{Kempynck, N.}, \bibinfo{author}{Winter, S.D.},
+  \bibinfo{author}{Blaauw, C.H.}, \bibinfo{author}{Konstantakos, V.},
+  \bibinfo{author}{Dieltiens, S.}, \bibinfo{author}{Ekşi, E.C.},
+  \bibinfo{author}{Bercier, V.}, \bibinfo{author}{Taskiran, I.I.},
+  \bibinfo{author}{Hulselmans, G.}, \bibinfo{author}{Spanier, K.}, and
+  \bibinfo{author}{Valerie~Christiaens, L.M.S.A., Ludo Van Den~Bosch}
+  (\bibinfo{year}{2025}). \bibinfo{title}{Crested: modeling genomic and
+  synthetic cell type-specific enhancers across tissues and species}.
+\newblock \bibinfo{journal}{Preprint at bioRxiv}.
+\newblock \bibinfo{note}{\href{link}{link}}.
 %Type = Misc
 \bibitem[{Rizos(2023)}]{georgios_rizos_2023_10253149}
 \bibinfo{author}{Rizos, G.} (\bibinfo{year}{2023}).
