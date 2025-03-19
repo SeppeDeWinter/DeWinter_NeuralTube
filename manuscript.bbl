@@ -1,4 +1,4 @@
-\begin{thebibliography}{6}
+\begin{thebibliography}{9}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \providecommand{\href}[2]{#2}
@@ -71,6 +71,47 @@
   synthetic cell type-specific enhancers across tissues and species}.
 \newblock \bibinfo{journal}{Preprint at bioRxiv}.
 \newblock \bibinfo{note}{\href{link}{link}}.
+%Type = Article
+\bibitem[{Rothstein and Simoes-Costa(2020)}]{rothstein2020heterodmerization}
+\bibinfo{author}{Rothstein, M.}, and \bibinfo{author}{Simoes-Costa, M.}
+  (\bibinfo{year}{2020}). \bibinfo{title}{Heterodimerization of tfap2 pioneer
+  factors drives epigenomic remodeling during neural crest specification}.
+\newblock \bibinfo{journal}{Genome research} pp. \bibinfo{pages}{35--48}.
+  \DOIprefix\doi{10.1101/gr.249680.119}.
+%Type = Article
+\bibitem[{Kim et~al.(2024)Kim, Morgunova, Naqvi, Goovaerts, Bader, Koska,
+  Popov, Luong, Pogson, Swigut, Claes, Taipale and Wysocka}]{kim2024dnaguided}
+\bibinfo{author}{Kim, S.}, \bibinfo{author}{Morgunova, E.},
+  \bibinfo{author}{Naqvi, S.}, \bibinfo{author}{Goovaerts, S.},
+  \bibinfo{author}{Bader, M.}, \bibinfo{author}{Koska, M.},
+  \bibinfo{author}{Popov, A.}, \bibinfo{author}{Luong, C.},
+  \bibinfo{author}{Pogson, A.}, \bibinfo{author}{Swigut, T.},
+  \bibinfo{author}{Claes, P.}, \bibinfo{author}{Taipale, J.}, and
+  \bibinfo{author}{Wysocka, J.} (\bibinfo{year}{2024}).
+  \bibinfo{title}{Dna-guided transcription factor cooperativity shapes face and
+  limb mesenchyme}.
+\newblock \bibinfo{journal}{Cell} pp. \bibinfo{pages}{692--711}.
+  \DOIprefix\doi{10.1016/j.cell.2023.12.032}.
+%Type = Article
+\bibitem[{White et~al.(2021)White, Indencleef, Naqvi, Eller, Hoskens,
+  Roosenboom, Lee, Li, Mohammed, Richmond, Quillen, Norton, Feingold, Swigut,
+  Marazita, Peeters, Hens, Shaffer, Wysocka, Walsh, Weinberg, Shriver and
+  Claes}]{white2021insights}
+\bibinfo{author}{White, J.D.}, \bibinfo{author}{Indencleef, K.},
+  \bibinfo{author}{Naqvi, S.}, \bibinfo{author}{Eller, R.J.},
+  \bibinfo{author}{Hoskens, H.}, \bibinfo{author}{Roosenboom, J.},
+  \bibinfo{author}{Lee, M.K.}, \bibinfo{author}{Li, J.},
+  \bibinfo{author}{Mohammed, J.}, \bibinfo{author}{Richmond, S.},
+  \bibinfo{author}{Quillen, E.E.}, \bibinfo{author}{Norton, H.L.},
+  \bibinfo{author}{Feingold, E.}, \bibinfo{author}{Swigut, T.},
+  \bibinfo{author}{Marazita, M.L.}, \bibinfo{author}{Peeters, H.},
+  \bibinfo{author}{Hens, G.}, \bibinfo{author}{Shaffer, J.R.},
+  \bibinfo{author}{Wysocka, J.}, \bibinfo{author}{Walsh, S.},
+  \bibinfo{author}{Weinberg, S.M.}, \bibinfo{author}{Shriver, M.D.}, and
+  \bibinfo{author}{Claes, P.} (\bibinfo{year}{2021}). \bibinfo{title}{Insights
+  into the genetic architecture of the human face}.
+\newblock \bibinfo{journal}{Nature Genetics}.
+  \DOIprefix\doi{10.1038/s41588-020-00741-7}.
 %Type = Misc
 \bibitem[{Rizos(2023)}]{georgios_rizos_2023_10253149}
 \bibinfo{author}{Rizos, G.} (\bibinfo{year}{2023}).

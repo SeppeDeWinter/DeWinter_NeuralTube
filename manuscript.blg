@@ -15,45 +15,45 @@ Too many commas in name 11 of "Niklas Kempynck and Seppe De Winter and Casper H.
 while executing---line 1645 of file numbered.bst
 Too many commas in name 11 of "Niklas Kempynck and Seppe De Winter and Casper H. Blaauw and Vasileios Konstantakos and Sam Dieltiens and Eren Can Ekşi and Valérie Bercier and Ibrahim I. Taskiran and Gert Hulselmans and Katina Spanier and Valerie Christiaens, Ludo Van Den Bosch, Lukas Mahieu, Stein Aerts" for entry kempynck2025crested
 while executing---line 1645 of file numbered.bst
-You've used 6 entries,
+You've used 9 entries,
             3197 wiz_defined-function locations,
-            699 strings with 7149 characters,
-and the built_in function-call counts, 4505 in all, are:
-= -- 274
-> -- 259
-< -- 2
-+ -- 179
-- -- 74
-* -- 573
-:= -- 617
-add.period$ -- 20
-call.type$ -- 6
-change.case$ -- 33
-chr.to.int$ -- 6
-cite$ -- 6
-duplicate$ -- 324
-empty$ -- 278
-format.name$ -- 88
-if$ -- 804
+            717 strings with 8281 characters,
+and the built_in function-call counts, 7911 in all, are:
+= -- 458
+> -- 525
+< -- 5
++ -- 366
+- -- 150
+* -- 1028
+:= -- 1052
+add.period$ -- 29
+call.type$ -- 9
+change.case$ -- 48
+chr.to.int$ -- 9
+cite$ -- 9
+duplicate$ -- 546
+empty$ -- 453
+format.name$ -- 175
+if$ -- 1427
 int.to.chr$ -- 1
-int.to.str$ -- 7
-missing$ -- 75
-newline$ -- 45
-num.names$ -- 18
-pop$ -- 123
+int.to.str$ -- 10
+missing$ -- 130
+newline$ -- 57
+num.names$ -- 27
+pop$ -- 209
 preamble$ -- 1
-purify$ -- 30
+purify$ -- 45
 quote$ -- 0
-skip$ -- 96
+skip$ -- 184
 stack$ -- 0
-substring$ -- 126
-swap$ -- 288
-text.length$ -- 0
+substring$ -- 210
+swap$ -- 525
+text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 36
+type$ -- 54
 warning$ -- 0
-while$ -- 14
+while$ -- 24
 width$ -- 0
-write$ -- 102
+write$ -- 143
 (There were 4 error messages)
