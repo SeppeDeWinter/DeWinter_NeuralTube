@@ -347,9 +347,32 @@ suggestive SNPs we scored both the reference and alternative allele(s) using bot
 }
 \textbf{a}, UMAP of organoid (top two) and embryo (bottom two) neural crest cells colored by cell-topic probabilities in RGB color scales for neural crest related topics. \textbf{b}, Code table showing average contribution score of pattern instances for each neural crest related topic. Contribution scores for $DeepNeuralTube_{organoid}$ are not outlined. Contribution scores for $DeepNeuralTube_{embryo}$ are outlined and negated. \textbf{c}, Heatmap showing the maximum normalized contribution score for each of the top 1,000 regions per topic (y-axis) and pattern (x-axis) of neural crest related topics. \textbf{d}, Heatmap showing scaled expression of transcription factors corresponding to identified patterns in organoid (left) and embryo (right) for neural crest related topics. \textbf{e}, Heatmap showing Jaccard index of regions based on the presence of instances of the identified patterns. \textbf{f}, Manhattan plot showing -log p value of the SNP being associated with variations in facial shape\cite{white2021insights} (positive y-axis) and the maximum (across classes of the model) of the absolute value of the difference in prediction score between the reference and alternative allele (negative y-axis; circles for $DeepNeuralTube_{organoid}$ and crosses for $DeepNeuralTube_{embryo}$) across the human genome. Lead SNPs are shown with a bigger dot size. \textbf{g}, Zoom in of chromosome one with the locus of SNP rs1555067 shown as an inset, the SNP itself is shown in red. \textbf{h}, Nucleotide contribution scores for Topic 58 of $DeepNeuralTube_{organoid}$ of the references (top) and alternative (bottom) allele of SNP rs1555067. The location of the SNP is indicated with a dotted line.
 
+\subsection*{
+  Deciphering the enhancer code underlying early neuronal differentiation.
+}
+
+Focusing on early neuronal differentiation, we identified several topics for different stages of neuronal fate
+acquisition in both organoid and embryo cells (\textbf{Fig. 6a}). Again we made use of $DeepNeuralTube_{organoid}$ and
+$DeepNeuralTube_{embryo}$ to explain the top 1,000 regions for each topic and generated a code table based on the
+identified pattern instances (\textbf{Fig. 6b}). Both models found similar patterns and the importance of the instances
+of these patterns is highly correlated across both models (CORR COEF; \textbf{Fig. 6b}).\par
+
+For both the organoid and embryo we found two topics (organoid Topic 6 and 4 and embryo Topic 10 and 18) for which
+instances of patterns from neuronal progenitors, more precisely the floorplate, are important (\textbf{Fig. 6b-c}).
+These include instances of TEAD, FOX and RFX (\textbf{Fig. 6b-c}) correlating with the expression of respectively \textit{TEAD4/1},
+\textit{FOXA2} and \textit{RFX4} (\textbf{Fig. 6d}). Instances of a SOX monomer motif is important for one of these topics (\textbf{Fig. 6b-c}), correlating with the expression of \textit{SOX2} (\textbf{Fig. 6d}). Next, in both organoids and embryo cells we identified a topic for which both instances of neuronal progenitor patterns as well as an EBOX pattern is important (organoid Topic 23 and embryo Topic 13 \textbf{Fig. 6b-c}) the importance of this EBOX pattern correlates with the expression of \textit{ASCL1}. For subsequent topics SOX2 instances are not important anymore (\textbf{Fig. 6b-c}) and we find topics with a where a combination of EBOX and EBF instances are important (organoid and embryo Topic 24\textbf{Fig. 6b-c}) the latter correlating with the expression of \textit{EBF1-3} (\textbf{Fig. 6d}) and topics where a combination of EBF and ONECUT instances are important (organoid Topic 13 and embryo Topic 18; \textbf{Fig. 6b-c}), the latter correlating with the expression of \textit{ONECUT1-3}. Additionally, in the embryo topics instances of NKX are important in these latter two topics, the importance of these instances is anti-correlated with the expression \textit{NKX2-2}. Finally, in the organoids we could identify an additional topic for which instances of GATA are important (\textbf{Fig. 6b-c}) correlating with the expression of \textit{GATA2}.\par
+
+Next, we analyzed the co-occurence of the identified patterns by calculating the Jaccard index of regions based on the presence of instances of each pattern. We find that instances of neuronal progenitor patterns tend to co-occur the most (\textbf{Fig. 6e}), in line with our results in figure 3.\par
+
 \noindent\includegraphics[width=1.0\linewidth]{figures/main/Figure_6.png}
 
-\subsection*{Figure 6. }
+\subsection*{
+  Figure 6. Deciphering the enhancer code of early neuronal differentiation.
+}
+
+\textbf{a}, UMAP of organoid (top two) and embryo (bottom two) differentiating neuron cells colored by cell-topic probabilities in RGB color scales for neuron related topics. \textbf{b}, Code table showing average contribution score of pattern instances for each neuron related topic. Contribution scores for $DeepNeuralTube_{organoid}$ are not outlined. Contribution scores for $DeepNeuralTube_{embryo}$ are outlined and negated. \textbf{c}, Heatmap showing the maximum normalized contribution score for each of the top 1,000 regions per topic (y-axis) and pattern (x-axis) of neuron related topics. \textbf{d}, Heatmap showing scaled expression of transcription factors corresponding to identified patterns in organoid (left) and embryo (right) for neuon related topics. \textbf{e}, Heatmap showing Jaccard index of regions based on the presence of instances of the identified patterns.
+
+
 
 \noindent\includegraphics[width=1.0\linewidth]{figures/main/Figure_7.png}
 
