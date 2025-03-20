@@ -3,57 +3,56 @@ Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: manuscript.aux
 The style file: numbered.bst
 Database file #1: references.bib
-Warning--entry type for "schreiber2025tangermeme" isn't style-file defined
---line 3 of file references.bib
+Warning--I didn't find a database entry for "shrikumar2020tfmodisco"
+Warning--I didn't find a database entry for "grant2011fimo"
+Warning--I didn't find a database entry for "schreiber2025tangermeme"
+Warning--I didn't find a database entry for "taskiran2024synthetic"
+Warning--I didn't find a database entry for "kempynck2025crested"
+Warning--I didn't find a database entry for "rothstein2020heterodmerization"
+Warning--I didn't find a database entry for "kim2024dnaguided"
+Warning--I didn't find a database entry for "white2021insights"
+Warning--I didn't find a database entry for "georgios_rizos_2023_10253149"
 Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
 Reallocated singl_function (elt_size=4) to 100 items from 50.
-Too many commas in name 11 of "Niklas Kempynck and Seppe De Winter and Casper H. Blaauw and Vasileios Konstantakos and Sam Dieltiens and Eren Can Ekşi and Valérie Bercier and Ibrahim I. Taskiran and Gert Hulselmans and Katina Spanier and Valerie Christiaens, Ludo Van Den Bosch, Lukas Mahieu, Stein Aerts" for entry kempynck2025crested
-while executing---line 1645 of file numbered.bst
-Too many commas in name 11 of "Niklas Kempynck and Seppe De Winter and Casper H. Blaauw and Vasileios Konstantakos and Sam Dieltiens and Eren Can Ekşi and Valérie Bercier and Ibrahim I. Taskiran and Gert Hulselmans and Katina Spanier and Valerie Christiaens, Ludo Van Den Bosch, Lukas Mahieu, Stein Aerts" for entry kempynck2025crested
-while executing---line 1645 of file numbered.bst
-Too many commas in name 11 of "Niklas Kempynck and Seppe De Winter and Casper H. Blaauw and Vasileios Konstantakos and Sam Dieltiens and Eren Can Ekşi and Valérie Bercier and Ibrahim I. Taskiran and Gert Hulselmans and Katina Spanier and Valerie Christiaens, Ludo Van Den Bosch, Lukas Mahieu, Stein Aerts" for entry kempynck2025crested
-while executing---line 1645 of file numbered.bst
-Too many commas in name 11 of "Niklas Kempynck and Seppe De Winter and Casper H. Blaauw and Vasileios Konstantakos and Sam Dieltiens and Eren Can Ekşi and Valérie Bercier and Ibrahim I. Taskiran and Gert Hulselmans and Katina Spanier and Valerie Christiaens, Ludo Van Den Bosch, Lukas Mahieu, Stein Aerts" for entry kempynck2025crested
-while executing---line 1645 of file numbered.bst
-You've used 9 entries,
+You've used 34 entries,
             3197 wiz_defined-function locations,
-            717 strings with 8281 characters,
-and the built_in function-call counts, 7911 in all, are:
-= -- 458
-> -- 525
-< -- 5
-+ -- 366
-- -- 150
-* -- 1028
-:= -- 1052
-add.period$ -- 29
-call.type$ -- 9
-change.case$ -- 48
-chr.to.int$ -- 9
-cite$ -- 9
-duplicate$ -- 546
-empty$ -- 453
-format.name$ -- 175
-if$ -- 1427
-int.to.chr$ -- 1
-int.to.str$ -- 10
-missing$ -- 130
-newline$ -- 57
-num.names$ -- 27
-pop$ -- 209
+            937 strings with 18877 characters,
+and the built_in function-call counts, 32456 in all, are:
+= -- 1893
+> -- 2177
+< -- 13
++ -- 1532
+- -- 622
+* -- 4439
+:= -- 4223
+add.period$ -- 102
+call.type$ -- 34
+change.case$ -- 171
+chr.to.int$ -- 33
+cite$ -- 34
+duplicate$ -- 2145
+empty$ -- 1885
+format.name$ -- 730
+if$ -- 5806
+int.to.chr$ -- 2
+int.to.str$ -- 35
+missing$ -- 546
+newline$ -- 160
+num.names$ -- 102
+pop$ -- 769
 preamble$ -- 1
-purify$ -- 45
+purify$ -- 170
 quote$ -- 0
-skip$ -- 184
+skip$ -- 663
 stack$ -- 0
-substring$ -- 210
-swap$ -- 525
-text.length$ -- 2
+substring$ -- 1134
+swap$ -- 2210
+text.length$ -- 4
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 54
+type$ -- 202
 warning$ -- 0
-while$ -- 24
+while$ -- 123
 width$ -- 0
-write$ -- 143
-(There were 4 error messages)
+write$ -- 496
+(There were 9 warnings)

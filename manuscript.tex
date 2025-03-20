@@ -93,8 +93,33 @@
 
 \section*{INTRODUCTION}
 
-%%% No subheadings, please. Use of abbreviations should be kept to a minimum, and nonstandard abbreviations should be
-%%% defined when first used in the text.
+%%% INTRO TO FIELD
+
+Genomes of complex multi-cellular organisms encode all cell types/states\cite{trapnellDefiningCellTypes2015, arendtOriginEvolutionCell2016, fleckWhatCellType2023} of that organism in specific non-coding elements named
+enhancers\cite{davidsonRegulatoryGenomeGene2010}. The code words used by enhancers are
+transcription factor binding sites (TFBS)\cite{davidsonRegulatoryGenomeGene2010} and the precise arrangement, copy
+number and strength of individual TFBS define the enhancer and its cell type-specific activity\cite{dewinterModellingDesignTranscriptional2025}. Due to the soft syntax rules underlying the enhancer-code\cite{zeitlingerSevenMythsHow2020}, DNA sequence based deep learning methods have shown major advances in the ability to model and explain enhancers\cite{zeitlingerSevenMythsHow2020, dewinterModellingDesignTranscriptional2025}. For example, during immune cell differentiation\cite{maslovaDeepLearningImmune2020}, fly brain cell types\cite{janssensDecodingGeneRegulation2022}, liver cell types\cite{bravogonzalez-blasSinglecellSpatialMultiomics2024}, melanoma states\cite{minnoyeCrossspeciesAnalysisEnhancer2020, atakInterpretationAllelespecificChromatin2021}, during human brain development\cite{mannensChromatinAccessibilityHuman2024}, mammalian and chicken brain cell types\cite{heckerEnhancerdrivenCellType2025} and pluripotent cell stem cells\cite{avsecBaseresolutionModelsTranscriptionfactor2021}. Furthermore, it has been demonstrated recently that the code learned by these models is sufficient to design novel enhancers with cell type-specific activity\cite{taskiranCelltypedirectedDesignSynthetic2024, dealmeidaTargetedDesignSynthetic2024, gosaiMachineguidedDesignCelltypetargeting2024, yinIterativeDeepLearningdesign2024}.\par
+
+Organoids are a reductionistic biological model system that can be used to interrogate how cell types are encoded in the
+genome. Especially organoids derived from pluripotent stem cells are interesting in this context, given that they
+demonstrate how a single genome can generate multiple distinct cell types\cite{mccauleyPluripotentStemCellderived2017,
+takebeOrganoidsDesign2019, hoferEngineeringOrganoids2021}. Organoids can furthermore, give insights into how genomes
+interpret both cell intrinsic and extrinsic signals. For example, epigentic
+modifications\cite{zenkSinglecellEpigenomicReconstruction2024}, transcription factor (TF)
+perturbations\cite{fleckInferringPerturbingCell2023} or morphogen
+signaling\cite{sanchis-callejaDecodingMorphogenPatterning2024}. Another benefit of organoids is that they can be used to
+model biological systems that are otherwise - due to ethical and/or practical reasons - inaccessible for study. For
+example, early human development.\par
+
+%%% What is missing and bridge
+
+Current efforts are ongoing to determine the breadth of human cell types that can be generated using organoid protocols and how they compare to their primary counterparts, at a transcriptomic level. For example, for brain organoids\cite{heIntegratedTranscriptomicCell2024} and endoderm-derived organoids\cite{xuIntegratedTranscriptomicCell2023}. However, such comparisons at the level of the enhancer-code are still limited\cite{zenkSinglecellEpigenomicReconstruction2024, fleckInferringPerturbingCell2023}.\par
+
+During vertebrate development both the neural tube and neural crest originate from the neural ectoderm. The neural tube
+consist of proliferating neuronal progenitors that, through opposing gradients of SHH and BMP/Wnt signaling, have different identities along the dorso-ventral (DV) axis of the embryo later giving rise to distinct neuronal subtypes of the central nervous system\cite{sagnerEstablishingNeuronalDiversity2019, delasRepressiveInteractionsGene2020}. Neural crest cells originate from the neural plate border, through intermediate signals of BMP and Wnt\cite{simoes-costaEstablishingNeuralCrest2015}, and migrate throughout the body giving rise to a multitude of cell types including the peripheral nervous system, craniofacial skeleton and melanocytes\cite{simoes-costaEstablishingNeuralCrest2015}. The gene regulatory networks underlying both DV patterning of neuronal progenitors\cite{sagnerEstablishingNeuronalDiversity2019, delasRepressiveInteractionsGene2020} and neural crest induction, specification, migration and differentiation\cite{simoes-costaEstablishingNeuralCrest2015, candido-ferreiraMultilayeredTranscriptionalControl2023} are already well studied. Furthermore, studies using chromatin accessibility profiling methods at the bulk and single cell level, profiling enhancers encoding cell types and states of neuronal progenitors and neural crest cells are starting to emerge\cite{delasDevelopmentalCellFate2023, zhangCisregulatoryLogicIntegrating2024, huEndothelialRegulatoryCircuits2025} but a detailed descriptions of the enhancer-code of each individual cell types are still limited.\par
+
+In this study, we will determine the enhancer-codes of cell types/states generated by human neural tube organoids, a model system for early human neuronal and neural crest development\cite{abdelfattahActuationEnhancesPatterning2021} and compare these codes to those of cell types/states of the head of a four weeks post conception human embryo.
+
 
 \section*{RESULTS}
 
