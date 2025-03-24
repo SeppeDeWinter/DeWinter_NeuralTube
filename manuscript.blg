@@ -14,45 +14,45 @@ Warning--I didn't find a database entry for "white2021insights"
 Warning--I didn't find a database entry for "georgios_rizos_2023_10253149"
 Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
 Reallocated singl_function (elt_size=4) to 100 items from 50.
-You've used 34 entries,
+You've used 56 entries,
             3197 wiz_defined-function locations,
-            937 strings with 18877 characters,
-and the built_in function-call counts, 32456 in all, are:
-= -- 1893
-> -- 2177
-< -- 13
-+ -- 1532
-- -- 622
-* -- 4439
-:= -- 4223
-add.period$ -- 102
-call.type$ -- 34
-change.case$ -- 171
-chr.to.int$ -- 33
-cite$ -- 34
-duplicate$ -- 2145
-empty$ -- 1885
-format.name$ -- 730
-if$ -- 5806
+            1104 strings with 26314 characters,
+and the built_in function-call counts, 51756 in all, are:
+= -- 3165
+> -- 3196
+< -- 25
++ -- 2242
+- -- 913
+* -- 7034
+:= -- 6697
+add.period$ -- 168
+call.type$ -- 56
+change.case$ -- 285
+chr.to.int$ -- 55
+cite$ -- 56
+duplicate$ -- 3501
+empty$ -- 3143
+format.name$ -- 1099
+if$ -- 9342
 int.to.chr$ -- 2
-int.to.str$ -- 35
-missing$ -- 546
-newline$ -- 160
-num.names$ -- 102
-pop$ -- 769
+int.to.str$ -- 57
+missing$ -- 856
+newline$ -- 250
+num.names$ -- 170
+pop$ -- 1197
 preamble$ -- 1
-purify$ -- 170
+purify$ -- 280
 quote$ -- 0
-skip$ -- 663
+skip$ -- 1061
 stack$ -- 0
-substring$ -- 1134
-swap$ -- 2210
-text.length$ -- 4
+substring$ -- 2018
+swap$ -- 3515
+text.length$ -- 10
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 202
+type$ -- 334
 warning$ -- 0
-while$ -- 123
+while$ -- 216
 width$ -- 0
-write$ -- 496
+write$ -- 812
 (There were 9 warnings)

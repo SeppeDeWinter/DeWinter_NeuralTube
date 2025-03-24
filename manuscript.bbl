@@ -1,4 +1,4 @@
-\begin{thebibliography}{34}
+\begin{thebibliography}{56}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \providecommand{\href}[2]{#2}
@@ -426,5 +426,249 @@
   enhances patterning in human neural tube organoids}.
 \newblock \bibinfo{journal}{Nat Commun} \emph{\bibinfo{volume}{12}},
   \bibinfo{pages}{3192}. \DOIprefix\doi{10.1038/s41467-021-22952-0}.
+%Type = Article
+\bibitem[{Wasserman and
+  Sandelin(2004)}]{wassermanAppliedBioinformaticsIdentification2004}
+\bibinfo{author}{Wasserman, W.W.}, and \bibinfo{author}{Sandelin, A.}
+  (\bibinfo{year}{2004}). \bibinfo{title}{Applied bioinformatics for the
+  identification of regulatory elements}.
+\newblock \bibinfo{journal}{Nat Rev Genet} \emph{\bibinfo{volume}{5}},
+  \bibinfo{pages}{276--287}. \DOIprefix\doi{10.1038/nrg1315}.
+%Type = Article
+\bibitem[{Kim and Wysocka(2023)}]{kimDecipheringMultiscaleQuantitative2023}
+\bibinfo{author}{Kim, S.}, and \bibinfo{author}{Wysocka, J.}
+  (\bibinfo{year}{2023}). \bibinfo{title}{Deciphering the multi-scale,
+  quantitative cis-regulatory code}.
+\newblock \bibinfo{journal}{Molecular Cell} \emph{\bibinfo{volume}{83}},
+  \bibinfo{pages}{373--392}. \DOIprefix\doi{10.1016/j.molcel.2022.12.032}.
+%Type = Article
+\bibitem[{{de Boer} and Taipale(2024)}]{deboerHoldOutGenome2024}
+\bibinfo{author}{{de Boer}, C.G.}, and \bibinfo{author}{Taipale, J.}
+  (\bibinfo{year}{2024}). \bibinfo{title}{Hold out the genome: A roadmap to
+  solving the cis-regulatory code}.
+\newblock \bibinfo{journal}{Nature} \emph{\bibinfo{volume}{625}},
+  \bibinfo{pages}{41--50}. \DOIprefix\doi{10.1038/s41586-023-06661-w}.
+%Type = Article
+\bibitem[{Long et~al.(2016)Long, Prescott and
+  Wysocka}]{longEverChangingLandscapesTranscriptional2016}
+\bibinfo{author}{Long, H.K.}, \bibinfo{author}{Prescott, S.L.}, and
+  \bibinfo{author}{Wysocka, J.} (\bibinfo{year}{2016}).
+  \bibinfo{title}{Ever-{{Changing Landscapes}}: {{Transcriptional Enhancers}}
+  in {{Development}} and {{Evolution}}}.
+\newblock \bibinfo{journal}{Cell} \emph{\bibinfo{volume}{167}},
+  \bibinfo{pages}{1170--1187}. \DOIprefix\doi{10.1016/j.cell.2016.09.018}.
+%Type = Article
+\bibitem[{Lambert et~al.(2018)Lambert, Jolma, Campitelli, Das, Yin, Albu, Chen,
+  Taipale, Hughes and Weirauch}]{lambertHumanTranscriptionFactors2018}
+\bibinfo{author}{Lambert, S.A.}, \bibinfo{author}{Jolma, A.},
+  \bibinfo{author}{Campitelli, L.F.}, \bibinfo{author}{Das, P.K.},
+  \bibinfo{author}{Yin, Y.}, \bibinfo{author}{Albu, M.}, \bibinfo{author}{Chen,
+  X.}, \bibinfo{author}{Taipale, J.}, \bibinfo{author}{Hughes, T.R.}, and
+  \bibinfo{author}{Weirauch, M.T.} (\bibinfo{year}{2018}). \bibinfo{title}{The
+  {{Human Transcription Factors}}}.
+\newblock \bibinfo{journal}{Cell} \emph{\bibinfo{volume}{172}},
+  \bibinfo{pages}{650--665}. \DOIprefix\doi{10.1016/j.cell.2018.01.029}.
+%Type = Article
+\bibitem[{Arnosti and
+  Kulkarni(2005)}]{arnostiTranscriptionalEnhancersIntelligent2005}
+\bibinfo{author}{Arnosti, D.N.}, and \bibinfo{author}{Kulkarni, M.M.}
+  (\bibinfo{year}{2005}). \bibinfo{title}{Transcriptional enhancers:
+  {{Intelligent}} enhanceosomes or flexible billboards?}
+\newblock \bibinfo{journal}{Journal of Cellular Biochemistry}
+  \emph{\bibinfo{volume}{94}}, \bibinfo{pages}{890--898}.
+  \DOIprefix\doi{10.1002/jcb.20352}.
+%Type = Article
+\bibitem[{Kim et~al.(2024)Kim, Morgunova, Naqvi, Goovaerts, Bader, Koska,
+  Popov, Luong, Pogson, Swigut, Claes, Taipale and
+  Wysocka}]{kimDNAguidedTranscriptionFactor2024}
+\bibinfo{author}{Kim, S.}, \bibinfo{author}{Morgunova, E.},
+  \bibinfo{author}{Naqvi, S.}, \bibinfo{author}{Goovaerts, S.},
+  \bibinfo{author}{Bader, M.}, \bibinfo{author}{Koska, M.},
+  \bibinfo{author}{Popov, A.}, \bibinfo{author}{Luong, C.},
+  \bibinfo{author}{Pogson, A.}, \bibinfo{author}{Swigut, T.},
+  \bibinfo{author}{Claes, P.}, \bibinfo{author}{Taipale, J.}, and
+  \bibinfo{author}{Wysocka, J.} (\bibinfo{year}{2024}).
+  \bibinfo{title}{{{DNA-guided}} transcription factor cooperativity shapes face
+  and limb mesenchyme}.
+\newblock \bibinfo{journal}{Cell} \emph{\bibinfo{volume}{187}},
+  \bibinfo{pages}{692--711.e26}. \DOIprefix\doi{10.1016/j.cell.2023.12.032}.
+%Type = Article
+\bibitem[{Rothstein and
+  {Simoes-Costa}(2020)}]{rothsteinHeterodimerizationTFAP2Pioneer2020}
+\bibinfo{author}{Rothstein, M.}, and \bibinfo{author}{{Simoes-Costa}, M.}
+  (\bibinfo{year}{2020}). \bibinfo{title}{Heterodimerization of {{TFAP2}}
+  pioneer factors drives epigenomic remodeling during neural crest
+  specification}.
+\newblock \bibinfo{journal}{Genome Res.} \emph{\bibinfo{volume}{30}},
+  \bibinfo{pages}{35--48}. \DOIprefix\doi{10.1101/gr.249680.119}.
+%Type = Article
+\bibitem[{{Iwafuchi-Doi} et~al.(2016){Iwafuchi-Doi}, Donahue, Kakumanu, Watts,
+  Mahony, Pugh, Lee, Kaestner and
+  Zaret}]{iwafuchi-doiPioneerTranscriptionFactor2016}
+\bibinfo{author}{{Iwafuchi-Doi}, M.}, \bibinfo{author}{Donahue, G.},
+  \bibinfo{author}{Kakumanu, A.}, \bibinfo{author}{Watts, J.A.},
+  \bibinfo{author}{Mahony, S.}, \bibinfo{author}{Pugh, B.F.},
+  \bibinfo{author}{Lee, D.}, \bibinfo{author}{Kaestner, K.H.}, and
+  \bibinfo{author}{Zaret, K.S.} (\bibinfo{year}{2016}). \bibinfo{title}{The
+  {{Pioneer Transcription Factor FoxA Maintains}} an {{Accessible Nucleosome
+  Configuration}} at {{Enhancers}} for {{Tissue-Specific Gene Activation}}}.
+\newblock \bibinfo{journal}{Molecular Cell} \emph{\bibinfo{volume}{62}},
+  \bibinfo{pages}{79--91}. \DOIprefix\doi{10.1016/j.molcel.2016.03.001}.
+%Type = Article
+\bibitem[{Iwafuchi et~al.(2020)Iwafuchi, Cuesta, Donahue, Takenaka, Osipovich,
+  Magnuson, Roder, Seeholzer, Santisteban and
+  Zaret}]{iwafuchiGeneNetworkTransitions2020}
+\bibinfo{author}{Iwafuchi, M.}, \bibinfo{author}{Cuesta, I.},
+  \bibinfo{author}{Donahue, G.}, \bibinfo{author}{Takenaka, N.},
+  \bibinfo{author}{Osipovich, A.B.}, \bibinfo{author}{Magnuson, M.A.},
+  \bibinfo{author}{Roder, H.}, \bibinfo{author}{Seeholzer, S.H.},
+  \bibinfo{author}{Santisteban, P.}, and \bibinfo{author}{Zaret, K.S.}
+  (\bibinfo{year}{2020}). \bibinfo{title}{Gene network transitions in embryos
+  depend upon interactions between a pioneer transcription factor and core
+  histones}.
+\newblock \bibinfo{journal}{Nat Genet} \emph{\bibinfo{volume}{52}},
+  \bibinfo{pages}{418--427}. \DOIprefix\doi{10.1038/s41588-020-0591-8}.
+%Type = Article
+\bibitem[{Hansen et~al.(2022)Hansen, Loell and
+  Cohen}]{hansenTestPioneerFactor2022}
+\bibinfo{author}{Hansen, J.L.}, \bibinfo{author}{Loell, K.J.}, and
+  \bibinfo{author}{Cohen, B.A.} (\bibinfo{year}{2022}). \bibinfo{title}{A test
+  of the pioneer factor hypothesis using ectopic liver gene activation}.
+\newblock \bibinfo{journal}{eLife} \emph{\bibinfo{volume}{11}},
+  \bibinfo{pages}{e73358}. \DOIprefix\doi{10.7554/eLife.73358}.
+%Type = Article
+\bibitem[{Farley et~al.(2015)Farley, Olson, Zhang, Brandt, Rokhsar and
+  Levine}]{farleySuboptimizationDevelopmentalEnhancers2015}
+\bibinfo{author}{Farley, E.K.}, \bibinfo{author}{Olson, K.M.},
+  \bibinfo{author}{Zhang, W.}, \bibinfo{author}{Brandt, A.J.},
+  \bibinfo{author}{Rokhsar, D.S.}, and \bibinfo{author}{Levine, M.S.}
+  (\bibinfo{year}{2015}). \bibinfo{title}{Suboptimization of developmental
+  enhancers}.
+\newblock \bibinfo{journal}{Science} \emph{\bibinfo{volume}{350}},
+  \bibinfo{pages}{325--328}. \DOIprefix\doi{10.1126/science.aac6948}.
+%Type = Incollection
+\bibitem[{Crocker et~al.(2016)Crocker, {Preger-Ben Noon} and
+  Stern}]{crockerChapterTwentySevenSoft2016}
+\bibinfo{author}{Crocker, J.}, \bibinfo{author}{{Preger-Ben Noon}, E.}, and
+  \bibinfo{author}{Stern, D.L.} (\bibinfo{year}{2016}). \bibinfo{title}{Chapter
+  {{Twenty-Seven}} - {{The Soft Touch}}: {{Low-Affinity Transcription Factor
+  Binding Sites}} in {{Development}} and {{Evolution}}}.
+\newblock In \bibinfo{editor}{ P.M.{ }Wassarman}, ed.
+  \bibinfo{booktitle}{Current {{Topics}} in {{Developmental Biology}}} vol.
+  \bibinfo{volume}{117} of \emph{\bibinfo{series}{Essays on {{Developmental
+  Biology}}, {{Part B}}}} pp. \bibinfo{pages}{455--469}..
+  \bibinfo{publisher}{Academic Press} pp. \bibinfo{pages}{455--469}.
+\newblock \DOIprefix\doi{10.1016/bs.ctdb.2015.11.018}.
+%Type = Article
+\bibitem[{Lim et~al.(2024)Lim, Solvason, Ryan, Le, Jindal, Steffen, Jandu and
+  Farley}]{limAffinityoptimizingEnhancerVariants2024}
+\bibinfo{author}{Lim, F.}, \bibinfo{author}{Solvason, J.J.},
+  \bibinfo{author}{Ryan, G.E.}, \bibinfo{author}{Le, S.H.},
+  \bibinfo{author}{Jindal, G.A.}, \bibinfo{author}{Steffen, P.},
+  \bibinfo{author}{Jandu, S.K.}, and \bibinfo{author}{Farley, E.K.}
+  (\bibinfo{year}{2024}). \bibinfo{title}{Affinity-optimizing enhancer variants
+  disrupt development}.
+\newblock \bibinfo{journal}{Nature} \emph{\bibinfo{volume}{626}},
+  \bibinfo{pages}{151--159}. \DOIprefix\doi{10.1038/s41586-023-06922-8}.
+%Type = Article
+\bibitem[{Naqvi et~al.(2025)Naqvi, Kim, Tabatabaee, Pampari, Kundaje, Pritchard
+  and Wysocka}]{naqviTransferLearningReveals2025}
+\bibinfo{author}{Naqvi, S.}, \bibinfo{author}{Kim, S.},
+  \bibinfo{author}{Tabatabaee, S.}, \bibinfo{author}{Pampari, A.},
+  \bibinfo{author}{Kundaje, A.}, \bibinfo{author}{Pritchard, J.K.}, and
+  \bibinfo{author}{Wysocka, J.} (\bibinfo{year}{2025}).
+  \bibinfo{title}{Transfer learning reveals sequence determinants of the
+  quantitative response to transcription factor dosage}.
+\newblock \bibinfo{journal}{Cell Genomics} \emph{\bibinfo{volume}{5}},
+  \bibinfo{pages}{100780}. \DOIprefix\doi{10.1016/j.xgen.2025.100780}.
+%Type = Article
+\bibitem[{Crocker et~al.(2015)Crocker, Abe, Rinaldi, McGregor, Frankel, Wang,
+  Alsawadi, Valenti, Plaza, Payre, Mann and
+  Stern}]{crockerLowAffinityBinding2015}
+\bibinfo{author}{Crocker, J.}, \bibinfo{author}{Abe, N.},
+  \bibinfo{author}{Rinaldi, L.}, \bibinfo{author}{McGregor, A.P.},
+  \bibinfo{author}{Frankel, N.}, \bibinfo{author}{Wang, S.},
+  \bibinfo{author}{Alsawadi, A.}, \bibinfo{author}{Valenti, P.},
+  \bibinfo{author}{Plaza, S.}, \bibinfo{author}{Payre, F.},
+  \bibinfo{author}{Mann, R.S.}, and \bibinfo{author}{Stern, D.L.}
+  (\bibinfo{year}{2015}). \bibinfo{title}{Low {{Affinity Binding Site Clusters
+  Confer Hox Specificity}} and {{Regulatory Robustness}}}.
+\newblock \bibinfo{journal}{Cell} \emph{\bibinfo{volume}{160}},
+  \bibinfo{pages}{191--203}. \DOIprefix\doi{10.1016/j.cell.2014.11.041}.
+%Type = Incollection
+\bibitem[{Mann et~al.(2009)Mann, Lelli and Joshi}]{mannChapter3Hox2009}
+\bibinfo{author}{Mann, R.S.}, \bibinfo{author}{Lelli, K.M.}, and
+  \bibinfo{author}{Joshi, R.} (\bibinfo{year}{2009}). \bibinfo{title}{Chapter 3
+  {{Hox Specificity}}: {{Unique Roles}} for {{Cofactors}} and
+  {{Collaborators}}}.
+\newblock In \bibinfo{booktitle}{Current {{Topics}} in {{Developmental
+  Biology}}} vol.~\bibinfo{volume}{88} of \emph{\bibinfo{series}{Genes}} pp.
+  \bibinfo{pages}{63--101}.. \bibinfo{publisher}{Academic Press} pp.
+  \bibinfo{pages}{63--101}.
+\newblock \DOIprefix\doi{10.1016/S0070-2153(09)88003-4}.
+%Type = Article
+\bibitem[{Hubert and Wellik(2023)}]{hubertHoxGenesDevelopment2023}
+\bibinfo{author}{Hubert, K.A.}, and \bibinfo{author}{Wellik, D.M.}
+  (\bibinfo{year}{2023}). \bibinfo{title}{Hox genes in development and beyond}.
+\newblock \bibinfo{journal}{Development} \emph{\bibinfo{volume}{150}},
+  \bibinfo{pages}{dev192476}. \DOIprefix\doi{10.1242/dev.192476}.
+%Type = Article
+\bibitem[{Berger et~al.(2008)Berger, Badis, Gehrke, Talukder, Philippakis,
+  {Pe{\~n}a-Castillo}, Alleyne, Mnaimneh, Botvinnik, Chan, Khalid, Zhang,
+  Newburger, Jaeger, Morris, Bulyk and
+  Hughes}]{bergerVariationHomeodomainDNA2008}
+\bibinfo{author}{Berger, M.F.}, \bibinfo{author}{Badis, G.},
+  \bibinfo{author}{Gehrke, A.R.}, \bibinfo{author}{Talukder, S.},
+  \bibinfo{author}{Philippakis, A.A.}, \bibinfo{author}{{Pe{\~n}a-Castillo},
+  L.}, \bibinfo{author}{Alleyne, T.M.}, \bibinfo{author}{Mnaimneh, S.},
+  \bibinfo{author}{Botvinnik, O.B.}, \bibinfo{author}{Chan, E.T.},
+  \bibinfo{author}{Khalid, F.}, \bibinfo{author}{Zhang, W.},
+  \bibinfo{author}{Newburger, D.}, \bibinfo{author}{Jaeger, S.A.},
+  \bibinfo{author}{Morris, Q.D.}, \bibinfo{author}{Bulyk, M.L.}, and
+  \bibinfo{author}{Hughes, T.R.} (\bibinfo{year}{2008}).
+  \bibinfo{title}{Variation in {{Homeodomain DNA Binding Revealed}} by
+  {{High-Resolution Analysis}} of {{Sequence Preferences}}}.
+\newblock \bibinfo{journal}{Cell} \emph{\bibinfo{volume}{133}},
+  \bibinfo{pages}{1266--1276}. \DOIprefix\doi{10.1016/j.cell.2008.05.024}.
+%Type = Article
+\bibitem[{Noyes et~al.(2008)Noyes, Christensen, Wakabayashi, Stormo, Brodsky
+  and Wolfe}]{noyesAnalysisHomeodomainSpecificities2008}
+\bibinfo{author}{Noyes, M.B.}, \bibinfo{author}{Christensen, R.G.},
+  \bibinfo{author}{Wakabayashi, A.}, \bibinfo{author}{Stormo, G.D.},
+  \bibinfo{author}{Brodsky, M.H.}, and \bibinfo{author}{Wolfe, S.A.}
+  (\bibinfo{year}{2008}). \bibinfo{title}{Analysis of {{Homeodomain
+  Specificities Allows}} the {{Family-wide Prediction}} of {{Preferred
+  Recognition Sites}}}.
+\newblock \bibinfo{journal}{Cell} \emph{\bibinfo{volume}{133}},
+  \bibinfo{pages}{1277--1289}. \DOIprefix\doi{10.1016/j.cell.2008.05.023}.
+%Type = Article
+\bibitem[{Jolma et~al.(2013)Jolma, Yan, Whitington, Toivonen, Nitta, Rastas,
+  Morgunova, Enge, Taipale, Wei, Palin, Vaquerizas, Vincentelli, Luscombe,
+  Hughes, Lemaire, Ukkonen, Kivioja and
+  Taipale}]{jolmaDNABindingSpecificitiesHuman2013}
+\bibinfo{author}{Jolma, A.}, \bibinfo{author}{Yan, J.},
+  \bibinfo{author}{Whitington, T.}, \bibinfo{author}{Toivonen, J.},
+  \bibinfo{author}{Nitta, K.R.}, \bibinfo{author}{Rastas, P.},
+  \bibinfo{author}{Morgunova, E.}, \bibinfo{author}{Enge, M.},
+  \bibinfo{author}{Taipale, M.}, \bibinfo{author}{Wei, G.},
+  \bibinfo{author}{Palin, K.}, \bibinfo{author}{Vaquerizas, J.M.},
+  \bibinfo{author}{Vincentelli, R.}, \bibinfo{author}{Luscombe, N.M.},
+  \bibinfo{author}{Hughes, T.R.}, \bibinfo{author}{Lemaire, P.},
+  \bibinfo{author}{Ukkonen, E.}, \bibinfo{author}{Kivioja, T.}, and
+  \bibinfo{author}{Taipale, J.} (\bibinfo{year}{2013}).
+  \bibinfo{title}{{{DNA-Binding Specificities}} of {{Human Transcription
+  Factors}}}.
+\newblock \bibinfo{journal}{Cell} \emph{\bibinfo{volume}{152}},
+  \bibinfo{pages}{327--339}. \DOIprefix\doi{10.1016/j.cell.2012.12.009}.
+%Type = Article
+\bibitem[{{de Almeida} et~al.(2022){de Almeida}, Reiter, Pagani and
+  Stark}]{dealmeidaDeepSTARRPredictsEnhancer2022}
+\bibinfo{author}{{de Almeida}, B.P.}, \bibinfo{author}{Reiter, F.},
+  \bibinfo{author}{Pagani, M.}, and \bibinfo{author}{Stark, A.}
+  (\bibinfo{year}{2022}). \bibinfo{title}{{{DeepSTARR}} predicts enhancer
+  activity from {{DNA}} sequence and enables the de novo design of synthetic
+  enhancers}.
+\newblock \bibinfo{journal}{Nat Genet} \emph{\bibinfo{volume}{54}},
+  \bibinfo{pages}{613--624}. \DOIprefix\doi{10.1038/s41588-022-01048-5}.
 
 \end{thebibliography}

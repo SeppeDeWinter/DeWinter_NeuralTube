@@ -399,7 +399,7 @@ Next, we analyzed the co-occurence of the identified patterns by calculating the
 
 
 \subsection* {
-  Four to five distinct transcription factor binding sites in a region of around 240 base pairs is sufficient to encode
+  Four to five distinct transcription factor binding sites in a region of around 140 base pairs is sufficient to encode
   all cell states related to neuronal progenitors, early neuronal differentiation and neural crest development.
 }
 
@@ -441,39 +441,26 @@ facial mesenchyme specification.\par
 
 In order to create this atlas, we generated a single-cell multiome (combined scATAC-seq and scRNA-seq of the same cell) dataset of the head of a four weeks post conception human embryo and we showed that the embryonic cell states can effectively be reproduced using human neural tube organoids on both transcriptomic level and on the level of the enhancer-codes. Specifically, we identified a total of fifteen distinct cell states with one-to-one matches between the organoid and embryo. The fact that cell states were defined in an unbiased manner by making use of topic modeling and that each of these states were independently identified in two separate datasets increases the confidence of their biological relevance. Furthermore, this high similarity between the organoid and the embyro derived cell states validates neural tube organoids as a biological model for early human neural tube and neural crest development, biological cell states that are otherwise not easily accessible in human.\par
 
-% enhancers
+The enhancer code remains complicated to study\cite{wassermanAppliedBioinformaticsIdentification2004} especially
+compared to the genetic code\cite{kimDecipheringMultiscaleQuantitative2023, deboerHoldOutGenome2024}. Nonetheless, there
+are some recurrent patterns that are shared among enhancers of different cell types. In particular, enhancers underlying
+DV patterning, early neuronal fate acquisition and neural crest tend to consist out of clusters of 4-5 different
+TFBS\cite{kimDecipheringMultiscaleQuantitative2023, longEverChangingLandscapesTranscriptional2016} that are located
+within one nucleosome depleted regions (+/-147bp). That is to say, cooperative binding of multiple TFs seem to underlie
+the cell type specificity of enhancers\cite{lambertHumanTranscriptionFactors2018}. Here, we see most evidence for a
+model of indirect cooperativity\cite{longEverChangingLandscapesTranscriptional2016} (i.e., flexible billboard enhancer
+model\cite{arnostiTranscriptionalEnhancersIntelligent2005}). However, for multiple cell types we also observed evidence
+of direct coooperativity between TFs in the form of protein-protein interactions between two TFs. This was the case for
+TWIST1 and ALX4 heterodimer in facial mesenchyme\cite{kimDNAguidedTranscriptionFactor2024} and GRHL1/2 dimers, TFAP2A and TFAP2B/C  heterodimer\cite{rothsteinHeterodimerizationTFAP2Pioneer2020} and SOX10 homodimers in neural crest. For all these TFs we found dimer motifs with a fixed number nucleotides in between the two TFBS instances. Of note, for SOX10 we observed three different dimer motif with either 3, 4 or 5 bps spacing with those instances with 4 bps spacing being the most accessible (SUPPLEMENT FIG). Finally, we also observed evidence of pioneer activity, where binding of one TF can facilitate the subsequent binding of other TFs to the same enhancer\cite{longEverChangingLandscapesTranscriptional2016}. This was the case for FOXA2 in the floorplate, consistent with previous findings of FOXA TFs\cite{iwafuchi-doiPioneerTranscriptionFactor2016, iwafuchiGeneNetworkTransitions2020}. Others have hypothesized, however, that pioneer activity is not a qualitative feature of a TF but rather dependent on the affinity of interactions between TF and DNA\cite{hansenTestPioneerFactor2022}. Similarly, we observed that FOXA2 binding sites that are specific to the floorplate contain either less FOXA2 binding sites and/or binding sites of lower affinity. The use of suboptimal TFBS is a reoccurring feature of cell type specific enhancers\cite{farleySuboptimizationDevelopmentalEnhancers2015, crockerChapterTwentySevenSoft2016, limAffinityoptimizingEnhancerVariants2024, naqviTransferLearningReveals2025}.
 
-% human tfs paper: https://www.sciencedirect.com/science/article/pii/S0092867418301065?via%3Dihub
-
-% https://www.cell.com/fulltext/s0092-8674(12)01496-1: also about dimerization and that motif "flanks" are important for
-% different TFs
-% also: https://www.nature.com/articles/s41588-022-01048-5 about flank
-
-%% Enhancers are clusters of TFBS
-%%%% https://www.cell.com/cell/fulltext/S0092-8674(16)31251-X
-%%%% https://www.cell.com/molecular-cell/fulltext/S1097-2765(22)01215-1
-%%%% https://www.sciencedirect.com/science/article/pii/S0959440X21000993
-
-%% Specificity through dimerization
-%%%% https://www.cell.com/cell/fulltext/S0092-8674(23)01438-1
-%%%% https://pmc.ncbi.nlm.nih.gov/articles/PMC6961570/
+Our results indicate that enhancers underlying neuronal progenitor AP-patterning form an exception to the rule that enhancer
+consist out of clusters of 4-5 different TFBS. Homeotypic clusters of 3-4 homeobox instances were sufficient to both create and identify enhancers specific to a certain AP domain. Similar findings were already reported in fly\cite{crockerLowAffinityBinding2015}. It has been a long standing question how homeodomain TFs achieve specific binding\cite{mannChapter3Hox2009, hubertHoxGenesDevelopment2023} given that all homeodomain TFs seem to bind the same \textit{TAAT} motif\cite{bergerVariationHomeodomainDNA2008, noyesAnalysisHomeodomainSpecificities2008}. It has been hypothesized that specificity is mainly achieved through cooperative binding with co-factors\cite{mannChapter3Hox2009}. Indeed, we observe this for EN1 and HOXB3 that are predicted to co-bind with PAX8 and X respectively forming specific dimer motifs. In contrast, we suggest a novel mode where specificity is achieved through the homeodomain itself for TFX and TFY that preferentially bind \textit{TAATTA} and \textit{TAATCC} sites. Thus, additional nucleotides, next to the core \textit{TAAT}, form a TFBS that is both necessary and sufficient for genome wide cell type specificity. In general, although there are only around 100 different DNA binding domains across human TFs\cite{lambertHumanTranscriptionFactors2018} and thus many of the 1,639 known human TFs recognize similar motifs\cite{lambertHumanTranscriptionFactors2018} there are slight variations in preferential TFBS of TFs of the same family\cite{lambertHumanTranscriptionFactors2018, jolmaDNABindingSpecificitiesHuman2013, dealmeidaDeepSTARRPredictsEnhancer2022} that can be important for cell type specific binding.
 
 % single TF
 % https://genome.cshlp.org/content/26/7/882.short
 
-%% pioneer
-% https://www.nature.com/articles/s41588-018-0140-x
-% https://elifesciences.org/articles/73358
-% https://www.cell.com/cell/fulltext/S0092-8674(15)00304-9
-% https://www.biorxiv.org/content/10.1101/2024.05.24.595749v3.abstract
-% https://www.nature.com/articles/s41576-023-00648-z
-% https://www.nature.com/articles/s41586-020-2195-y
-
-%% Low affinity/suboptimization:
-%%%% https://www.nature.com/articles/s41586-023-06922-8
-%%%% https://www.science.org/doi/10.1126/science.aac6948
-%%%% https://pmc.ncbi.nlm.nih.gov/articles/PMC11160683/
-%%%% https://www.sciencedirect.com/science/article/abs/pii/S0070215315001842
+%% position of the binding sites vis a vi nucleosomes
+% https://www.pnas.org/doi/abs/10.1073/pnas.1804663115
 
 %% Repression through chromatin closing
 % carmen paper & ibrahim paper
@@ -484,14 +471,27 @@ In order to create this atlas, we generated a single-cell multiome (combined scA
 % https://www.cell.com/cell/fulltext/S0092-8674(14)01518-9
 % https://elifesciences.org/articles/28975
 
-% https://www.pnas.org/doi/epub/10.1073/pnas.2411887121
-% https://www.nature.com/articles/s41594-024-01235-4
 
 % another paper of face GWAS: https://www.nature.com/articles/s41588-018-0057-4
 
 % might be interesting
 % https://www.nature.com/articles/s41594-024-01449-6
 % https://www.nature.com/articles/s41586-018-0549-5
+
+% co-factors (limitation)
+% "new" studies
+% https://www.biorxiv.org/content/10.1101/2022.08.26.505496v1.abstract
+% https://www.cell.com/cell/fulltext/S0092-8674(20)31541-5?uuid=uuid%3A51e14242-dce3-432c-8521-14d9a94b0381
+% https://www.cell.com/molecular-cell/fulltext/S1097-2765(21)01070-4?uuid=uuid%3Afbec3fc1-2707-4902-bda8-f196da451272
+% https://www.science.org/doi/full/10.1126/science.adf6149
+% focus on single enhancers and not entire locus
+%
+% from lambert et al
+%%TFs have traditionally been classified as either ‘‘activators’’ or ‘‘repressors’’; however, this notion has been repeatedly questioned. Many TFs can recruit multiple cofactors that have opposite effects (Frietze and Farnham, 2011; Rosenfeld et al., 2006;
+% Schmitges et al., 2016), dependent on the local sequence
+%context and availability of cofactors (Meijsing et al., 2009;
+%Wong and Struhl, 2011).
+
 
 % white box models
 % DeepNeuralTube
