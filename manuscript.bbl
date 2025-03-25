@@ -1,4 +1,4 @@
-\begin{thebibliography}{56}
+\begin{thebibliography}{80}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \providecommand{\href}[2]{#2}
@@ -176,15 +176,15 @@
 \newblock \bibinfo{journal}{Science} \emph{\bibinfo{volume}{387}},
   \bibinfo{pages}{eadp3957}. \DOIprefix\doi{10.1126/science.adp3957}.
 %Type = Article
-\bibitem[{Avsec et~al.(2021)Avsec, Weilert, Shrikumar, Krueger, Alexandari,
-  Dalal, Fropf, McAnany, Gagneur, Kundaje and
+\bibitem[{Avsec et~al.(2021{\natexlab{a}})Avsec, Weilert, Shrikumar, Krueger,
+  Alexandari, Dalal, Fropf, McAnany, Gagneur, Kundaje and
   Zeitlinger}]{avsecBaseresolutionModelsTranscriptionfactor2021}
 \bibinfo{author}{Avsec, {\v Z}.}, \bibinfo{author}{Weilert, M.},
   \bibinfo{author}{Shrikumar, A.}, \bibinfo{author}{Krueger, S.},
   \bibinfo{author}{Alexandari, A.}, \bibinfo{author}{Dalal, K.},
   \bibinfo{author}{Fropf, R.}, \bibinfo{author}{McAnany, C.},
   \bibinfo{author}{Gagneur, J.}, \bibinfo{author}{Kundaje, A.}, and
-  \bibinfo{author}{Zeitlinger, J.} (\bibinfo{year}{2021}).
+  \bibinfo{author}{Zeitlinger, J.} (\bibinfo{year}{2021}{\natexlab{a}}).
   \bibinfo{title}{Base-resolution models of transcription-factor binding reveal
   soft motif syntax}.
 \newblock \bibinfo{journal}{Nat Genet} \emph{\bibinfo{volume}{53}},
@@ -670,5 +670,327 @@
   enhancers}.
 \newblock \bibinfo{journal}{Nat Genet} \emph{\bibinfo{volume}{54}},
   \bibinfo{pages}{613--624}. \DOIprefix\doi{10.1038/s41588-022-01048-5}.
+%Type = Article
+\bibitem[{Jacobs et~al.(2023)Jacobs, Pagani, Wenzl and
+  Stark}]{jacobsWidespreadRegulatorySpecificities2023}
+\bibinfo{author}{Jacobs, J.}, \bibinfo{author}{Pagani, M.},
+  \bibinfo{author}{Wenzl, C.}, and \bibinfo{author}{Stark, A.}
+  (\bibinfo{year}{2023}). \bibinfo{title}{Widespread regulatory specificities
+  between transcriptional co-repressors and enhancers in {{Drosophila}}}.
+\newblock \bibinfo{journal}{Science} \emph{\bibinfo{volume}{381}},
+  \bibinfo{pages}{198--204}. \DOIprefix\doi{10.1126/science.adf6149}.
+%Type = Article
+\bibitem[{Tycko et~al.(2020)Tycko, DelRosso, Hess, Aradhana, Banerjee, Mukund,
+  Van, Ego, Yao, Spees, Suzuki, Marinov, Kundaje, Bassik and
+  Bintu}]{tyckoHighThroughputDiscoveryCharacterization2020}
+\bibinfo{author}{Tycko, J.}, \bibinfo{author}{DelRosso, N.},
+  \bibinfo{author}{Hess, G.T.}, \bibinfo{author}{Aradhana},
+  \bibinfo{author}{Banerjee, A.}, \bibinfo{author}{Mukund, A.},
+  \bibinfo{author}{Van, M.V.}, \bibinfo{author}{Ego, B.K.},
+  \bibinfo{author}{Yao, D.}, \bibinfo{author}{Spees, K.},
+  \bibinfo{author}{Suzuki, P.}, \bibinfo{author}{Marinov, G.K.},
+  \bibinfo{author}{Kundaje, A.}, \bibinfo{author}{Bassik, M.C.}, and
+  \bibinfo{author}{Bintu, L.} (\bibinfo{year}{2020}).
+  \bibinfo{title}{High-{{Throughput Discovery}} and {{Characterization}} of
+  {{Human Transcriptional Effectors}}}.
+\newblock \bibinfo{journal}{Cell} \emph{\bibinfo{volume}{183}},
+  \bibinfo{pages}{2020--2035.e16}. \DOIprefix\doi{10.1016/j.cell.2020.11.024}.
+%Type = Article
+\bibitem[{Alerasool et~al.(2022)Alerasool, Leng, Lin, Gingras and
+  Taipale}]{alerasoolIdentificationFunctionalCharacterization2022}
+\bibinfo{author}{Alerasool, N.}, \bibinfo{author}{Leng, H.},
+  \bibinfo{author}{Lin, Z.Y.}, \bibinfo{author}{Gingras, A.C.}, and
+  \bibinfo{author}{Taipale, M.} (\bibinfo{year}{2022}).
+  \bibinfo{title}{Identification and functional characterization of
+  transcriptional activators in human cells}.
+\newblock \bibinfo{journal}{Molecular Cell} \emph{\bibinfo{volume}{82}},
+  \bibinfo{pages}{677--695.e7}. \DOIprefix\doi{10.1016/j.molcel.2021.12.008}.
+%Type = Article
+\bibitem[{Soto et~al.(2022)Soto, Li, Santoso, Berenson, Ho, Shen, Yuan and
+  Bass}]{sotoCompendiumHumanTranscription2022}
+\bibinfo{author}{Soto, L.F.}, \bibinfo{author}{Li, Z.},
+  \bibinfo{author}{Santoso, C.S.}, \bibinfo{author}{Berenson, A.},
+  \bibinfo{author}{Ho, I.}, \bibinfo{author}{Shen, V.X.},
+  \bibinfo{author}{Yuan, S.}, and \bibinfo{author}{Bass, J.I.F.}
+  (\bibinfo{year}{2022}). \bibinfo{title}{Compendium of human transcription
+  factor effector domains}.
+\newblock \bibinfo{journal}{Molecular Cell} \emph{\bibinfo{volume}{82}},
+  \bibinfo{pages}{514--526}. \DOIprefix\doi{10.1016/j.molcel.2021.11.007}.
+%Type = Article
+\bibitem[{DelRosso et~al.(2023)DelRosso, Tycko, Suzuki, Andrews, Aradhana,
+  Mukund, Liongson, Ludwig, Spees, Fordyce, Bassik and
+  Bintu}]{delrossoLargescaleMappingMutagenesis2023}
+\bibinfo{author}{DelRosso, N.}, \bibinfo{author}{Tycko, J.},
+  \bibinfo{author}{Suzuki, P.}, \bibinfo{author}{Andrews, C.},
+  \bibinfo{author}{Aradhana}, \bibinfo{author}{Mukund, A.},
+  \bibinfo{author}{Liongson, I.}, \bibinfo{author}{Ludwig, C.},
+  \bibinfo{author}{Spees, K.}, \bibinfo{author}{Fordyce, P.},
+  \bibinfo{author}{Bassik, M.C.}, and \bibinfo{author}{Bintu, L.}
+  (\bibinfo{year}{2023}). \bibinfo{title}{Large-scale mapping and mutagenesis
+  of human transcriptional effector domains}.
+\newblock \bibinfo{journal}{Nature} \emph{\bibinfo{volume}{616}},
+  \bibinfo{pages}{365--372}. \DOIprefix\doi{10.1038/s41586-023-05906-y}.
+%Type = Article
+\bibitem[{Mukund et~al.(2023)Mukund, Tycko, Allen, Robinson, Andrews, Sinha,
+  Ludwig, Spees, Bassik and
+  Bintu}]{mukundHighthroughputFunctionalCharacterization2023}
+\bibinfo{author}{Mukund, A.X.}, \bibinfo{author}{Tycko, J.},
+  \bibinfo{author}{Allen, S.J.}, \bibinfo{author}{Robinson, S.A.},
+  \bibinfo{author}{Andrews, C.}, \bibinfo{author}{Sinha, J.},
+  \bibinfo{author}{Ludwig, C.H.}, \bibinfo{author}{Spees, K.},
+  \bibinfo{author}{Bassik, M.C.}, and \bibinfo{author}{Bintu, L.}
+  (\bibinfo{year}{2023}). \bibinfo{title}{High-throughput functional
+  characterization of combinations of transcriptional activators and
+  repressors}.
+\newblock \bibinfo{journal}{cels} \emph{\bibinfo{volume}{14}},
+  \bibinfo{pages}{746--763.e5}. \DOIprefix\doi{10.1016/j.cels.2023.07.001}.
+%Type = Article
+\bibitem[{Bell et~al.(2024)Bell, Balic, Talarmain, Gillespie, Scolamiero, Lam,
+  Ang, Faulkner, Gilan and Dawson}]{bellComparativeCofactorScreens2024}
+\bibinfo{author}{Bell, C.C.}, \bibinfo{author}{Balic, J.J.},
+  \bibinfo{author}{Talarmain, L.}, \bibinfo{author}{Gillespie, A.},
+  \bibinfo{author}{Scolamiero, L.}, \bibinfo{author}{Lam, E.Y.N.},
+  \bibinfo{author}{Ang, C.S.}, \bibinfo{author}{Faulkner, G.J.},
+  \bibinfo{author}{Gilan, O.}, and \bibinfo{author}{Dawson, M.A.}
+  (\bibinfo{year}{2024}). \bibinfo{title}{Comparative cofactor screens show the
+  influence of transactivation domains and core promoters on the mechanisms of
+  transcription}.
+\newblock \bibinfo{journal}{Nat Genet} \emph{\bibinfo{volume}{56}},
+  \bibinfo{pages}{1181--1192}. \DOIprefix\doi{10.1038/s41588-024-01749-z}.
+%Type = Article
+\bibitem[{Tycko et~al.(2024)Tycko, Van, Aradhana, DelRosso, Ye, Yao, Valbuena,
+  {Vaughan-Jackson}, Xu, Ludwig, Spees, Liu, Gu, Khare, Mukund, Suzuki, Arana,
+  Zhang, Du, Ornstein, Hess, Kamber, Qi, Khalil, Bintu and
+  Bassik}]{tyckoDevelopmentCompactTranscriptional2024}
+\bibinfo{author}{Tycko, J.}, \bibinfo{author}{Van, M.V.},
+  \bibinfo{author}{Aradhana}, \bibinfo{author}{DelRosso, N.},
+  \bibinfo{author}{Ye, H.}, \bibinfo{author}{Yao, D.},
+  \bibinfo{author}{Valbuena, R.}, \bibinfo{author}{{Vaughan-Jackson}, A.},
+  \bibinfo{author}{Xu, X.}, \bibinfo{author}{Ludwig, C.},
+  \bibinfo{author}{Spees, K.}, \bibinfo{author}{Liu, K.}, \bibinfo{author}{Gu,
+  M.}, \bibinfo{author}{Khare, V.}, \bibinfo{author}{Mukund, A.X.},
+  \bibinfo{author}{Suzuki, P.H.}, \bibinfo{author}{Arana, S.},
+  \bibinfo{author}{Zhang, C.}, \bibinfo{author}{Du, P.P.},
+  \bibinfo{author}{Ornstein, T.S.}, \bibinfo{author}{Hess, G.T.},
+  \bibinfo{author}{Kamber, R.A.}, \bibinfo{author}{Qi, L.S.},
+  \bibinfo{author}{Khalil, A.S.}, \bibinfo{author}{Bintu, L.}, and
+  \bibinfo{author}{Bassik, M.C.} (\bibinfo{year}{2024}).
+  \bibinfo{title}{Development of compact transcriptional effectors using
+  high-throughput measurements in diverse contexts}.
+\newblock \bibinfo{journal}{Nat Biotechnol} pp. \bibinfo{pages}{1--14}.
+  \DOIprefix\doi{10.1038/s41587-024-02442-6}.
+%Type = Article
+\bibitem[{Doughty et~al.(2024)Doughty, Hinks, Schaepe, Marinov, Thurm,
+  {Rios-Martinez}, Parks, Tan, Marklund, Dubocanin, Bintu and
+  Greenleaf}]{doughtySinglemoleculeStatesLink2024}
+\bibinfo{author}{Doughty, B.R.}, \bibinfo{author}{Hinks, M.M.},
+  \bibinfo{author}{Schaepe, J.M.}, \bibinfo{author}{Marinov, G.K.},
+  \bibinfo{author}{Thurm, A.R.}, \bibinfo{author}{{Rios-Martinez}, C.},
+  \bibinfo{author}{Parks, B.E.}, \bibinfo{author}{Tan, Y.},
+  \bibinfo{author}{Marklund, E.}, \bibinfo{author}{Dubocanin, D.},
+  \bibinfo{author}{Bintu, L.}, and \bibinfo{author}{Greenleaf, W.J.}
+  (\bibinfo{year}{2024}). \bibinfo{title}{Single-molecule states link
+  transcription factor binding to gene expression}.
+\newblock \bibinfo{journal}{Nature} \emph{\bibinfo{volume}{636}},
+  \bibinfo{pages}{745--754}. \DOIprefix\doi{10.1038/s41586-024-08219-w}.
+%Type = Article
+\bibitem[{{Bravo Gonz{\'a}lez-Blas} et~al.(2023){Bravo Gonz{\'a}lez-Blas},
+  De~Winter, Hulselmans, Hecker, Matetovici, Christiaens, Poovathingal,
+  Wouters, Aibar and Aerts}]{bravogonzalez-blasSCENICSinglecellMultiomic2023}
+\bibinfo{author}{{Bravo Gonz{\'a}lez-Blas}, C.}, \bibinfo{author}{De~Winter,
+  S.}, \bibinfo{author}{Hulselmans, G.}, \bibinfo{author}{Hecker, N.},
+  \bibinfo{author}{Matetovici, I.}, \bibinfo{author}{Christiaens, V.},
+  \bibinfo{author}{Poovathingal, S.}, \bibinfo{author}{Wouters, J.},
+  \bibinfo{author}{Aibar, S.}, and \bibinfo{author}{Aerts, S.}
+  (\bibinfo{year}{2023}). \bibinfo{title}{{{SCENIC}}+: Single-cell multiomic
+  inference of enhancers and gene regulatory networks}.
+\newblock \bibinfo{journal}{Nat Methods} \emph{\bibinfo{volume}{20}},
+  \bibinfo{pages}{1355--1367}. \DOIprefix\doi{10.1038/s41592-023-01938-4}.
+%Type = Article
+\bibitem[{Kempynck et~al.(2025)Kempynck, De~Winter, Blaauw, Konstantakos,
+  Dieltiens, Ek{\c s}i, Bercier, Taskiran, Hulselmans, Spanier, Christiaens,
+  Van Den~Bosch, Mahieu and Aerts}]{kempynckCREstedModelingGenomic2025}
+\bibinfo{author}{Kempynck, N.}, \bibinfo{author}{De~Winter, S.},
+  \bibinfo{author}{Blaauw, C.H.}, \bibinfo{author}{Konstantakos, V.},
+  \bibinfo{author}{Dieltiens, S.}, \bibinfo{author}{Ek{\c s}i, E.C.},
+  \bibinfo{author}{Bercier, V.}, \bibinfo{author}{Taskiran, I.I.},
+  \bibinfo{author}{Hulselmans, G.}, \bibinfo{author}{Spanier, K.},
+  \bibinfo{author}{Christiaens, V.}, \bibinfo{author}{Van Den~Bosch, L.},
+  \bibinfo{author}{Mahieu, L.}, and \bibinfo{author}{Aerts, S.}
+  (\bibinfo{year}{2025}). \bibinfo{title}{{{CREsted}}: Modeling genomic and
+  synthetic cell type-specific enhancers across tissues and species}.
+\newblock \bibinfo{journal}{BioRxiv}.
+%Type = Article
+\bibitem[{Perry et~al.(2010)Perry, Boettiger, Bothma and
+  Levine}]{perryShadowEnhancersFoster2010}
+\bibinfo{author}{Perry, M.W.}, \bibinfo{author}{Boettiger, A.N.},
+  \bibinfo{author}{Bothma, J.P.}, and \bibinfo{author}{Levine, M.}
+  (\bibinfo{year}{2010}). \bibinfo{title}{Shadow {{Enhancers Foster
+  Robustness}} of {{{\emph{Drosophila}}}} {{Gastrulation}}}.
+\newblock \bibinfo{journal}{Current Biology} \emph{\bibinfo{volume}{20}},
+  \bibinfo{pages}{1562--1567}. \DOIprefix\doi{10.1016/j.cub.2010.07.043}.
+%Type = Article
+\bibitem[{{Martinez-Ara} et~al.(2022){Martinez-Ara}, Comoglio, {van
+  Arensbergen} and {van
+  Steensel}}]{martinez-araSystematicAnalysisIntrinsic2022}
+\bibinfo{author}{{Martinez-Ara}, M.}, \bibinfo{author}{Comoglio, F.},
+  \bibinfo{author}{{van Arensbergen}, J.}, and \bibinfo{author}{{van Steensel},
+  B.} (\bibinfo{year}{2022}). \bibinfo{title}{Systematic analysis of intrinsic
+  enhancer-promoter compatibility in the mouse genome}.
+\newblock \bibinfo{journal}{Molecular Cell} \emph{\bibinfo{volume}{82}},
+  \bibinfo{pages}{2519--2531.e6}. \DOIprefix\doi{10.1016/j.molcel.2022.04.009}.
+%Type = Article
+\bibitem[{Bergman et~al.(2022)Bergman, Jones, Liu, Ray, Jagoda, Siraj, Kang,
+  Nasser, Kane, Rios, Nguyen, Grossman, Fulco, Lander and
+  Engreitz}]{bergmanCompatibilityRulesHuman2022}
+\bibinfo{author}{Bergman, D.T.}, \bibinfo{author}{Jones, T.R.},
+  \bibinfo{author}{Liu, V.}, \bibinfo{author}{Ray, J.},
+  \bibinfo{author}{Jagoda, E.}, \bibinfo{author}{Siraj, L.},
+  \bibinfo{author}{Kang, H.Y.}, \bibinfo{author}{Nasser, J.},
+  \bibinfo{author}{Kane, M.}, \bibinfo{author}{Rios, A.},
+  \bibinfo{author}{Nguyen, T.H.}, \bibinfo{author}{Grossman, S.R.},
+  \bibinfo{author}{Fulco, C.P.}, \bibinfo{author}{Lander, E.S.}, and
+  \bibinfo{author}{Engreitz, J.M.} (\bibinfo{year}{2022}).
+  \bibinfo{title}{Compatibility rules of human enhancer and promoter
+  sequences}.
+\newblock \bibinfo{journal}{Nature} \emph{\bibinfo{volume}{607}},
+  \bibinfo{pages}{176--184}. \DOIprefix\doi{10.1038/s41586-022-04877-w}.
+%Type = Article
+\bibitem[{Zuin et~al.(2022)Zuin, Roth, Zhan, Cramard, Redolfi, Piskadlo, Mach,
+  Kryzhanovska, Tihanyi, Kohler, Eder, Leemans, {van Steensel}, Meister,
+  Smallwood and Giorgetti}]{zuinNonlinearControlTranscription2022}
+\bibinfo{author}{Zuin, J.}, \bibinfo{author}{Roth, G.}, \bibinfo{author}{Zhan,
+  Y.}, \bibinfo{author}{Cramard, J.}, \bibinfo{author}{Redolfi, J.},
+  \bibinfo{author}{Piskadlo, E.}, \bibinfo{author}{Mach, P.},
+  \bibinfo{author}{Kryzhanovska, M.}, \bibinfo{author}{Tihanyi, G.},
+  \bibinfo{author}{Kohler, H.}, \bibinfo{author}{Eder, M.},
+  \bibinfo{author}{Leemans, C.}, \bibinfo{author}{{van Steensel}, B.},
+  \bibinfo{author}{Meister, P.}, \bibinfo{author}{Smallwood, S.}, and
+  \bibinfo{author}{Giorgetti, L.} (\bibinfo{year}{2022}).
+  \bibinfo{title}{Nonlinear control of transcription through enhancer--promoter
+  interactions}.
+\newblock \bibinfo{journal}{Nature} \emph{\bibinfo{volume}{604}},
+  \bibinfo{pages}{571--577}. \DOIprefix\doi{10.1038/s41586-022-04570-y}.
+%Type = Misc
+\bibitem[{Gschwind et~al.(2023)Gschwind, Mualim, Karbalayghareh, Sheth, Dey,
+  Jagoda, Nurtdinov, Xi, Tan, Jones, Ma, Yao, Nasser, Avsec, James, Shamim,
+  Durand, Rao, Mahajan, Doughty, Andreeva, Ulirsch, Fan, Perez, Nguyen, Kelley,
+  Finucane, Moore, Weng, Kellis, Bassik, Price, Beer, Guig{\'o},
+  Stamatoyannopoulos, Aiden, Greenleaf, Leslie, Steinmetz, Kundaje and
+  Engreitz}]{gschwindEncyclopediaEnhancergeneRegulatory2023}
+\bibinfo{author}{Gschwind, A.R.}, \bibinfo{author}{Mualim, K.S.},
+  \bibinfo{author}{Karbalayghareh, A.}, \bibinfo{author}{Sheth, M.U.},
+  \bibinfo{author}{Dey, K.K.}, \bibinfo{author}{Jagoda, E.},
+  \bibinfo{author}{Nurtdinov, R.N.}, \bibinfo{author}{Xi, W.},
+  \bibinfo{author}{Tan, A.S.}, \bibinfo{author}{Jones, H.},
+  \bibinfo{author}{Ma, X.R.}, \bibinfo{author}{Yao, D.},
+  \bibinfo{author}{Nasser, J.}, \bibinfo{author}{Avsec, {\v Z}.},
+  \bibinfo{author}{James, B.T.}, \bibinfo{author}{Shamim, M.S.},
+  \bibinfo{author}{Durand, N.C.}, \bibinfo{author}{Rao, S.S.P.},
+  \bibinfo{author}{Mahajan, R.}, \bibinfo{author}{Doughty, B.R.},
+  \bibinfo{author}{Andreeva, K.}, \bibinfo{author}{Ulirsch, J.C.},
+  \bibinfo{author}{Fan, K.}, \bibinfo{author}{Perez, E.M.},
+  \bibinfo{author}{Nguyen, T.C.}, \bibinfo{author}{Kelley, D.R.},
+  \bibinfo{author}{Finucane, H.K.}, \bibinfo{author}{Moore, J.E.},
+  \bibinfo{author}{Weng, Z.}, \bibinfo{author}{Kellis, M.},
+  \bibinfo{author}{Bassik, M.C.}, \bibinfo{author}{Price, A.L.},
+  \bibinfo{author}{Beer, M.A.}, \bibinfo{author}{Guig{\'o}, R.},
+  \bibinfo{author}{Stamatoyannopoulos, J.A.}, \bibinfo{author}{Aiden, E.L.},
+  \bibinfo{author}{Greenleaf, W.J.}, \bibinfo{author}{Leslie, C.S.},
+  \bibinfo{author}{Steinmetz, L.M.}, \bibinfo{author}{Kundaje, A.}, and
+  \bibinfo{author}{Engreitz, J.M.} (\bibinfo{year}{2023}).
+\newblock \bibinfo{title}{An encyclopedia of enhancer-gene regulatory
+  interactions in the human genome}. \bibinfo{publisher}{bioRxiv}.
+\newblock \DOIprefix\doi{10.1101/2023.11.09.563812}.
+%Type = Article
+\bibitem[{{Martinez-Ara} et~al.(2024){Martinez-Ara}, Comoglio and {van
+  Steensel}}]{martinez-araLargescaleAnalysisIntegration2024}
+\bibinfo{author}{{Martinez-Ara}, M.}, \bibinfo{author}{Comoglio, F.}, and
+  \bibinfo{author}{{van Steensel}, B.} (\bibinfo{year}{2024}).
+  \bibinfo{title}{Large-scale analysis of the integration of enhancer-enhancer
+  signals by promoters}.
+\newblock \bibinfo{journal}{eLife} \emph{\bibinfo{volume}{12}},
+  \bibinfo{pages}{RP91994}. \DOIprefix\doi{10.7554/eLife.91994}.
+%Type = Article
+\bibitem[{Loubiere et~al.(2024)Loubiere, {de Almeida}, Pagani and
+  Stark}]{loubiereDevelopmentalHousekeepingTranscriptional2024}
+\bibinfo{author}{Loubiere, V.}, \bibinfo{author}{{de Almeida}, B.P.},
+  \bibinfo{author}{Pagani, M.}, and \bibinfo{author}{Stark, A.}
+  (\bibinfo{year}{2024}). \bibinfo{title}{Developmental and housekeeping
+  transcriptional programs display distinct modes of enhancer-enhancer
+  cooperativity in {{Drosophila}}}.
+\newblock \bibinfo{journal}{Nat Commun} \emph{\bibinfo{volume}{15}},
+  \bibinfo{pages}{8584}. \DOIprefix\doi{10.1038/s41467-024-52921-2}.
+%Type = Article
+\bibitem[{Thomas et~al.(2025)Thomas, Feng, Haslhofer, Huber,
+  Garc{\'i}a~Gallardo, Loubiere, Vanina, Pitasi, Stark and
+  Buecker}]{thomasEnhancerCooperativityCan2025}
+\bibinfo{author}{Thomas, H.F.}, \bibinfo{author}{Feng, S.},
+  \bibinfo{author}{Haslhofer, F.}, \bibinfo{author}{Huber, M.},
+  \bibinfo{author}{Garc{\'i}a~Gallardo, M.}, \bibinfo{author}{Loubiere, V.},
+  \bibinfo{author}{Vanina, D.}, \bibinfo{author}{Pitasi, M.},
+  \bibinfo{author}{Stark, A.}, and \bibinfo{author}{Buecker, C.}
+  (\bibinfo{year}{2025}). \bibinfo{title}{Enhancer cooperativity can compensate
+  for loss of activity over large genomic distances}.
+\newblock \bibinfo{journal}{Molecular Cell} \emph{\bibinfo{volume}{85}},
+  \bibinfo{pages}{362--375.e9}. \DOIprefix\doi{10.1016/j.molcel.2024.11.008}.
+%Type = Article
+\bibitem[{Avsec et~al.(2021{\natexlab{b}})Avsec, Agarwal, Visentin, Ledsam,
+  {Grabska-Barwinska}, Taylor, Assael, Jumper, Kohli and
+  Kelley}]{avsecEffectiveGeneExpression2021}
+\bibinfo{author}{Avsec, {\v Z}.}, \bibinfo{author}{Agarwal, V.},
+  \bibinfo{author}{Visentin, D.}, \bibinfo{author}{Ledsam, J.R.},
+  \bibinfo{author}{{Grabska-Barwinska}, A.}, \bibinfo{author}{Taylor, K.R.},
+  \bibinfo{author}{Assael, Y.}, \bibinfo{author}{Jumper, J.},
+  \bibinfo{author}{Kohli, P.}, and \bibinfo{author}{Kelley, D.R.}
+  (\bibinfo{year}{2021}{\natexlab{b}}). \bibinfo{title}{Effective gene
+  expression prediction from sequence by integrating long-range interactions}.
+\newblock \bibinfo{journal}{Nat Methods} \emph{\bibinfo{volume}{18}},
+  \bibinfo{pages}{1196--1203}. \DOIprefix\doi{10.1038/s41592-021-01252-x}.
+%Type = Article
+\bibitem[{Linder et~al.(2025)Linder, Srivastava, Yuan, Agarwal and
+  Kelley}]{linderPredictingRNAseqCoverage2025a}
+\bibinfo{author}{Linder, J.}, \bibinfo{author}{Srivastava, D.},
+  \bibinfo{author}{Yuan, H.}, \bibinfo{author}{Agarwal, V.}, and
+  \bibinfo{author}{Kelley, D.R.} (\bibinfo{year}{2025}).
+  \bibinfo{title}{Predicting {{RNA-seq}} coverage from {{DNA}} sequence as a
+  unifying model of gene regulation}.
+\newblock \bibinfo{journal}{Nat Genet}.
+  \DOIprefix\doi{10.1038/s41588-024-02053-6}.
+%Type = Misc
+\bibitem[{Hingerl et~al.(2024{\natexlab{a}})Hingerl, Martens, Karollus, Manz,
+  Buenrostro, Theis and Gagneur}]{hingerlScoobyModelingMultimodal2024}
+\bibinfo{author}{Hingerl, J.C.}, \bibinfo{author}{Martens, L.D.},
+  \bibinfo{author}{Karollus, A.}, \bibinfo{author}{Manz, T.},
+  \bibinfo{author}{Buenrostro, J.D.}, \bibinfo{author}{Theis, F.J.}, and
+  \bibinfo{author}{Gagneur, J.} (\bibinfo{year}{2024}{\natexlab{a}}).
+\newblock \bibinfo{title}{Scooby: {{Modeling}} multi-modal genomic profiles
+  from {{DNA}} sequence at single-cell resolution}.
+  \bibinfo{publisher}{bioRxiv}{\natexlab{a}}.
+\newblock \DOIprefix\doi{10.1101/2024.09.19.613754}.
+%Type = Misc
+\bibitem[{Hingerl et~al.(2024{\natexlab{b}})Hingerl, Karollus and
+  Gagneur}]{hingerlFlashzoiEnhancedBorzoi2024}
+\bibinfo{author}{Hingerl, J.C.}, \bibinfo{author}{Karollus, A.}, and
+  \bibinfo{author}{Gagneur, J.} (\bibinfo{year}{2024}{\natexlab{b}}).
+\newblock \bibinfo{title}{Flashzoi: {{An}} enhanced {{Borzoi}} model for
+  accelerated genomic analysis}. \bibinfo{publisher}{bioRxiv}{\natexlab{b}}.
+\newblock \DOIprefix\doi{10.1101/2024.12.18.629121}.
+%Type = Misc
+\bibitem[{Lal et~al.(2025)Lal, Karollus, Gunsalus, Garfield, Nair, Tseng,
+  Gordon, Blischak, van~de Geijn, Bhangale, Collier, Diamant, Biancalani,
+  Bravo, Scalia and Eraslan}]{lalDecodingSequenceDeterminants2025}
+\bibinfo{author}{Lal, A.}, \bibinfo{author}{Karollus, A.},
+  \bibinfo{author}{Gunsalus, L.}, \bibinfo{author}{Garfield, D.},
+  \bibinfo{author}{Nair, S.}, \bibinfo{author}{Tseng, A.M.},
+  \bibinfo{author}{Gordon, M.G.}, \bibinfo{author}{Blischak, J.},
+  \bibinfo{author}{van~de Geijn, B.}, \bibinfo{author}{Bhangale, T.},
+  \bibinfo{author}{Collier, J.L.}, \bibinfo{author}{Diamant, N.},
+  \bibinfo{author}{Biancalani, T.}, \bibinfo{author}{Bravo, H.C.},
+  \bibinfo{author}{Scalia, G.}, and \bibinfo{author}{Eraslan, G.}
+  (\bibinfo{year}{2025}).
+\newblock \bibinfo{title}{Decoding sequence determinants of gene expression in
+  diverse cellular and disease states}. \bibinfo{publisher}{bioRxiv}.
+\newblock \DOIprefix\doi{10.1101/2024.10.09.617507}.
 
 \end{thebibliography}
