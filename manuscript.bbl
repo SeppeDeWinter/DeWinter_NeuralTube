@@ -1,4 +1,4 @@
-\begin{thebibliography}{80}
+\begin{thebibliography}{84}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \providecommand{\href}[2]{#2}
@@ -426,6 +426,89 @@
   enhances patterning in human neural tube organoids}.
 \newblock \bibinfo{journal}{Nat Commun} \emph{\bibinfo{volume}{12}},
   \bibinfo{pages}{3192}. \DOIprefix\doi{10.1038/s41467-021-22952-0}.
+%Type = Misc
+\bibitem[{Shrikumar et~al.(2018)Shrikumar, Tian, Avsec, Shcherbina, Banerjee,
+  Sharmin, Nair and Kundaje}]{shrikumarTechnicalNoteTranscription2018}
+\bibinfo{author}{Shrikumar, A.}, \bibinfo{author}{Tian, K.},
+  \bibinfo{author}{Avsec, {\v Z}.}, \bibinfo{author}{Shcherbina, A.},
+  \bibinfo{author}{Banerjee, A.}, \bibinfo{author}{Sharmin, M.},
+  \bibinfo{author}{Nair, S.}, and \bibinfo{author}{Kundaje, A.}
+  (\bibinfo{year}{2018}).
+\newblock \bibinfo{title}{Technical {{Note}} on {{Transcription Factor Motif
+  Discovery}} from {{Importance Scores}} ({{TF-MoDISco}}) version 0.5.6.5}.
+  \bibinfo{publisher}{arXiv}.
+\newblock \DOIprefix\doi{10.48550/ARXIV.1811.00416}.
+%Type = Article
+\bibitem[{Grant et~al.(2011)Grant, Bailey and
+  Noble}]{grantFIMOScanningOccurrences2011}
+\bibinfo{author}{Grant, C.E.}, \bibinfo{author}{Bailey, T.L.}, and
+  \bibinfo{author}{Noble, W.S.} (\bibinfo{year}{2011}).
+  \bibinfo{title}{{{FIMO}}: Scanning for occurrences of a given motif}.
+\newblock \bibinfo{journal}{Bioinformatics} \emph{\bibinfo{volume}{27}},
+  \bibinfo{pages}{1017--1018}. \DOIprefix\doi{10.1093/bioinformatics/btr064}.
+%Type = Misc
+\bibitem[{Schreiber(2025)}]{schreiberTangermemeBiologicalSequence2025}
+\bibinfo{author}{Schreiber, J.} (\bibinfo{year}{2025}).
+\newblock \bibinfo{title}{Tangermeme: {{Biological}} sequence analysis for the
+  modern age.}. .
+%Type = Article
+\bibitem[{Kempynck et~al.(2025)Kempynck, De~Winter, Blaauw, Konstantakos,
+  Dieltiens, Ek{\c s}i, Bercier, Taskiran, Hulselmans, Spanier, Christiaens,
+  Van Den~Bosch, Mahieu and Aerts}]{kempynckCREstedModelingGenomic2025}
+\bibinfo{author}{Kempynck, N.}, \bibinfo{author}{De~Winter, S.},
+  \bibinfo{author}{Blaauw, C.H.}, \bibinfo{author}{Konstantakos, V.},
+  \bibinfo{author}{Dieltiens, S.}, \bibinfo{author}{Ek{\c s}i, E.C.},
+  \bibinfo{author}{Bercier, V.}, \bibinfo{author}{Taskiran, I.I.},
+  \bibinfo{author}{Hulselmans, G.}, \bibinfo{author}{Spanier, K.},
+  \bibinfo{author}{Christiaens, V.}, \bibinfo{author}{Van Den~Bosch, L.},
+  \bibinfo{author}{Mahieu, L.}, and \bibinfo{author}{Aerts, S.}
+  (\bibinfo{year}{2025}). \bibinfo{title}{{{CREsted}}: Modeling genomic and
+  synthetic cell type-specific enhancers across tissues and species}.
+\newblock \bibinfo{journal}{BioRxiv}.
+%Type = Article
+\bibitem[{Rothstein and
+  {Simoes-Costa}(2020)}]{rothsteinHeterodimerizationTFAP2Pioneer2020}
+\bibinfo{author}{Rothstein, M.}, and \bibinfo{author}{{Simoes-Costa}, M.}
+  (\bibinfo{year}{2020}). \bibinfo{title}{Heterodimerization of {{TFAP2}}
+  pioneer factors drives epigenomic remodeling during neural crest
+  specification}.
+\newblock \bibinfo{journal}{Genome Res.} \emph{\bibinfo{volume}{30}},
+  \bibinfo{pages}{35--48}. \DOIprefix\doi{10.1101/gr.249680.119}.
+%Type = Article
+\bibitem[{Kim et~al.(2024)Kim, Morgunova, Naqvi, Goovaerts, Bader, Koska,
+  Popov, Luong, Pogson, Swigut, Claes, Taipale and
+  Wysocka}]{kimDNAguidedTranscriptionFactor2024}
+\bibinfo{author}{Kim, S.}, \bibinfo{author}{Morgunova, E.},
+  \bibinfo{author}{Naqvi, S.}, \bibinfo{author}{Goovaerts, S.},
+  \bibinfo{author}{Bader, M.}, \bibinfo{author}{Koska, M.},
+  \bibinfo{author}{Popov, A.}, \bibinfo{author}{Luong, C.},
+  \bibinfo{author}{Pogson, A.}, \bibinfo{author}{Swigut, T.},
+  \bibinfo{author}{Claes, P.}, \bibinfo{author}{Taipale, J.}, and
+  \bibinfo{author}{Wysocka, J.} (\bibinfo{year}{2024}).
+  \bibinfo{title}{{{DNA-guided}} transcription factor cooperativity shapes face
+  and limb mesenchyme}.
+\newblock \bibinfo{journal}{Cell} \emph{\bibinfo{volume}{187}},
+  \bibinfo{pages}{692--711.e26}. \DOIprefix\doi{10.1016/j.cell.2023.12.032}.
+%Type = Article
+\bibitem[{White et~al.(2021)White, Indencleef, Naqvi, Eller, Hoskens,
+  Roosenboom, Lee, Li, Mohammed, Richmond, Quillen, Norton, Feingold, Swigut,
+  Marazita, Peeters, Hens, Shaffer, Wysocka, Walsh, Weinberg, Shriver and
+  Claes}]{whiteInsightsGeneticArchitecture2021}
+\bibinfo{author}{White, J.D.}, \bibinfo{author}{Indencleef, K.},
+  \bibinfo{author}{Naqvi, S.}, \bibinfo{author}{Eller, R.J.},
+  \bibinfo{author}{Hoskens, H.}, \bibinfo{author}{Roosenboom, J.},
+  \bibinfo{author}{Lee, M.K.}, \bibinfo{author}{Li, J.},
+  \bibinfo{author}{Mohammed, J.}, \bibinfo{author}{Richmond, S.},
+  \bibinfo{author}{Quillen, E.E.}, \bibinfo{author}{Norton, H.L.},
+  \bibinfo{author}{Feingold, E.}, \bibinfo{author}{Swigut, T.},
+  \bibinfo{author}{Marazita, M.L.}, \bibinfo{author}{Peeters, H.},
+  \bibinfo{author}{Hens, G.}, \bibinfo{author}{Shaffer, J.R.},
+  \bibinfo{author}{Wysocka, J.}, \bibinfo{author}{Walsh, S.},
+  \bibinfo{author}{Weinberg, S.M.}, \bibinfo{author}{Shriver, M.D.}, and
+  \bibinfo{author}{Claes, P.} (\bibinfo{year}{2021}). \bibinfo{title}{Insights
+  into the genetic architecture of the human face}.
+\newblock \bibinfo{journal}{Nat Genet} \emph{\bibinfo{volume}{53}},
+  \bibinfo{pages}{45--53}. \DOIprefix\doi{10.1038/s41588-020-00741-7}.
 %Type = Article
 \bibitem[{Wasserman and
   Sandelin(2004)}]{wassermanAppliedBioinformaticsIdentification2004}
@@ -477,30 +560,6 @@
 \newblock \bibinfo{journal}{Journal of Cellular Biochemistry}
   \emph{\bibinfo{volume}{94}}, \bibinfo{pages}{890--898}.
   \DOIprefix\doi{10.1002/jcb.20352}.
-%Type = Article
-\bibitem[{Kim et~al.(2024)Kim, Morgunova, Naqvi, Goovaerts, Bader, Koska,
-  Popov, Luong, Pogson, Swigut, Claes, Taipale and
-  Wysocka}]{kimDNAguidedTranscriptionFactor2024}
-\bibinfo{author}{Kim, S.}, \bibinfo{author}{Morgunova, E.},
-  \bibinfo{author}{Naqvi, S.}, \bibinfo{author}{Goovaerts, S.},
-  \bibinfo{author}{Bader, M.}, \bibinfo{author}{Koska, M.},
-  \bibinfo{author}{Popov, A.}, \bibinfo{author}{Luong, C.},
-  \bibinfo{author}{Pogson, A.}, \bibinfo{author}{Swigut, T.},
-  \bibinfo{author}{Claes, P.}, \bibinfo{author}{Taipale, J.}, and
-  \bibinfo{author}{Wysocka, J.} (\bibinfo{year}{2024}).
-  \bibinfo{title}{{{DNA-guided}} transcription factor cooperativity shapes face
-  and limb mesenchyme}.
-\newblock \bibinfo{journal}{Cell} \emph{\bibinfo{volume}{187}},
-  \bibinfo{pages}{692--711.e26}. \DOIprefix\doi{10.1016/j.cell.2023.12.032}.
-%Type = Article
-\bibitem[{Rothstein and
-  {Simoes-Costa}(2020)}]{rothsteinHeterodimerizationTFAP2Pioneer2020}
-\bibinfo{author}{Rothstein, M.}, and \bibinfo{author}{{Simoes-Costa}, M.}
-  (\bibinfo{year}{2020}). \bibinfo{title}{Heterodimerization of {{TFAP2}}
-  pioneer factors drives epigenomic remodeling during neural crest
-  specification}.
-\newblock \bibinfo{journal}{Genome Res.} \emph{\bibinfo{volume}{30}},
-  \bibinfo{pages}{35--48}. \DOIprefix\doi{10.1101/gr.249680.119}.
 %Type = Article
 \bibitem[{{Iwafuchi-Doi} et~al.(2016){Iwafuchi-Doi}, Donahue, Kakumanu, Watts,
   Mahony, Pugh, Lee, Kaestner and
@@ -806,20 +865,6 @@
   inference of enhancers and gene regulatory networks}.
 \newblock \bibinfo{journal}{Nat Methods} \emph{\bibinfo{volume}{20}},
   \bibinfo{pages}{1355--1367}. \DOIprefix\doi{10.1038/s41592-023-01938-4}.
-%Type = Article
-\bibitem[{Kempynck et~al.(2025)Kempynck, De~Winter, Blaauw, Konstantakos,
-  Dieltiens, Ek{\c s}i, Bercier, Taskiran, Hulselmans, Spanier, Christiaens,
-  Van Den~Bosch, Mahieu and Aerts}]{kempynckCREstedModelingGenomic2025}
-\bibinfo{author}{Kempynck, N.}, \bibinfo{author}{De~Winter, S.},
-  \bibinfo{author}{Blaauw, C.H.}, \bibinfo{author}{Konstantakos, V.},
-  \bibinfo{author}{Dieltiens, S.}, \bibinfo{author}{Ek{\c s}i, E.C.},
-  \bibinfo{author}{Bercier, V.}, \bibinfo{author}{Taskiran, I.I.},
-  \bibinfo{author}{Hulselmans, G.}, \bibinfo{author}{Spanier, K.},
-  \bibinfo{author}{Christiaens, V.}, \bibinfo{author}{Van Den~Bosch, L.},
-  \bibinfo{author}{Mahieu, L.}, and \bibinfo{author}{Aerts, S.}
-  (\bibinfo{year}{2025}). \bibinfo{title}{{{CREsted}}: Modeling genomic and
-  synthetic cell type-specific enhancers across tissues and species}.
-\newblock \bibinfo{journal}{BioRxiv}.
 %Type = Article
 \bibitem[{Perry et~al.(2010)Perry, Boettiger, Bothma and
   Levine}]{perryShadowEnhancersFoster2010}
