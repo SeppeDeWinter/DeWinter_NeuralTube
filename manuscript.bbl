@@ -338,6 +338,24 @@
   endoderm-derived organoids}. \bibinfo{publisher}{bioRxiv}.
 \newblock \DOIprefix\doi{10.1101/2023.11.20.567825}.
 %Type = Article
+\bibitem[{Abdel~Fattah et~al.(2021)Abdel~Fattah, Daza, Rustandi,
+  {Berrocal-Rubio}, Gorissen, Poovathingal, Davie, {Barrasa-Fano}, C{\'o}ndor,
+  Cao, Rosenzweig, Lei, Finnell, Verfaillie, Sampaolesi, Dedecker,
+  Van~Oosterwyck, Aerts and Ranga}]{abdelfattahActuationEnhancesPatterning2021}
+\bibinfo{author}{Abdel~Fattah, A.R.}, \bibinfo{author}{Daza, B.},
+  \bibinfo{author}{Rustandi, G.}, \bibinfo{author}{{Berrocal-Rubio}, M.{\'A}.},
+  \bibinfo{author}{Gorissen, B.}, \bibinfo{author}{Poovathingal, S.},
+  \bibinfo{author}{Davie, K.}, \bibinfo{author}{{Barrasa-Fano}, J.},
+  \bibinfo{author}{C{\'o}ndor, M.}, \bibinfo{author}{Cao, X.},
+  \bibinfo{author}{Rosenzweig, D.H.}, \bibinfo{author}{Lei, Y.},
+  \bibinfo{author}{Finnell, R.}, \bibinfo{author}{Verfaillie, C.},
+  \bibinfo{author}{Sampaolesi, M.}, \bibinfo{author}{Dedecker, P.},
+  \bibinfo{author}{Van~Oosterwyck, H.}, \bibinfo{author}{Aerts, S.}, and
+  \bibinfo{author}{Ranga, A.} (\bibinfo{year}{2021}). \bibinfo{title}{Actuation
+  enhances patterning in human neural tube organoids}.
+\newblock \bibinfo{journal}{Nat Commun} \emph{\bibinfo{volume}{12}},
+  \bibinfo{pages}{3192}. \DOIprefix\doi{10.1038/s41467-021-22952-0}.
+%Type = Article
 \bibitem[{Sagner and Briscoe(2019)}]{sagnerEstablishingNeuronalDiversity2019}
 \bibinfo{author}{Sagner, A.}, and \bibinfo{author}{Briscoe, J.}
   (\bibinfo{year}{2019}). \bibinfo{title}{Establishing neuronal diversity in
@@ -408,24 +426,6 @@
 \newblock \bibinfo{title}{Endothelial regulatory circuits control cranial
   neural crest migration and plasticity}. \bibinfo{publisher}{bioRxiv}.
 \newblock \DOIprefix\doi{10.1101/2024.09.17.613303}.
-%Type = Article
-\bibitem[{Abdel~Fattah et~al.(2021)Abdel~Fattah, Daza, Rustandi,
-  {Berrocal-Rubio}, Gorissen, Poovathingal, Davie, {Barrasa-Fano}, C{\'o}ndor,
-  Cao, Rosenzweig, Lei, Finnell, Verfaillie, Sampaolesi, Dedecker,
-  Van~Oosterwyck, Aerts and Ranga}]{abdelfattahActuationEnhancesPatterning2021}
-\bibinfo{author}{Abdel~Fattah, A.R.}, \bibinfo{author}{Daza, B.},
-  \bibinfo{author}{Rustandi, G.}, \bibinfo{author}{{Berrocal-Rubio}, M.{\'A}.},
-  \bibinfo{author}{Gorissen, B.}, \bibinfo{author}{Poovathingal, S.},
-  \bibinfo{author}{Davie, K.}, \bibinfo{author}{{Barrasa-Fano}, J.},
-  \bibinfo{author}{C{\'o}ndor, M.}, \bibinfo{author}{Cao, X.},
-  \bibinfo{author}{Rosenzweig, D.H.}, \bibinfo{author}{Lei, Y.},
-  \bibinfo{author}{Finnell, R.}, \bibinfo{author}{Verfaillie, C.},
-  \bibinfo{author}{Sampaolesi, M.}, \bibinfo{author}{Dedecker, P.},
-  \bibinfo{author}{Van~Oosterwyck, H.}, \bibinfo{author}{Aerts, S.}, and
-  \bibinfo{author}{Ranga, A.} (\bibinfo{year}{2021}). \bibinfo{title}{Actuation
-  enhances patterning in human neural tube organoids}.
-\newblock \bibinfo{journal}{Nat Commun} \emph{\bibinfo{volume}{12}},
-  \bibinfo{pages}{3192}. \DOIprefix\doi{10.1038/s41467-021-22952-0}.
 %Type = Misc
 \bibitem[{Shrikumar et~al.(2018)Shrikumar, Tian, Avsec, Shcherbina, Banerjee,
   Sharmin, Nair and Kundaje}]{shrikumarTechnicalNoteTranscription2018}
@@ -451,6 +451,17 @@
 \bibinfo{author}{Schreiber, J.} (\bibinfo{year}{2025}).
 \newblock \bibinfo{title}{Tangermeme: {{Biological}} sequence analysis for the
   modern age.}. .
+%Type = Incollection
+\bibitem[{Mann et~al.(2009)Mann, Lelli and Joshi}]{mannChapter3Hox2009}
+\bibinfo{author}{Mann, R.S.}, \bibinfo{author}{Lelli, K.M.}, and
+  \bibinfo{author}{Joshi, R.} (\bibinfo{year}{2009}). \bibinfo{title}{Chapter 3
+  {{Hox Specificity}}: {{Unique Roles}} for {{Cofactors}} and
+  {{Collaborators}}}.
+\newblock In \bibinfo{booktitle}{Current {{Topics}} in {{Developmental
+  Biology}}} vol.~\bibinfo{volume}{88} of \emph{\bibinfo{series}{Genes}} pp.
+  \bibinfo{pages}{63--101}.. \bibinfo{publisher}{Academic Press} pp.
+  \bibinfo{pages}{63--101}.
+\newblock \DOIprefix\doi{10.1016/S0070-2153(09)88003-4}.
 %Type = Article
 \bibitem[{Kempynck et~al.(2025)Kempynck, De~Winter, Blaauw, Konstantakos,
   Dieltiens, Ek{\c s}i, Bercier, Taskiran, Hulselmans, Spanier, Christiaens,
@@ -654,17 +665,6 @@
   Confer Hox Specificity}} and {{Regulatory Robustness}}}.
 \newblock \bibinfo{journal}{Cell} \emph{\bibinfo{volume}{160}},
   \bibinfo{pages}{191--203}. \DOIprefix\doi{10.1016/j.cell.2014.11.041}.
-%Type = Incollection
-\bibitem[{Mann et~al.(2009)Mann, Lelli and Joshi}]{mannChapter3Hox2009}
-\bibinfo{author}{Mann, R.S.}, \bibinfo{author}{Lelli, K.M.}, and
-  \bibinfo{author}{Joshi, R.} (\bibinfo{year}{2009}). \bibinfo{title}{Chapter 3
-  {{Hox Specificity}}: {{Unique Roles}} for {{Cofactors}} and
-  {{Collaborators}}}.
-\newblock In \bibinfo{booktitle}{Current {{Topics}} in {{Developmental
-  Biology}}} vol.~\bibinfo{volume}{88} of \emph{\bibinfo{series}{Genes}} pp.
-  \bibinfo{pages}{63--101}.. \bibinfo{publisher}{Academic Press} pp.
-  \bibinfo{pages}{63--101}.
-\newblock \DOIprefix\doi{10.1016/S0070-2153(09)88003-4}.
 %Type = Article
 \bibitem[{Hubert and Wellik(2023)}]{hubertHoxGenesDevelopment2023}
 \bibinfo{author}{Hubert, K.A.}, and \bibinfo{author}{Wellik, D.M.}
