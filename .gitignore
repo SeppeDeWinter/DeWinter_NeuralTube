@@ -2,5 +2,7 @@
 manuscript.out
 manuscript.log
 manuscript.aux
+figures_parts/
 *.pdf
 *.ai
+*.docx
