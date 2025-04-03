@@ -1,4 +1,4 @@
-\begin{thebibliography}{84}
+\begin{thebibliography}{87}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \providecommand{\href}[2]{#2}
@@ -1037,5 +1037,46 @@
 \newblock \bibinfo{title}{Decoding sequence determinants of gene expression in
   diverse cellular and disease states}. \bibinfo{publisher}{bioRxiv}.
 \newblock \DOIprefix\doi{10.1101/2024.10.09.617507}.
+%Type = Article
+\bibitem[{Ranga et~al.(2016)Ranga, Girgin, Meinhardt, Eberle, Caiazzo, Tanaka
+  and Lutolf}]{rangaNeuralTubeMorphogenesis2016}
+\bibinfo{author}{Ranga, A.}, \bibinfo{author}{Girgin, M.},
+  \bibinfo{author}{Meinhardt, A.}, \bibinfo{author}{Eberle, D.},
+  \bibinfo{author}{Caiazzo, M.}, \bibinfo{author}{Tanaka, E.M.}, and
+  \bibinfo{author}{Lutolf, M.P.} (\bibinfo{year}{2016}). \bibinfo{title}{Neural
+  tube morphogenesis in synthetic {{3D}} microenvironments}.
+\newblock \bibinfo{journal}{Proceedings of the National Academy of Sciences}
+  \emph{\bibinfo{volume}{113}}, \bibinfo{pages}{E6831--E6839}.
+  \DOIprefix\doi{10.1073/pnas.1603529113}.
+%Type = Article
+\bibitem[{Ranga et~al.(2014)Ranga, Gobaa, Okawa, Mosiewicz, Negro and
+  Lutolf}]{ranga3DNicheMicroarrays2014}
+\bibinfo{author}{Ranga, A.}, \bibinfo{author}{Gobaa, S.},
+  \bibinfo{author}{Okawa, Y.}, \bibinfo{author}{Mosiewicz, K.},
+  \bibinfo{author}{Negro, A.}, and \bibinfo{author}{Lutolf, M.P.}
+  (\bibinfo{year}{2014}). \bibinfo{title}{{{3D}} niche microarrays for
+  systems-level analyses of cell fate}.
+\newblock \bibinfo{journal}{Nat Commun} \emph{\bibinfo{volume}{5}},
+  \bibinfo{pages}{4324}. \DOIprefix\doi{10.1038/ncomms5324}.
+%Type = Article
+\bibitem[{Corces et~al.(2017)Corces, Trevino, Hamilton, Greenside,
+  {Sinnott-Armstrong}, Vesuna, Satpathy, Rubin, Montine, Wu, Kathiria, Cho,
+  Mumbach, Carter, Kasowski, Orloff, Risca, Kundaje, Khavari, Montine,
+  Greenleaf and Chang}]{corcesImprovedATACseqProtocol2017}
+\bibinfo{author}{Corces, M.R.}, \bibinfo{author}{Trevino, A.E.},
+  \bibinfo{author}{Hamilton, E.G.}, \bibinfo{author}{Greenside, P.G.},
+  \bibinfo{author}{{Sinnott-Armstrong}, N.A.}, \bibinfo{author}{Vesuna, S.},
+  \bibinfo{author}{Satpathy, A.T.}, \bibinfo{author}{Rubin, A.J.},
+  \bibinfo{author}{Montine, K.S.}, \bibinfo{author}{Wu, B.},
+  \bibinfo{author}{Kathiria, A.}, \bibinfo{author}{Cho, S.W.},
+  \bibinfo{author}{Mumbach, M.R.}, \bibinfo{author}{Carter, A.C.},
+  \bibinfo{author}{Kasowski, M.}, \bibinfo{author}{Orloff, L.A.},
+  \bibinfo{author}{Risca, V.I.}, \bibinfo{author}{Kundaje, A.},
+  \bibinfo{author}{Khavari, P.A.}, \bibinfo{author}{Montine, T.J.},
+  \bibinfo{author}{Greenleaf, W.J.}, and \bibinfo{author}{Chang, H.Y.}
+  (\bibinfo{year}{2017}). \bibinfo{title}{An improved {{ATAC-seq}} protocol
+  reduces background and enables interrogation of frozen tissues}.
+\newblock \bibinfo{journal}{Nat Methods} \emph{\bibinfo{volume}{14}},
+  \bibinfo{pages}{959--962}. \DOIprefix\doi{10.1038/nmeth.4396}.
 
 \end{thebibliography}

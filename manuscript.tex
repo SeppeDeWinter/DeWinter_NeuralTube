@@ -10,6 +10,9 @@
 \usepackage{orcidlink}
 \usepackage{afterpage}
 \usepackage{caption}
+\usepackage{siunitx}
+\DeclareSIUnit{\molar}{M}
+\DeclareSIUnit{\units}{U}
 \usepackage[super,comma,sort&compress]  
    {natbib}\bibliographystyle{numbered}
 % \usepackage[right]{lineno} \linenumbers
@@ -888,6 +891,29 @@ I%f you are publishing in a STAR Methods journal, please refer to the appropriat
 %%%  life sciences (e.g., if your study is 
 %%%  computational or physical science research). 
 
+\subsubsection*{Collection of human fetal samples}
+
+The experiments on human embryos in this study fall under category 2 as defined by the International Society for Stem
+Cell Research (ISSCR) 2021 guidelines. All experiments followed relevant guidelines and regulations, including the ISSCR
+2021 guidelines. Human fetal samples were collected from routine termination of pregnancies at the Karolinska University Hospital following informed consent of the donors. The donors were informed of the purpose of the research and specific procedures the tissues will be used for. The use of fetal samples collected from abortions was approved by the Swedish Ethical Review Authority and the National Board of Health and Welfare (Etikprövningsmyndigheten; DNR2020-02074). Embryos were not kept in culture and were immediately dissected after collection. The embryo was staged according to the Carnegie stages. Following the dissection, the samples were transferred to ice-cold Hibernate E medium (ThermoFisher, A1247601) and processed the same day.
+
+\subsubsection*{Generation of human neural tube organoids}
+The generation of human neural tube organoids falls under category 1a as defined by the ISSCR 2021 guidelines. 
+Two induced Pluripotent Stem Cell lines (iPSC): IPSC EPITHELIAL-1 (\href{https://rrid.site/data/record/SCR_013869-1/CVCL_EE38/resolver?q=SIGi001-A&l=SIGi001-A&i=rrid:cvcl_ee38-ebisc-sigi001-a}{RRID:CVCL\_EE38}; Purchased from Sigma-Aldrich iPSC0028 and hereafter referred to as Sigma iPSC), BJ1 iPSC (iPSC generated from BJ fibroblasts (\href{https://rrid.site/data/record/SCR_013869-1/CVCL_3653/resolver?q=CRL-2522&l=CRL-2522&i=rrid:cvcl_3653-atcc-crl-2522}{RRID:CVCL\_3653}) and kindly gifted by professor Catherine Verfaillie (Leuven Stem Cell Institute)) and one human Embryonic Stem Cell (ESC) line H9-ESC (\href{https://rrid.site/data/record/SCR_013869-1/CVCL_9773/resolver?q=NIHhESC-10-0062&l=NIHhESC-10-0062&i=rrid:cvcl_9773-0}{RRID:CVCL\_9773} and kindly gifted by professor Pierre Vanderhaeghen) were used for the \textit{in vitro} generation of human neural tube organoids.
+The identities of the cell lines were validated based on their genomic sequences (see Methods details below).
+Pluripotent stem cells were cultured in flat bottom, TC-treated 6 well plates (Avantor; 734-2323). For culture details see
+Methods details below. All human iPSC and ESC experiments were approved by the Ethical Committee of the KU Leuven (%TODO Number%)  
+. Human neural tube organoids were generated based on Fattah \textit{et al.} 2021 Nature communications\cite{
+abdelfattahActuationEnhancesPatterning2021} and Ranga \textit{et al.} 2016 PNAS\cite{rangaNeuralTubeMorphogenesis2016}.
+At 60-70\% confluency pluripotent stem cells were washed twice using Phosphate Buffered Saline
+(PBS; ThermoFisher, 14190169; 2ml) next a single cell suspension was made by adding 1ml of room temperature TrypLE
+Express Enzyme (ThermoFisher, 12605010) and incubation for 3 minutes at \SI{37}{\degreeCelsius} followed by pipetting up and down using a
+\SI{1}{\milli\litre} pipette. Immediately after the TrypLE reaction was inhibited by adding \SI{2}{\milli\liter} of DMEM/F12 FBS (Fetal Bovine Serum (FBS; ThermoFisher, A5256701) \SI{20}{\percent} V/V; Penicillin-Streptomycin (ThermoFisher, 15140122) \SI{50}{\micro\gram} in DMEM/F12 (ThermoFisher, 11320033)). Cells were pelleted at 300 RCF for \SI{3}{\minute} and after counting on a LUNA-FL™ Dual Fluorescence Cell Counter resuspended to \SI{3.5e6}{cells\per\milli\litre} in $GM_0$ ( basal GM (N-2 Supplement (ThermoFisher, 17502048) 1x, B-27 Supplement (ThermoFisher, 17504044) 1x, GlutaMax Supplement (ThermoFisher, 35050061) 1x, Sodium Pyruvate (ThermoFisher, 11360070) \SI{1}{\milli\molar}, MEM Non-Essential Amino Acids Solution (ThermoFisher, 11140050) 1x, Penicillin-Streptomycin (ThermoFisher, 15140122) \SI{50}{\micro\gram\per\milli\litre}, Neurobasal Medium (ThermoFisher, 21103049) \SI{50}{\percent} V/V and DMEM/F12 (ThermoFisher, 11320033) \SI{50}{\percent} V/V) with RHO/ROCK inhibitor (Y-27632 (Dihydrochloride), Stemcell technologies, 100-1044) \SI{1}{\micro\molar}). Next, the polyethylene glycol A (PEG-A) hydrogel matrix (see Methods detail below) was prepared by first adding Corning Mouse Laminin (Avantor, 734-1098) \SI{0.1}{\milli\gram\per\milli\liter} followed by activated factor 13 (see Methods details below) in that order to a PEG mixture (see Methods details below; PEG \SI{1.5}{\percent} or \SI{2}{\percent} V/V, buffer (TRIS \SI{0.05}{\milli\molar}, $CaCl_2$ \SI{0.05}{\milli\molar}; pH 7.6; filter sterilized) in $GM_0$ medium). After mixing the matrix by pipetting up and down, without generating bubbles, for 1-2 minutes \SI{3.5e4}{cells\per\micro\litre} mixture were added. The matrix and gell mixture was mixed gently one more time by pipetting and \SI{10}{\micro\litre} droplets were generated in each well of a TC-treated 96 well plate (Corning, 3603). When the matrix started to gell the plate was turned up-side down for 10 seconds, after which it was turned right-side up for 10 seconds. This was repeated for a total of 5 times, after which the plates were kept at room temperature. After 20 minutes of gelling \SI{200}{\micro\litre} of $GM_0$ medium was added to each well and the organoids were incubated at \SI{37}{\degreeCelsius} \SI{5}{\percent} $CO_2$ for a total of 11 days, or until the timepoint of single-cell multiome. At day 3 of differentiation medium was changed with basal GM supplemented with retinoic acid (Sigma-Aldrich, R2625-100MG) \SI{0.25}{\micro\molar} and Smoothened agonist (Sigma-Aldrich, 566661-500UG) \SI{1}{\micro\molar}. At day 5, 7 and 9 the medium was changed with basal GM. 
+
+\subsubsection*{Chicken embryos}
+Fertilized chicken eggs, obtained from ... %TODO
+were incubated at \SI{37}{\degreeCelsius} at \SI{70}{\percent} humidity for 30 hours to reach Humburger Hamilton (HH) stage 4. Afterwards, embryos were removed from the egg and kept in culture for an additional 24 hours.
+
 \subsection*{Method details}
 
 %%%  Please provide precise details of all the 
@@ -903,6 +929,87 @@ I%f you are publishing in a STAR Methods journal, please refer to the appropriat
 %%%  size estimation, and the criteria for 
 %%%  inclusion and exclusion of any data or 
 %%%  subjects).
+
+\subsubsection*{Human neural tube organoid culture}
+
+\paragraph*{Factor 13 activation}
+\SI{1}{\units} of reconstituted Thrombin (Sigma-Aldrich, 10602400001) in Ehrbars buffer (TRIS \SI{10}{\milli\molar}; NaCl
+\SI{150}{\milli\molar}; $CaCl_2$ \SI{25}{\milli\molar}; pH 7.4) per \SI{90}{\units} of reconstituted Fibrogammin (UZ Leuven pharmacy)
+was mixed and put in water bath at \SI{37}{\degreeCelsius} for 30 minutes while swirling every 5 minutes. Activated
+factor 13 was filter sterilized, aliquoted and stored at \SI{-80}{\degreeCelsius}.
+
+\paragraph*{PEG-A hydrogel precursor synthesis}
+PEG-A hydrogel precursors, as described in Ranga \textit{et al.} nature
+communications\cite{ranga3DNicheMicroarrays2014}, were kindly gifted by professor Adrian Ranga (Department of Mechanical
+Engineering at KU Leuven).
+
+\paragraph*{Human pluripotent stem cell culture}
+TC-treated well plates were coated using Geltrex Matrix (ThermoFisher, A1413301) as follows. Geltrex Matrix was thawed
+in ice over night at \SI{4}{\degreeCelsius} and diluted in DMEM/F12 (ThermoFisher, 11320033) \SI{1}{\percent} V/V.
+Sufficient amount of diluted Geltrex Matrix was added to each well to coat the surface and the culture plates were
+incubated at \SI{37}{\degreeCelsius} for a minimum of 60 minutes. Remaining Geltrex mixture was removed prior to
+culture. Human Pluripotent stem cells were cultured on the Geltrex Matrix coated well plates at \SI{37}{\degreeCelsius}
+\SI{5}{\percent} $CO_2$ in Essential 8 Flex Medium (ThermoFisher, A2858501) supplemented with Penicillin-Streptomycin (ThermoFisher, 15140122) \SI{50}{\micro\gram\per\milli\litre}. Medium was changed every other day. Cells were passaged when they reached \SI{70}{\percent} by washing them twice using DPBS without Calcium and Magnesium (ThermoFisher, 14190) and adding EDTA (ThermoFisher, 15575020) \SI{0.5}{\milli\molar} followed by incubation at \SI{37}{\degreeCelsius}. After 3-4 minutes the EDTA solution was aspirated and replaced by Essential 8 Flex Medium. Cells were scraped using a cell scraper (Corning, 734-0385) and split in a 1:6 ratio.
+
+\paragraph*{single cell suspension}
+PEG hydrogel droplets were removed from the 96 well plate by gently scraping with a \SI{100}{\micro\litre} pipette tip
+and transferred to a tube on ice using a p1000 pipette by putting the pipette tip on the droplet and creating a gentle
+negative pressure, making sure that the droplet does not enter the pipette tip. Organoids were dissociated by adding room temperature TrypLE Express Enzyme (ThermoFisher, 12605010) and incubation at \SI{37}{\degreeCelsius} while pipetting up and down until no large pieces of hydrogel were visible anymore or a maximum of 7.5 minutes. Immediately after the TrypLE reaction was inhibited by adding twice the volume of DMEM/F12 FBS (Fetal Bovine Serum (FBS; ThermoFisher, A5256701) \SI{20}{\percent} V/V; Penicillin-Streptomycin (ThermoFisher, 15140122) \SI{50}{\micro\gram} in DMEM/F12 (ThermoFisher, 11320033)). The single-cell suspension was pelleted at 500 RCF for 4 minutes, resuspended in DMEM/F12 FBS and counted on LUNA-FL™ Dual Fluorescence Cell Counter. Immediately after the cells were processed for 10x single-cell multiome.
+
+\subsubsection*{Human neural tube organoid multiome}
+
+\paragraph*{10x multiome library preparation}
+%TODO Valerie
+
+\paragraph*{10x multiome library sequencing}
+%TODO Valerie
+
+
+\subsubsection*{Human embryo sample preparation}
+
+\paragraph*{10x multiome library preparation}
+%TODO Camiel
+
+\paragraph*{10x multiome library sequencing}
+%TODO Camiel
+
+\subsubsection*{Human neural tube data analysis}
+
+\paragraph*{Samples}
+Eight individual single-cell multiome libraries were generated:
+\begin{itemize}
+  \item A single library containing a mix of organoids at 1, 3, 5, 7, 9 and 11 days of differentiation cultured in \SI{1.5}{\percent} PEG hydrogel matrix.
+  \item A single library containing a mix of organoids at 1, 3, 5, 7, 9 and 11 days of differentiation cultured in \SI{2}{\percent} PEG hydrogel matrix.
+  \item Two libraries containing a mix of organoids at 1, 2, 3, 6 and 7 days of differentiation cultured in \SI{2}{\percent} PEG hydrogel matrix.
+  \item A single library containing a mix of organoids at 6 and 7 days of differentiation cultured in \SI{2}{\percent}
+    PEG hydrogel matrix.
+  \item A single library containing a mix of organoids at 4, 5, 8 and 9 days of differentiation cultured in
+    \SI{2}{\percent} PEG hydrogel matrix.
+  \item A single library containing a mix of organoids at 8 and 9 days of differentiation cultured in \SI{2}{\percent}
+    PEG hydrogel matrix.
+  \item A single library containing a mix of organoids at 10 and 11 days of differentiation cultured in \SI{2}{\percent}
+    PEG hydrogel matrix.
+\end{itemize}
+
+For each sample a mix of H9-ESC, Sigma iPSC and BJ1 iPSC cells were used.
+
+\paragraph*{RNA count matrices and ATAC fragment files}
+single-cell RNA count matrices and single-cell ATAC fragment files were generated for each sample using the Cell Ranger
+ARC (v2.0.2; \href{https://rrid.site/data/record/nlx_144509-1/SCR_023897/resolver}{RRID:SCR\_023897}) command
+cellranger-arc count command using as the GRCh38 reference genome supplied with Cell Ranger ARC (v2020-A-2.0.0).
+
+\paragraph*{Cell line demultiplexing}
+Variants were called from in house Omni-ATAC-seq\cite{corcesImprovedATACseqProtocol2017} data that was performed on each
+cell line individually (unpublished data). 
+First, bam files per cell line were merged using samtools (v1.11; \href{https://rrid.site/data/record/nlx_144509-1/SCR_002105/resolver}{RRID:SCR\_002105}) merge, sorted using samtools sort and indexed using samtools index. 
+Next, for each cell line merged bam file common variants were called using the bcftools (v1.11; \href{https://rrid.site/data/record/nlx_144509-1/SCR_005227/resolver}{RRID:SCR\_005227}) mpileup command using common short genetic variants from 1000 Genomes project as targets parameter (-T) and 8,000 as max depth (-D) parameter followed by the call command from bcftools. 
+
+next ... demuxlet etc
+
+\paragraph*{single-cell RNA quality control}
+
+\paragraph*{single-cell ATAC quality control}
+
 
 \subsection*{Quantification and statistical analysis}
 
