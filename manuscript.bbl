@@ -1,4 +1,4 @@
-\begin{thebibliography}{87}
+\begin{thebibliography}{110}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \providecommand{\href}[2]{#2}
@@ -476,6 +476,7 @@
   (\bibinfo{year}{2025}). \bibinfo{title}{{{CREsted}}: Modeling genomic and
   synthetic cell type-specific enhancers across tissues and species}.
 \newblock \bibinfo{journal}{BioRxiv}.
+  \DOIprefix\doi{10.1101/2025.04.02.646812}.
 %Type = Article
 \bibitem[{Rothstein and
   {Simoes-Costa}(2020)}]{rothsteinHeterodimerizationTFAP2Pioneer2020}
@@ -1078,5 +1079,344 @@
   reduces background and enables interrogation of frozen tissues}.
 \newblock \bibinfo{journal}{Nat Methods} \emph{\bibinfo{volume}{14}},
   \bibinfo{pages}{959--962}. \DOIprefix\doi{10.1038/nmeth.4396}.
+%Type = Article
+\bibitem[{Li et~al.(2009)Li, Handsaker, Wysoker, Fennell, Ruan, Homer, Marth,
+  Abecasis, Durbin and {1000 Genome Project Data Processing
+  Subgroup}}]{liSequenceAlignmentMap2009}
+\bibinfo{author}{Li, H.}, \bibinfo{author}{Handsaker, B.},
+  \bibinfo{author}{Wysoker, A.}, \bibinfo{author}{Fennell, T.},
+  \bibinfo{author}{Ruan, J.}, \bibinfo{author}{Homer, N.},
+  \bibinfo{author}{Marth, G.}, \bibinfo{author}{Abecasis, G.},
+  \bibinfo{author}{Durbin, R.}, and \bibinfo{author}{{1000 Genome Project Data
+  Processing Subgroup}} (\bibinfo{year}{2009}). \bibinfo{title}{The {{Sequence
+  Alignment}}/{{Map}} format and {{SAMtools}}}.
+\newblock \bibinfo{journal}{Bioinformatics} \emph{\bibinfo{volume}{25}},
+  \bibinfo{pages}{2078--2079}. \DOIprefix\doi{10.1093/bioinformatics/btp352}.
+%Type = Article
+\bibitem[{Li(2011)}]{liStatisticalFrameworkSNP2011}
+\bibinfo{author}{Li, H.} (\bibinfo{year}{2011}). \bibinfo{title}{A statistical
+  framework for {{SNP}} calling, mutation discovery, association mapping and
+  population genetical parameter estimation from sequencing data}.
+\newblock \bibinfo{journal}{Bioinformatics} \emph{\bibinfo{volume}{27}},
+  \bibinfo{pages}{2987--2993}. \DOIprefix\doi{10.1093/bioinformatics/btr509}.
+%Type = Article
+\bibitem[{Kang et~al.(2018)Kang, Subramaniam, Targ, Nguyen, Maliskova,
+  McCarthy, Wan, Wong, Byrnes, Lanata, Gate, Mostafavi, Marson, Zaitlen,
+  Criswell and Ye}]{kangMultiplexedDropletSinglecell2018}
+\bibinfo{author}{Kang, H.M.}, \bibinfo{author}{Subramaniam, M.},
+  \bibinfo{author}{Targ, S.}, \bibinfo{author}{Nguyen, M.},
+  \bibinfo{author}{Maliskova, L.}, \bibinfo{author}{McCarthy, E.},
+  \bibinfo{author}{Wan, E.}, \bibinfo{author}{Wong, S.},
+  \bibinfo{author}{Byrnes, L.}, \bibinfo{author}{Lanata, C.M.},
+  \bibinfo{author}{Gate, R.E.}, \bibinfo{author}{Mostafavi, S.},
+  \bibinfo{author}{Marson, A.}, \bibinfo{author}{Zaitlen, N.},
+  \bibinfo{author}{Criswell, L.A.}, and \bibinfo{author}{Ye, C.J.}
+  (\bibinfo{year}{2018}). \bibinfo{title}{Multiplexed droplet single-cell
+  {{RNA-sequencing}} using natural genetic variation}.
+\newblock \bibinfo{journal}{Nat Biotechnol} \emph{\bibinfo{volume}{36}},
+  \bibinfo{pages}{89--94}. \DOIprefix\doi{10.1038/nbt.4042}.
+%Type = Article
+\bibitem[{Wolf et~al.(2018)Wolf, Angerer and
+  Theis}]{wolfSCANPYLargescaleSinglecell2018}
+\bibinfo{author}{Wolf, F.A.}, \bibinfo{author}{Angerer, P.}, and
+  \bibinfo{author}{Theis, F.J.} (\bibinfo{year}{2018}).
+  \bibinfo{title}{{{SCANPY}}: Large-scale single-cell gene expression data
+  analysis}.
+\newblock \bibinfo{journal}{Genome Biology} \emph{\bibinfo{volume}{19}},
+  \bibinfo{pages}{15}. \DOIprefix\doi{10.1186/s13059-017-1382-0}.
+%Type = Article
+\bibitem[{Korsunsky et~al.(2019)Korsunsky, Millard, Fan, Slowikowski, Zhang,
+  Wei, Baglaenko, Brenner, Loh and
+  Raychaudhuri}]{korsunskyFastSensitiveAccurate2019}
+\bibinfo{author}{Korsunsky, I.}, \bibinfo{author}{Millard, N.},
+  \bibinfo{author}{Fan, J.}, \bibinfo{author}{Slowikowski, K.},
+  \bibinfo{author}{Zhang, F.}, \bibinfo{author}{Wei, K.},
+  \bibinfo{author}{Baglaenko, Y.}, \bibinfo{author}{Brenner, M.},
+  \bibinfo{author}{Loh, P.r.}, and \bibinfo{author}{Raychaudhuri, S.}
+  (\bibinfo{year}{2019}). \bibinfo{title}{Fast, sensitive and accurate
+  integration of single-cell data with {{Harmony}}}.
+\newblock \bibinfo{journal}{Nat Methods} \emph{\bibinfo{volume}{16}},
+  \bibinfo{pages}{1289--1296}. \DOIprefix\doi{10.1038/s41592-019-0619-0}.
+%Type = Article
+\bibitem[{Traag et~al.(2019)Traag, Waltman and {van
+  Eck}}]{traagLouvainLeidenGuaranteeing2019}
+\bibinfo{author}{Traag, V.A.}, \bibinfo{author}{Waltman, L.}, and
+  \bibinfo{author}{{van Eck}, N.J.} (\bibinfo{year}{2019}).
+  \bibinfo{title}{From {{Louvain}} to {{Leiden}}: Guaranteeing well-connected
+  communities}.
+\newblock \bibinfo{journal}{Sci Rep} \emph{\bibinfo{volume}{9}},
+  \bibinfo{pages}{5233}. \DOIprefix\doi{10.1038/s41598-019-41695-z}.
+%Type = Article
+\bibitem[{Virtanen et~al.(2020)Virtanen, Gommers, Oliphant, Haberland, Reddy,
+  Cournapeau, Burovski, Peterson, Weckesser, Bright, Van Der~Walt, Brett,
+  Wilson, Millman, Mayorov, Nelson, Jones, Kern, Larson, Carey, Polat, Feng,
+  Moore, VanderPlas, Laxalde, Perktold, Cimrman, Henriksen, Quintero, Harris,
+  Archibald, Ribeiro, Pedregosa, Van~Mulbregt, {SciPy 1.0 Contributors},
+  Vijaykumar, Bardelli, Rothberg, Hilboll, Kloeckner, Scopatz, Lee, Rokem,
+  Woods, Fulton, Masson, H{\"a}ggstr{\"o}m, Fitzgerald, Nicholson, Hagen,
+  Pasechnik, Olivetti, Martin, Wieser, Silva, Lenders, Wilhelm, Young, Price,
+  Ingold, Allen, Lee, Audren, Probst, Dietrich, Silterra, Webber, Slavi{\v c},
+  Nothman, Buchner, Kulick, Sch{\"o}nberger, De~Miranda~Cardoso, Reimer,
+  Harrington, Rodr{\'i}guez, {Nunez-Iglesias}, Kuczynski, Tritz, Thoma,
+  Newville, K{\"u}mmerer, Bolingbroke, Tartre, Pak, Smith, Nowaczyk, Shebanov,
+  Pavlyk, Brodtkorb, Lee, McGibbon, Feldbauer, Lewis, Tygier, Sievert, Vigna,
+  Peterson, More, Pudlik, Oshima, Pingel, Robitaille, Spura, Jones, Cera,
+  Leslie, Zito, Krauss, Upadhyay, Halchenko and
+  {V{\'a}zquez-Baeza}}]{virtanenSciPy10Fundamental2020}
+\bibinfo{author}{Virtanen, P.}, \bibinfo{author}{Gommers, R.},
+  \bibinfo{author}{Oliphant, T.E.}, \bibinfo{author}{Haberland, M.},
+  \bibinfo{author}{Reddy, T.}, \bibinfo{author}{Cournapeau, D.},
+  \bibinfo{author}{Burovski, E.}, \bibinfo{author}{Peterson, P.},
+  \bibinfo{author}{Weckesser, W.}, \bibinfo{author}{Bright, J.},
+  \bibinfo{author}{Van Der~Walt, S.J.}, \bibinfo{author}{Brett, M.},
+  \bibinfo{author}{Wilson, J.}, \bibinfo{author}{Millman, K.J.},
+  \bibinfo{author}{Mayorov, N.}, \bibinfo{author}{Nelson, A.R.J.},
+  \bibinfo{author}{Jones, E.}, \bibinfo{author}{Kern, R.},
+  \bibinfo{author}{Larson, E.}, \bibinfo{author}{Carey, C.J.},
+  \bibinfo{author}{Polat, {\.I}.}, \bibinfo{author}{Feng, Y.},
+  \bibinfo{author}{Moore, E.W.}, \bibinfo{author}{VanderPlas, J.},
+  \bibinfo{author}{Laxalde, D.}, \bibinfo{author}{Perktold, J.},
+  \bibinfo{author}{Cimrman, R.}, \bibinfo{author}{Henriksen, I.},
+  \bibinfo{author}{Quintero, E.A.}, \bibinfo{author}{Harris, C.R.},
+  \bibinfo{author}{Archibald, A.M.}, \bibinfo{author}{Ribeiro, A.H.},
+  \bibinfo{author}{Pedregosa, F.}, \bibinfo{author}{Van~Mulbregt, P.},
+  \bibinfo{author}{{SciPy 1.0 Contributors}}, \bibinfo{author}{Vijaykumar, A.},
+  \bibinfo{author}{Bardelli, A.P.}, \bibinfo{author}{Rothberg, A.},
+  \bibinfo{author}{Hilboll, A.}, \bibinfo{author}{Kloeckner, A.},
+  \bibinfo{author}{Scopatz, A.}, \bibinfo{author}{Lee, A.},
+  \bibinfo{author}{Rokem, A.}, \bibinfo{author}{Woods, C.N.},
+  \bibinfo{author}{Fulton, C.}, \bibinfo{author}{Masson, C.},
+  \bibinfo{author}{H{\"a}ggstr{\"o}m, C.}, \bibinfo{author}{Fitzgerald, C.},
+  \bibinfo{author}{Nicholson, D.A.}, \bibinfo{author}{Hagen, D.R.},
+  \bibinfo{author}{Pasechnik, D.V.}, \bibinfo{author}{Olivetti, E.},
+  \bibinfo{author}{Martin, E.}, \bibinfo{author}{Wieser, E.},
+  \bibinfo{author}{Silva, F.}, \bibinfo{author}{Lenders, F.},
+  \bibinfo{author}{Wilhelm, F.}, \bibinfo{author}{Young, G.},
+  \bibinfo{author}{Price, G.A.}, \bibinfo{author}{Ingold, G.L.},
+  \bibinfo{author}{Allen, G.E.}, \bibinfo{author}{Lee, G.R.},
+  \bibinfo{author}{Audren, H.}, \bibinfo{author}{Probst, I.},
+  \bibinfo{author}{Dietrich, J.P.}, \bibinfo{author}{Silterra, J.},
+  \bibinfo{author}{Webber, J.T.}, \bibinfo{author}{Slavi{\v c}, J.},
+  \bibinfo{author}{Nothman, J.}, \bibinfo{author}{Buchner, J.},
+  \bibinfo{author}{Kulick, J.}, \bibinfo{author}{Sch{\"o}nberger, J.L.},
+  \bibinfo{author}{De~Miranda~Cardoso, J.V.}, \bibinfo{author}{Reimer, J.},
+  \bibinfo{author}{Harrington, J.}, \bibinfo{author}{Rodr{\'i}guez, J.L.C.},
+  \bibinfo{author}{{Nunez-Iglesias}, J.}, \bibinfo{author}{Kuczynski, J.},
+  \bibinfo{author}{Tritz, K.}, \bibinfo{author}{Thoma, M.},
+  \bibinfo{author}{Newville, M.}, \bibinfo{author}{K{\"u}mmerer, M.},
+  \bibinfo{author}{Bolingbroke, M.}, \bibinfo{author}{Tartre, M.},
+  \bibinfo{author}{Pak, M.}, \bibinfo{author}{Smith, N.J.},
+  \bibinfo{author}{Nowaczyk, N.}, \bibinfo{author}{Shebanov, N.},
+  \bibinfo{author}{Pavlyk, O.}, \bibinfo{author}{Brodtkorb, P.A.},
+  \bibinfo{author}{Lee, P.}, \bibinfo{author}{McGibbon, R.T.},
+  \bibinfo{author}{Feldbauer, R.}, \bibinfo{author}{Lewis, S.},
+  \bibinfo{author}{Tygier, S.}, \bibinfo{author}{Sievert, S.},
+  \bibinfo{author}{Vigna, S.}, \bibinfo{author}{Peterson, S.},
+  \bibinfo{author}{More, S.} et~al. (\bibinfo{year}{2020}).
+  \bibinfo{title}{{{SciPy}} 1.0: Fundamental algorithms for scientific
+  computing in {{Python}}}.
+\newblock \bibinfo{journal}{Nat Methods} \emph{\bibinfo{volume}{17}},
+  \bibinfo{pages}{261--272}. \DOIprefix\doi{10.1038/s41592-019-0686-2}.
+%Type = Article
+\bibitem[{Islam et~al.(2011)Islam, Kj{\"a}llquist, Moliner, Zajac, Fan,
+  L{\"o}nnerberg and
+  Linnarsson}]{islamCharacterizationSinglecellTranscriptional2011}
+\bibinfo{author}{Islam, S.}, \bibinfo{author}{Kj{\"a}llquist, U.},
+  \bibinfo{author}{Moliner, A.}, \bibinfo{author}{Zajac, P.},
+  \bibinfo{author}{Fan, J.B.}, \bibinfo{author}{L{\"o}nnerberg, P.}, and
+  \bibinfo{author}{Linnarsson, S.} (\bibinfo{year}{2011}).
+  \bibinfo{title}{Characterization of the single-cell transcriptional landscape
+  by highly multiplex {{RNA-seq}}}.
+\newblock \bibinfo{journal}{Genome Res.} \emph{\bibinfo{volume}{21}},
+  \bibinfo{pages}{1160--1167}. \DOIprefix\doi{10.1101/gr.110882.110}.
+%Type = Article
+\bibitem[{Jacomy et~al.(2014)Jacomy, Venturini, Heymann and
+  Bastian}]{jacomyForceAtlas2ContinuousGraph2014}
+\bibinfo{author}{Jacomy, M.}, \bibinfo{author}{Venturini, T.},
+  \bibinfo{author}{Heymann, S.}, and \bibinfo{author}{Bastian, M.}
+  (\bibinfo{year}{2014}). \bibinfo{title}{{{ForceAtlas2}}, a {{Continuous Graph
+  Layout Algorithm}} for {{Handy Network Visualization Designed}} for the
+  {{Gephi Software}}}.
+\newblock \bibinfo{journal}{PLOS ONE} \emph{\bibinfo{volume}{9}},
+  \bibinfo{pages}{e98679}. \DOIprefix\doi{10.1371/journal.pone.0098679}.
+%Type = Article
+\bibitem[{Haghverdi et~al.(2016)Haghverdi, B{\"u}ttner, Wolf, Buettner and
+  Theis}]{haghverdiDiffusionPseudotimeRobustly2016}
+\bibinfo{author}{Haghverdi, L.}, \bibinfo{author}{B{\"u}ttner, M.},
+  \bibinfo{author}{Wolf, F.A.}, \bibinfo{author}{Buettner, F.}, and
+  \bibinfo{author}{Theis, F.J.} (\bibinfo{year}{2016}).
+  \bibinfo{title}{Diffusion pseudotime robustly reconstructs lineage
+  branching}.
+\newblock \bibinfo{journal}{Nat Methods} \emph{\bibinfo{volume}{13}},
+  \bibinfo{pages}{845--848}. \DOIprefix\doi{10.1038/nmeth.3971}.
+%Type = Misc
+\bibitem[{{The pandas
+  development}(2024)}]{thepandasdevelopmentPandasdevPandasPandas2024}
+\bibinfo{author}{{The pandas development}} (\bibinfo{year}{2024}).
+\newblock \bibinfo{title}{Pandas-dev/pandas: {{Pandas}}}.
+\newblock \bibinfo{howpublished}{Zenodo}. .
+\newblock \DOIprefix\doi{10.5281/zenodo.13819579}.
+%Type = Article
+\bibitem[{Zhang et~al.(2008)Zhang, Liu, Meyer, Eeckhoute, Johnson, Bernstein,
+  Nusbaum, Myers, Brown, Li and Liu}]{zhangModelbasedAnalysisChIPSeq2008}
+\bibinfo{author}{Zhang, Y.}, \bibinfo{author}{Liu, T.}, \bibinfo{author}{Meyer,
+  C.A.}, \bibinfo{author}{Eeckhoute, J.}, \bibinfo{author}{Johnson, D.S.},
+  \bibinfo{author}{Bernstein, B.E.}, \bibinfo{author}{Nusbaum, C.},
+  \bibinfo{author}{Myers, R.M.}, \bibinfo{author}{Brown, M.},
+  \bibinfo{author}{Li, W.}, and \bibinfo{author}{Liu, X.S.}
+  (\bibinfo{year}{2008}). \bibinfo{title}{Model-based {{Analysis}} of
+  {{ChIP-Seq}} ({{MACS}})}.
+\newblock \bibinfo{journal}{Genome Biology} \emph{\bibinfo{volume}{9}},
+  \bibinfo{pages}{R137}. \DOIprefix\doi{10.1186/gb-2008-9-9-r137}.
+%Type = Inproceedings
+\bibitem[{Mimno et~al.(2011)Mimno, Wallach, Talley, Leenders and
+  McCallum}]{mimno-etal-2011-optimizing}
+\bibinfo{author}{Mimno, D.}, \bibinfo{author}{Wallach, H.},
+  \bibinfo{author}{Talley, E.}, \bibinfo{author}{Leenders, M.}, and
+  \bibinfo{author}{McCallum, A.} (\bibinfo{year}{2011}).
+  \bibinfo{title}{Optimizing semantic coherence in topic models}.
+\newblock In \bibinfo{editor}{ R.{ }Barzilay}, and \bibinfo{editor}{ M.{
+  }Johnson}, eds. \bibinfo{booktitle}{Proceedings of the 2011 Conference on
+  Empirical Methods in Natural Language Processing}.
+  \bibinfo{address}{Edinburgh, Scotland, UK.}: \bibinfo{publisher}{Association
+  for Computational Linguistics} pp. \bibinfo{pages}{262--272}.
+%Type = Article
+\bibitem[{Griffiths and Steyvers(2004)}]{griffithsFindingScientificTopics2004}
+\bibinfo{author}{Griffiths, T.L.}, and \bibinfo{author}{Steyvers, M.}
+  (\bibinfo{year}{2004}). \bibinfo{title}{Finding scientific topics}.
+\newblock \bibinfo{journal}{Proceedings of the National Academy of Sciences}
+  \emph{\bibinfo{volume}{101}}, \bibinfo{pages}{5228--5235}.
+  \DOIprefix\doi{10.1073/pnas.0307752101}.
+%Type = Incollection
+\bibitem[{Arun et~al.(2010)Arun, Suresh, Veni~Madhavan and
+  Narasimha~Murthy}]{arunFindingNaturalNumber2010}
+\bibinfo{author}{Arun, R.}, \bibinfo{author}{Suresh, V.},
+  \bibinfo{author}{Veni~Madhavan, C.E.}, and \bibinfo{author}{Narasimha~Murthy,
+  M.N.} (\bibinfo{year}{2010}). \bibinfo{title}{On {{Finding}} the {{Natural
+  Number}} of {{Topics}} with {{Latent Dirichlet Allocation}}: {{Some
+  Observations}}}.
+\newblock In \bibinfo{editor}{ D.{ }Hutchison}, \bibinfo{editor}{ T.{ }Kanade},
+  \bibinfo{editor}{ J.{ }Kittler}, \bibinfo{editor}{ J.M.{ }Kleinberg},
+  \bibinfo{editor}{ F.{ }Mattern}, \bibinfo{editor}{ J.C.{ }Mitchell},
+  \bibinfo{editor}{ M.{ }Naor}, \bibinfo{editor}{ O.{ }Nierstrasz},
+  \bibinfo{editor}{ C.{ }Pandu~Rangan}, \bibinfo{editor}{ B.{ }Steffen},
+  \bibinfo{editor}{ M.{ }Sudan}, \bibinfo{editor}{ D.{ }Terzopoulos},
+  \bibinfo{editor}{ D.{ }Tygar}, \bibinfo{editor}{ M.Y.{ }Vardi},
+  \bibinfo{editor}{ G.{ }Weikum}, \bibinfo{editor}{ M.J.{ }Zaki},
+  \bibinfo{editor}{ J.X.{ }Yu}, \bibinfo{editor}{ B.{ }Ravindran}, and
+  \bibinfo{editor}{ V.{ }Pudi}, eds. \bibinfo{booktitle}{Advances in
+  {{Knowledge Discovery}} and {{Data Mining}}} vol. \bibinfo{volume}{6118} pp.
+  \bibinfo{pages}{391--402}.. \bibinfo{address}{Berlin, Heidelberg}:
+  \bibinfo{publisher}{Springer Berlin Heidelberg}.
+\newblock ISBN \bibinfo{isbn}{978-3-642-13656-6 978-3-642-13657-3} pp.
+  \bibinfo{pages}{391--402}.
+\newblock \DOIprefix\doi{10.1007/978-3-642-13657-3_43}.
+%Type = Article
+\bibitem[{Cao et~al.(2009)Cao, Xia, Li, Zhang and
+  Tang}]{caoDensitybasedMethodAdaptive2009}
+\bibinfo{author}{Cao, J.}, \bibinfo{author}{Xia, T.}, \bibinfo{author}{Li, J.},
+  \bibinfo{author}{Zhang, Y.}, and \bibinfo{author}{Tang, S.}
+  (\bibinfo{year}{2009}). \bibinfo{title}{A density-based method for adaptive
+  {{LDA}} model selection}.
+\newblock \bibinfo{journal}{Neurocomputing} \emph{\bibinfo{volume}{72}},
+  \bibinfo{pages}{1775--1781}. \DOIprefix\doi{10.1016/j.neucom.2008.06.011}.
+%Type = Article
+\bibitem[{Otsu(1979)}]{otsuThresholdSelectionMethod1979}
+\bibinfo{author}{Otsu, N.} (\bibinfo{year}{1979}). \bibinfo{title}{A
+  {{Threshold Selection Method}} from {{Gray-Level Histograms}}}.
+\newblock \bibinfo{journal}{IEEE Trans. Syst., Man, Cybern.}
+  \emph{\bibinfo{volume}{9}}, \bibinfo{pages}{62--66}.
+  \DOIprefix\doi{10.1109/TSMC.1979.4310076}.
+%Type = Article
+\bibitem[{Li and Lee(1993)}]{liMinimumCrossEntropy1993}
+\bibinfo{author}{Li, C.}, and \bibinfo{author}{Lee, C.} (\bibinfo{year}{1993}).
+  \bibinfo{title}{Minimum cross entropy thresholding}.
+\newblock \bibinfo{journal}{Pattern Recognition} \emph{\bibinfo{volume}{26}},
+  \bibinfo{pages}{617--625}. \DOIprefix\doi{10.1016/0031-3203(93)90115-D}.
+%Type = Article
+\bibitem[{Tirosh et~al.(2016)Tirosh, Izar, Prakadan, Wadsworth, Treacy,
+  Trombetta, Rotem, Rodman, Lian, Murphy, {Fallahi-Sichani}, {Dutton-Regester},
+  Lin, Cohen, Shah, Lu, Genshaft, Hughes, Ziegler, Kazer, Gaillard, Kolb,
+  Villani, Johannessen, Andreev, Van~Allen, Bertagnolli, Sorger, Sullivan,
+  Flaherty, Frederick, {Jan{\'e}-Valbuena}, Yoon, {Rozenblatt-Rosen}, Shalek,
+  Regev and Garraway}]{tiroshDissectingMulticellularEcosystem2016}
+\bibinfo{author}{Tirosh, I.}, \bibinfo{author}{Izar, B.},
+  \bibinfo{author}{Prakadan, S.M.}, \bibinfo{author}{Wadsworth, M.H.},
+  \bibinfo{author}{Treacy, D.}, \bibinfo{author}{Trombetta, J.J.},
+  \bibinfo{author}{Rotem, A.}, \bibinfo{author}{Rodman, C.},
+  \bibinfo{author}{Lian, C.}, \bibinfo{author}{Murphy, G.},
+  \bibinfo{author}{{Fallahi-Sichani}, M.}, \bibinfo{author}{{Dutton-Regester},
+  K.}, \bibinfo{author}{Lin, J.R.}, \bibinfo{author}{Cohen, O.},
+  \bibinfo{author}{Shah, P.}, \bibinfo{author}{Lu, D.},
+  \bibinfo{author}{Genshaft, A.S.}, \bibinfo{author}{Hughes, T.K.},
+  \bibinfo{author}{Ziegler, C.G.K.}, \bibinfo{author}{Kazer, S.W.},
+  \bibinfo{author}{Gaillard, A.}, \bibinfo{author}{Kolb, K.E.},
+  \bibinfo{author}{Villani, A.C.}, \bibinfo{author}{Johannessen, C.M.},
+  \bibinfo{author}{Andreev, A.Y.}, \bibinfo{author}{Van~Allen, E.M.},
+  \bibinfo{author}{Bertagnolli, M.}, \bibinfo{author}{Sorger, P.K.},
+  \bibinfo{author}{Sullivan, R.J.}, \bibinfo{author}{Flaherty, K.T.},
+  \bibinfo{author}{Frederick, D.T.}, \bibinfo{author}{{Jan{\'e}-Valbuena}, J.},
+  \bibinfo{author}{Yoon, C.H.}, \bibinfo{author}{{Rozenblatt-Rosen}, O.},
+  \bibinfo{author}{Shalek, A.K.}, \bibinfo{author}{Regev, A.}, and
+  \bibinfo{author}{Garraway, L.A.} (\bibinfo{year}{2016}).
+  \bibinfo{title}{Dissecting the multicellular ecosystem of metastatic melanoma
+  by single-cell {{RNA-seq}}}.
+\newblock \bibinfo{journal}{Science} \emph{\bibinfo{volume}{352}},
+  \bibinfo{pages}{189--196}. \DOIprefix\doi{10.1126/science.aad0501}.
+%Type = Article
+\bibitem[{Frith et~al.(2003)Frith, Li and
+  Weng}]{frithClusterBusterFindingDense2003}
+\bibinfo{author}{Frith, M.C.}, \bibinfo{author}{Li, M.C.}, and
+  \bibinfo{author}{Weng, Z.} (\bibinfo{year}{2003}).
+  \bibinfo{title}{Cluster-{{Buster}}: Finding dense clusters of motifs in
+  {{DNA}} sequences}.
+\newblock \bibinfo{journal}{Nucleic Acids Research}
+  \emph{\bibinfo{volume}{31}}, \bibinfo{pages}{3666--3668}.
+  \DOIprefix\doi{10.1093/nar/gkg540}.
+%Type = Incollection
+\bibitem[{Potier et~al.(2012)Potier, Atak, Sanchez, Herrmann and
+  Aerts}]{potierUsingCisTargetXPredict2012}
+\bibinfo{author}{Potier, D.}, \bibinfo{author}{Atak, Z.K.},
+  \bibinfo{author}{Sanchez, M.N.}, \bibinfo{author}{Herrmann, C.}, and
+  \bibinfo{author}{Aerts, S.} (\bibinfo{year}{2012}). \bibinfo{title}{Using
+  {{cisTargetX}} to {{Predict Transcriptional Targets}} and {{Networks}} in
+  {{Drosophila}}}.
+\newblock In \bibinfo{editor}{ B.{ }Deplancke}, and \bibinfo{editor}{ N.{
+  }Gheldof}, eds. \bibinfo{booktitle}{Gene {{Regulatory Networks}}: {{Methods}}
+  and {{Protocols}}} pp. \bibinfo{pages}{291--314}.. \bibinfo{address}{Totowa,
+  NJ}: \bibinfo{publisher}{Humana Press}.
+\newblock ISBN \bibinfo{isbn}{978-1-61779-292-2} pp. \bibinfo{pages}{291--314}.
+\newblock \DOIprefix\doi{10.1007/978-1-61779-292-2_18}.
+%Type = Article
+\bibitem[{Gupta et~al.(2007)Gupta, Stamatoyannopoulos, Bailey and
+  Noble}]{guptaQuantifyingSimilarityMotifs2007}
+\bibinfo{author}{Gupta, S.}, \bibinfo{author}{Stamatoyannopoulos, J.A.},
+  \bibinfo{author}{Bailey, T.L.}, and \bibinfo{author}{Noble, W.S.}
+  (\bibinfo{year}{2007}). \bibinfo{title}{Quantifying similarity between
+  motifs}.
+\newblock \bibinfo{journal}{Genome Biology} \emph{\bibinfo{volume}{8}},
+  \bibinfo{pages}{R24}. \DOIprefix\doi{10.1186/gb-2007-8-2-r24}.
+%Type = Article
+\bibitem[{Harris et~al.(2020)Harris, Millman, Van Der~Walt, Gommers, Virtanen,
+  Cournapeau, Wieser, Taylor, Berg, Smith, Kern, Picus, Hoyer, Van~Kerkwijk,
+  Brett, Haldane, Del~R{\'i}o, Wiebe, Peterson, {G{\'e}rard-Marchant},
+  Sheppard, Reddy, Weckesser, Abbasi, Gohlke and
+  Oliphant}]{harrisArrayProgrammingNumPy2020}
+\bibinfo{author}{Harris, C.R.}, \bibinfo{author}{Millman, K.J.},
+  \bibinfo{author}{Van Der~Walt, S.J.}, \bibinfo{author}{Gommers, R.},
+  \bibinfo{author}{Virtanen, P.}, \bibinfo{author}{Cournapeau, D.},
+  \bibinfo{author}{Wieser, E.}, \bibinfo{author}{Taylor, J.},
+  \bibinfo{author}{Berg, S.}, \bibinfo{author}{Smith, N.J.},
+  \bibinfo{author}{Kern, R.}, \bibinfo{author}{Picus, M.},
+  \bibinfo{author}{Hoyer, S.}, \bibinfo{author}{Van~Kerkwijk, M.H.},
+  \bibinfo{author}{Brett, M.}, \bibinfo{author}{Haldane, A.},
+  \bibinfo{author}{Del~R{\'i}o, J.F.}, \bibinfo{author}{Wiebe, M.},
+  \bibinfo{author}{Peterson, P.}, \bibinfo{author}{{G{\'e}rard-Marchant}, P.},
+  \bibinfo{author}{Sheppard, K.}, \bibinfo{author}{Reddy, T.},
+  \bibinfo{author}{Weckesser, W.}, \bibinfo{author}{Abbasi, H.},
+  \bibinfo{author}{Gohlke, C.}, and \bibinfo{author}{Oliphant, T.E.}
+  (\bibinfo{year}{2020}). \bibinfo{title}{Array programming with {{NumPy}}}.
+\newblock \bibinfo{journal}{Nature} \emph{\bibinfo{volume}{585}},
+  \bibinfo{pages}{357--362}. \DOIprefix\doi{10.1038/s41586-020-2649-2}.
 
 \end{thebibliography}
