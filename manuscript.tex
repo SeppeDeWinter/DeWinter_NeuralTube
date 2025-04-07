@@ -866,6 +866,8 @@ I%f you are publishing in a STAR Methods journal, please refer to the appropriat
 
 %\textit{To create the KRT, please use the \href{https://star-methods.com}{KRT webform} or the \href{http://www.cell.com/pb-assets/journals/research/cell/methods/table-template1.docx}{Word template} and upload this file separately.}
 
+
+
 \subsection*{Experimental model and study participant details}
 
 %%%  Please list here under separate headings 
@@ -1250,7 +1252,8 @@ least \SI{50}{\percent} of tested embryos.
 Ground truth facial mesenchyme enhancers were defined as enhancers that were positive in the tissue "fm", in at least 3 embryos and at
 least \SI{50}{\percent} of tested embryos. 
 For both neural tube enhancers and facial mesenchyme enhancers precision-recall curves and receiver-operator curves were
-calculated using respectively the function metrics.precision\_recall\_curve and metrics.roc\_curve from Scikit-learn
+calculated using respectively the function metrics.precision\_recall\_curve and metrics.roc\_curve from
+Scikit-learn\cite{JMLR:v12:pedregosa11a}
 (v1.5.2; \href{https://rrid.site/data/record/nlx_144509-1/SCR_002577/resolver}{RRID:SCR\_002577}) using the maximum
 prediction score across classes related to neural tube respectively facial mesenchyme in both organoid and embryo. 
 We consider classes related to neural tube in the organoid as classes of the following topics: 
@@ -1288,7 +1291,7 @@ progenitor Topic 23,
 progenitor Topic 24,
 progenitor Topic 25,
 progenitor Topic 29 and
-progenitor Topic 30
+progenitor Topic 30. 
 We consider classes related to neural tube in the embryo as classes of the following topics: 
 neuron Topic 1, 
 neuron Topic 3, 
@@ -1338,16 +1341,136 @@ progenitor Topic 58,
 progenitor Topic 59,
 neural crest Topic 12, 
 neural crest Topic 13, 
-neural crest Topic 15,
-We consider classes related to facial mesenchyme in the organod as classes of the following topics: 
-neural crest Topic 3
+neural crest Topic 15. 
+We consider classes related to facial mesenchyme in the organod as classes of the following topic: 
+neural crest Topic 3.
 We consider classes related to facial mesenchyme in the organod as classes of the following topics: 
 neural crest Topic 1, 
 neural crest Topic 19, 
 neural crest Topic 21 and 
-neural crest Topic 29
+neural crest Topic 29. 
 
+\subsubsection*{Clustering of \textit{de novo} and enriched motifs}
+A pairwise similarity matrix between all enriched motifs (see Motif enrichment analysis) and \textit{de novo} motifs was
+calculated using TomTom\cite{guptaQuantifyingSimilarityMotifs2007} implemented in tangermeme (v0.4.0; \href{https://rrid.site/data/record/nlx_144509-1/SCR_026620/resolver}{RRID:SCR\_026620}).
+The Scanpy\cite{wolfSCANPYLargescaleSinglecell2018} (v1.11.0; \href{https://rrid.site/data/record/nlx_144509-1/SCR_018139/resolver}{RRID:SCR\_018139}) functions pca, neighbors, tsne and leiden were used to generate a tSNE-embedding of the motifs based on 50 principle components and to cluster the motifs at a leiden resolution of 2.
 
+\subsubsection*{Chicken embryo enhancer reporter assay}
+
+\paragraph*{Enhancer cloning}
+
+Enhancer candidates were ordered from Twist Bioscience (\href{https://rrid.site/data/record/nlx_144509-1/SCR_025817/resolver}{RRID:SCR\_025817}) with 5\lq 5\lq-GGTACCGAGCTCGAG-3\lq and 3\lq 5\lq-GGGCTCGAGATCTGC-3\lq adaptors.
+Plasmid pTK BsmBI LacZ Citrine Nanotag 24 (\href{https://rrid.site/data/record/nif-0000-11872-1/Addgene_130522/resolver}{RRID:Addgene\_130522}) was linarized using forward primer 5\lq-ggAACTCGAGCTCGGTACCT-3\lq and reverse primer 5\lq-GGGCTCGAGATCTGCGATC-3\lq. Using PCR. A PCR mixture of KAPA HiFi hot start ready mix (Roche, 07958935001 \SI{50}{\percent} V/V), \SI{0.8}{\micro\gram\per\micro\litre} plasmid and \SI{0.3}{\micro\molar} of forward and reverse primer and 
+%TODO: Add concentration
+PCR program: \SI{95}{\degreeCelsius} for 3 minutes, 15 cycles of: \SI{98}{\degreeCelsius} for 20 seconds,
+\SI{58}{\degreeCelsius} for 15 seconds and \SI{72}{\degreeCelsius} for 2.5 minutes, followed by \SI{72}{\degreeCelsius}
+for 5 minutes.
+Linarized plasmids were purified using QIAquick PCR purification kit (Qiagen, 28104), followed by DpnI digestion for 1
+hour at \SI{37}{\degreeCelsius} and gel extraction of 4,5 kb band using QIAquick Gel Extraction Kit (Qiagen, 28704).
+Enhancer candiates were cloned into the target vector using an NEBuilder (New England Biolabs, E5520S) reaction with a linarized plasmid to insert ratio of 1:2 (45 minutes at \SI{50}{\degreeCelsius}). Next, \SI{2.5}{\micro\litre} of the rection mixture was transformed into \SI{25}{\micro\litre} Stellar Competent Cells (Takara Bio, 636763). Cells were thawed 15 minutes on ice, plasmid + cell mixture was kept for an additional 30 minutes on ice followed by 45 second heat shot at \SI{42}{\degreeCelsius} and 5 minutes on ice. 
+Cells were incubutated for 1 hour at \SI{37}{\degreeCelsius}, single colonies were then grown on Carbencillin plates
+over night.
+Finally, plasmids were purified using NucleoBond Xtra Maxi Plus Kit (Macherey-Nagel, 740416.50) and eluded at a target
+concentration of \SI{4}{\micro\gram\per\micro\litre}.
+
+\paragraph*{Injection control cloning}
+Plasmid pCI H2B-RFP (\href{https://rrid.site/data/record/nif-0000-11872-1/Addgene_92398/resolver}{RRID:Addgene\_92398})
+was ordered from Addgene (\href{https://rrid.site/data/record/nlx_144509-1/SCR_002037/resolver}{RRID:SCR\_002037}),
+transformed in Stellar Competent Cells (Takara Bio, 636763). Cells were thawed 15 minutes on ice, plasmid + cell mixture was kept for an additional 30 minutes on ice followed by 45 second heat shot at \SI{42}{\degreeCelsius} and 5 minutes on ice. 
+Cells were incubutated for 1 hour at \SI{37}{\degreeCelsius}, single colonies were then grown on Carbencillin plates
+over night.
+Finally, plasmids were purified using NucleoBond Xtra Maxi Plus Kit (Macherey-Nagel, 740416.50) and eluded at a target
+concentration of \SI{4}{\micro\gram\per\micro\litre}.
+
+\paragraph*{\textit{ex ovo} enhancer-reporter injection}
+Preparation of chicken embryos and injection was performed as described in Williams and Sauka-Spengler 2021\cite{
+williamsExOvoElectroporation2021}.
+Eggs were incubated as described above (see Chicken embryos). A hole was created in the egg shell using the back of
+foreceps, thick albumin was discarded and thin albumin was collected. When most albumin was removed, the egg shell was
+cut open and yolk turned so that embryo faces upwards. More albumin was removed from the yolk by stroking the yolk using
+serrated forceps, moving away from (and not touching) the embryo. A Whatman filter paper with perforated hole was placed
+on top of the embryo and yolk and whatman paper was cut using dissection scissors and embryo was removed and placed in
+Ringer solution 
+(
+  $NaCl_2$ \SI{62.5}{\micro\molar}; 
+  KCl \SI{5}{\micro\molar}; 
+  $CaCl_2\cdot2H_2O$ \SI{1.5}{\micro\molar};
+  $NaHPO_4\cdot7H_2O$ \SI{0.75}{\micro\molar};
+  $KH_2PO_4$ \SI{0.15}{\micro\molar}
+).
+Embryo was placed in custom elektroporation cuvette (see Williams and Sauka-Spengler 2021\cite{
+williamsExOvoElectroporation2021}), enhancer-reporter plasmid mixture (
+enhancer-reporter plasmid \SI{2}{\micro\gram\per\micro\litre};
+injection control plasmid \SI{1}{\micro\gram\per\micro\litre};
+food coloring
+) was injected using micro injector in the cavity between the blastoderm and underlying viteline membrane and
+embryo was elektroorated (5 pules of 5V: 100 ms on, 50 ms off). Embryo was grown for 24 hours at \SI{37}{\degreeCelsius}
+and imaged whole mount
+
+\subsubsection*{Code table}
+For each pattern of the same cluster (see \textit{de novo} motif discovery) the optimal pairwise alignment was calculated using TomTom\cite{guptaQuantifyingSimilarityMotifs2007} implemented in tangermeme (v0.4.0; \href{https://rrid.site/data/record/nlx_144509-1/SCR_026620/resolver}{RRID:SCR\_026620}). A seed pattern was selected, for each clusters, as the patterning with the highest information content. All patterns were aligned to the seed pattern and the average contribution score for each nucleotide and position was calculated for all pattern instances (seqlets) of the cluster and using all relevant classes of both models.
+
+\subsubsection*{Footprinting analysis}
+TN5 cut site BigWigs were calculated for all organoid topics using the bigwig command from
+scatac\_fragment\_tools ()
+%TODO: add RRID
+using the --cut-sites option.
+Next, for each pattern (converted to a PWM) of the FOX cluster of neuronal progenitors (cluster 6) motif hits were calculated on the top
+1,000 regions of all neuronal progenitor topics using FIMO\cite{grantFIMOScanningOccurrences2011} implemented in tangermeme (v0.4.0; \href{https://rrid.site/data/record/nlx_144509-1/SCR_026620/resolver}{RRID:SCR\_026620}) using default parameters.
+Overlapping hits were resolved by taking the hit with the highest $-log_{10}(pvalue)$. 
+For each sequence the maximum hit, based on the average contribution score of that hit for the topic from which the
+region originated, was retained.
+FOX patterns were aligned using TomTom\cite{guptaQuantifyingSimilarityMotifs2007} implemented in tangermeme (v0.4.0; \href{https://rrid.site/data/record/nlx_144509-1/SCR_026620/resolver}{RRID:SCR\_026620}) to a seed pattern defined as the pattern with the highest information content.
+Finally, regions were centered on the pattern hit position and TN5 cute site coverage was calculated using pyBigWig
+(v0.3.24; \href{https://rrid.site/data/record/nlx_144509-1/SCR_024807/resolver}{RRID:SCR\_024807}).
+
+\subsubsection*{General and specific FOXA2 target regions}
+FOXA2 ChIP-seq peaks in HepG2 (\href{https://www.encodeproject.org/files/ENCFF466FCB/}{ENCFF466FCB}) and A549 \href{https://www.encodeproject.org/files/ENCFF686MSH/}{ENCFF686MSH} were downloaded from ENCODE (\href{https://rrid.site/data/record/nlx_144509-1/SCR_006793/resolver}{RRID:SCR\_006793}). 
+For each pattern (converted to a PWM) of all neuronal progenitor pattern cluster motif hits were calculated on the top
+1,000 regions of all neuronal progenitor topics using FIMO\cite{grantFIMOScanningOccurrences2011} implemented in tangermeme (v0.4.0; \href{https://rrid.site/data/record/nlx_144509-1/SCR_026620/resolver}{RRID:SCR\_026620}) using default parameters.
+For each sequence the maximum hit, based on the average contribution score of that hit for the topic from which the
+region originated, was retained.
+Attribution scores were normalized by dividing over the sum of attribution scores over all patterns per sequence.
+FOX hits were defined as hits with a value greater than 0.0008 in organoid and 0.0004 in embryo.
+To define general hits, the FOX hits were intersected with FOXA2 ChIP-seq peaks in HepG2 and A549 using bedtools (v2.31;
+\href{https://rrid.site/data/record/nlx_144509-1/SCR_006646/resolver?q=bedtools&l=bedtools&i=rrid:scr_006646}{RRID:SCR\_006646}) intersect using option -F 0.4 and peaks intersecting with either of the two ChIP-seq peak sets were defined as general.
+
+\subsubsection*{Anterior-posterior HOX motif replacement}
+For all patterns (convered to a PWM and trimmed based on information content using a threshold of 0.1) belonging to cluster 4 or 8 of anterior-posterior \textit{de novo} patterns hits
+were calculated on the top, based on region-topic probabilities, 3,000 regions for topic 31 and topic 61 using  FIMO\cite{grantFIMOScanningOccurrences2011} implemented in tangermeme (v0.4.0; \href{https://rrid.site/data/record/nlx_144509-1/SCR_026620/resolver}{RRID:SCR\_026620}) using default parameters. 
+Hits for cluster 4 were replaced to 5\lq-AGGGATTAG-3\lq and hits for cluster 8 were replaced to 5\lq-CTAATTAG-3\lq.
+If the hit was reverse complement, the reverse complement of those sequences was implanted.
+
+\subsubsection*{Anterior-posterior synthetic enhancer design}
+5\lq-GGATTAG-3\lq and 5\lq-CTAATTAG-3\lq were used as motifs in the CREsted\cite{kempynckCREstedModelingGenomic2025} (v1.3.0; \href{https://rrid.site/data/record/nlx_144509-1/SCR_026617/resolver}{RRID:SCR\_026617}) function enhancer\_design\_motif\_insertion to design 200 synthetic enhancers of length 500 for both topic 31 and 61 using up to 5 motif instances.
+
+\subsubsection*{Anterior-posterior logistic regression model}
+Motif scores for all patterns (convered to a PWM) belonging to cluster 4 or 8 of anterior-posterior \textit{de novo} patterns hits
+were calculated on the top, based on region-topic probabilities, 3,000 regions for topic 31 and topic 61 using  FIMO\cite{grantFIMOScanningOccurrences2011} implemented in tangermeme (v0.4.0; \href{https://rrid.site/data/record/nlx_144509-1/SCR_026620/resolver}{RRID:SCR\_026620}) using threshold parameter set to 0.5 to make sure each region gets a score for at least one pattern per cluster.
+For each sequence and cluster the maximum score, based on the $-log_{10}(p-value)$ of the hit, was retained.
+Regions were split in train and test set using the train\_test\_split function from
+Scikit-learn\cite{JMLR:v12:pedregosa11a}
+(v1.5.2; \href{https://rrid.site/data/record/nlx_144509-1/SCR_002577/resolver}{RRID:SCR\_002577}) using test size of
+\SI{33}{\percent} and random state 42.
+A logistic regression model was fit (on training regions) to predict the difference between the log of topic 31 and topic 61 region topic
+probabilities making use of the cluster 4 and cluster 8 motif scores as features.
+
+\subsubsection*{Scoring facial GWAS variants}
+SNPs reaching at least suggestive significance and lead SNPs were downloaded from Figshare doi: \href{https://doi.org/10.6084/m9.figshare.c.4667261.v7}{https://doi.org/10.6084/m9.figshare.c.4667261.v7}\cite{whiteInsightsGeneticArchitecture2021}. For each SNP the hg38 genomic coordinate and alternative alleles was downloaded using the Entrez Utilities (\href{https://rrid.site/data/record/nlx_144509-1/SCR_013249/resolver}{RRID:SCR\_013249}) API, scored using both $DeepNeuralTube_O$ and $DeepNeuralTube_E$ and difference between the prediction of reference and alternative allele was calculated (delta prediction score).
+
+\subsubsection*{logistic regression models for each cell states}
+For each cell type, neuronal progenitors dorso-ventral patterning, neuronal progenitors anterior-posterior patterning, neurons,
+and neural crest, motif scores for all patterns (converted to a PWM) patterns belonging to clusters of the cell type\lq s
+code-table hits were calculated on the top, based on region-topic probabilities, 1,000 regions for all topics of that
+cell type\lq s code-table using FIMO\cite{grantFIMOScanningOccurrences2011} implemented in tangermeme (v0.4.0; \href{https://rrid.site/data/record/nlx_144509-1/SCR_026620/resolver}{RRID:SCR\_026620}) using threshold parameter set to 0.5 to make sure each region gets a score for at least one pattern per cluster.
+For each sequence and cluster the maximum score, based on the $-log_{10}(p-value)$ of the hit, was retained.
+Regions were split in train and test set using the train\_test\_split function from
+Scikit-learn\cite{JMLR:v12:pedregosa11a}
+(v1.5.2; \href{https://rrid.site/data/record/nlx_144509-1/SCR_002577/resolver}{RRID:SCR\_002577}) using test size of
+\SI{33}{\percent} and random state 42 for each topic.
+For each topic per cell type a logistic regression model was fit (on training regions) to predict the difference between
+the log of the region-topic probability and the maximum, across all other topics of that cell type, log of the
+region-topic probability. Making use of the motif scores as features.
 
 
 \subsection*{Quantification and statistical analysis}
@@ -1370,6 +1493,11 @@ neural crest Topic 29
 %%%  of any data or subjects, as well as any methods 
 %%%  used to determine whether the data met 
 %%%  assumptions of the statistical approach.
+
+Statistical details including the statistical test used, exact sample size, definition of center, dispersion and
+precision measures and the method used to determine significance can be found in the figure legends.
+%TODO: make sure it is there.
+
 
 \subsection*{Additional resources}
 

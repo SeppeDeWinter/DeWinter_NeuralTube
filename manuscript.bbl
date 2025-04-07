@@ -1,4 +1,4 @@
-\begin{thebibliography}{110}
+\begin{thebibliography}{114}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \providecommand{\href}[2]{#2}
@@ -1418,5 +1418,50 @@
   (\bibinfo{year}{2020}). \bibinfo{title}{Array programming with {{NumPy}}}.
 \newblock \bibinfo{journal}{Nature} \emph{\bibinfo{volume}{585}},
   \bibinfo{pages}{357--362}. \DOIprefix\doi{10.1038/s41586-020-2649-2}.
+%Type = Article
+\bibitem[{Visel et~al.(2007)Visel, Minovitsky, Dubchak and
+  Pennacchio}]{viselVISTAEnhancerBrowsera2007}
+\bibinfo{author}{Visel, A.}, \bibinfo{author}{Minovitsky, S.},
+  \bibinfo{author}{Dubchak, I.}, and \bibinfo{author}{Pennacchio, L.A.}
+  (\bibinfo{year}{2007}). \bibinfo{title}{{{VISTA Enhancer Browser--a}}
+  database of tissue-specific human enhancers}.
+\newblock \bibinfo{journal}{Nucleic Acids Res} \emph{\bibinfo{volume}{35}},
+  \bibinfo{pages}{D88--92}. \DOIprefix\doi{10.1093/nar/gkl822}.
+%Type = Article
+\bibitem[{Kosicki et~al.(2025)Kosicki, Baltoumas, Kelman, Boverhof, Ong, Cook,
+  Dickel, Pavlopoulos, Pennacchio and Visel}]{kosickiVISTAEnhancerBrowser2025}
+\bibinfo{author}{Kosicki, M.}, \bibinfo{author}{Baltoumas, F.A.},
+  \bibinfo{author}{Kelman, G.}, \bibinfo{author}{Boverhof, J.},
+  \bibinfo{author}{Ong, Y.}, \bibinfo{author}{Cook, L.E.},
+  \bibinfo{author}{Dickel, D.E.}, \bibinfo{author}{Pavlopoulos, G.A.},
+  \bibinfo{author}{Pennacchio, L.A.}, and \bibinfo{author}{Visel, A.}
+  (\bibinfo{year}{2025}). \bibinfo{title}{{{VISTA Enhancer}} browser: An
+  updated database of tissue-specific developmental enhancers}.
+\newblock \bibinfo{journal}{Nucleic Acids Res} \emph{\bibinfo{volume}{53}},
+  \bibinfo{pages}{D324--D330}. \DOIprefix\doi{10.1093/nar/gkae940}.
+%Type = Article
+\bibitem[{Pedregosa et~al.(2011)Pedregosa, Varoquaux, Gramfort, Michel,
+  Thirion, Grisel, Blondel, Prettenhofer, Weiss, Dubourg, Vanderplas, Passos,
+  Cournapeau, Brucher, Perrot and Duchesnay}]{JMLR:v12:pedregosa11a}
+\bibinfo{author}{Pedregosa, F.}, \bibinfo{author}{Varoquaux, G.},
+  \bibinfo{author}{Gramfort, A.}, \bibinfo{author}{Michel, V.},
+  \bibinfo{author}{Thirion, B.}, \bibinfo{author}{Grisel, O.},
+  \bibinfo{author}{Blondel, M.}, \bibinfo{author}{Prettenhofer, P.},
+  \bibinfo{author}{Weiss, R.}, \bibinfo{author}{Dubourg, V.},
+  \bibinfo{author}{Vanderplas, J.}, \bibinfo{author}{Passos, A.},
+  \bibinfo{author}{Cournapeau, D.}, \bibinfo{author}{Brucher, M.},
+  \bibinfo{author}{Perrot, M.}, and \bibinfo{author}{Duchesnay, {\'E}.}
+  (\bibinfo{year}{2011}). \bibinfo{title}{Scikit-learn: {{Machine}} learning in
+  python}.
+\newblock \bibinfo{journal}{Journal of Machine Learning Research}
+  \emph{\bibinfo{volume}{12}}, \bibinfo{pages}{2825--2830}.
+%Type = Article
+\bibitem[{Williams and
+  {Sauka-Spengler}(2021)}]{williamsExOvoElectroporation2021}
+\bibinfo{author}{Williams, R.M.}, and \bibinfo{author}{{Sauka-Spengler}, T.}
+  (\bibinfo{year}{2021}). \bibinfo{title}{{\emph{Ex Ovo}} electroporation of
+  early chicken embryos}.
+\newblock \bibinfo{journal}{STAR Protocols} \emph{\bibinfo{volume}{2}},
+  \bibinfo{pages}{100424}. \DOIprefix\doi{10.1016/j.xpro.2021.100424}.
 
 \end{thebibliography}
