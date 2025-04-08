@@ -1,4 +1,4 @@
-\begin{thebibliography}{119}
+\begin{thebibliography}{115}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \providecommand{\href}[2]{#2}
@@ -356,48 +356,6 @@
 \newblock \bibinfo{journal}{Nat Rev Mater} \emph{\bibinfo{volume}{6}},
   \bibinfo{pages}{402--420}. \DOIprefix\doi{10.1038/s41578-021-00279-y}.
 %Type = Article
-\bibitem[{Zenk et~al.(2024)Zenk, Fleck, Jansen, Kashanian, Eisinger, Santel,
-  Dupr{\'e}, Camp and Treutlein}]{zenkSinglecellEpigenomicReconstruction2024}
-\bibinfo{author}{Zenk, F.}, \bibinfo{author}{Fleck, J.S.},
-  \bibinfo{author}{Jansen, S.M.J.}, \bibinfo{author}{Kashanian, B.},
-  \bibinfo{author}{Eisinger, B.}, \bibinfo{author}{Santel, M.},
-  \bibinfo{author}{Dupr{\'e}, J.S.}, \bibinfo{author}{Camp, J.G.}, and
-  \bibinfo{author}{Treutlein, B.} (\bibinfo{year}{2024}).
-  \bibinfo{title}{Single-cell epigenomic reconstruction of developmental
-  trajectories from pluripotency in human neural organoid systems}.
-\newblock \bibinfo{journal}{Nat Neurosci} \emph{\bibinfo{volume}{27}},
-  \bibinfo{pages}{1376--1386}. \DOIprefix\doi{10.1038/s41593-024-01652-0}.
-%Type = Article
-\bibitem[{Fleck et~al.(2023{\natexlab{b}})Fleck, Jansen, Wollny, Zenk, Seimiya,
-  Jain, Okamoto, Santel, He, Camp and
-  Treutlein}]{fleckInferringPerturbingCell2023}
-\bibinfo{author}{Fleck, J.S.}, \bibinfo{author}{Jansen, S.M.J.},
-  \bibinfo{author}{Wollny, D.}, \bibinfo{author}{Zenk, F.},
-  \bibinfo{author}{Seimiya, M.}, \bibinfo{author}{Jain, A.},
-  \bibinfo{author}{Okamoto, R.}, \bibinfo{author}{Santel, M.},
-  \bibinfo{author}{He, Z.}, \bibinfo{author}{Camp, J.G.}, and
-  \bibinfo{author}{Treutlein, B.} (\bibinfo{year}{2023}{\natexlab{b}}).
-  \bibinfo{title}{Inferring and perturbing cell fate regulomes in human brain
-  organoids}.
-\newblock \bibinfo{journal}{Nature} \emph{\bibinfo{volume}{621}},
-  \bibinfo{pages}{365--372}. \DOIprefix\doi{10.1038/s41586-022-05279-8}.
-%Type = Misc
-\bibitem[{{Sanch{\'i}s-Calleja} et~al.(2024){Sanch{\'i}s-Calleja}, Jain, He,
-  Okamoto, Rusimbi, Rifes, Rathore, Santel, Janssens, Seimiya, Fleck, Kirkeby,
-  Camp and Treutlein}]{sanchis-callejaDecodingMorphogenPatterning2024}
-\bibinfo{author}{{Sanch{\'i}s-Calleja}, F.}, \bibinfo{author}{Jain, A.},
-  \bibinfo{author}{He, Z.}, \bibinfo{author}{Okamoto, R.},
-  \bibinfo{author}{Rusimbi, C.}, \bibinfo{author}{Rifes, P.},
-  \bibinfo{author}{Rathore, G.S.}, \bibinfo{author}{Santel, M.},
-  \bibinfo{author}{Janssens, J.}, \bibinfo{author}{Seimiya, M.},
-  \bibinfo{author}{Fleck, J.S.}, \bibinfo{author}{Kirkeby, A.},
-  \bibinfo{author}{Camp, J.G.}, and \bibinfo{author}{Treutlein, B.}
-  (\bibinfo{year}{2024}).
-\newblock \bibinfo{title}{Decoding morphogen patterning of human neural
-  organoids with a multiplexed single-cell transcriptomic screen}.
-  \bibinfo{publisher}{bioRxiv}.
-\newblock \DOIprefix\doi{10.1101/2024.02.08.579413}.
-%Type = Article
 \bibitem[{He et~al.(2024)He, Dony, Fleck, Sza{\l}ata, Li, Sli{\v s}kovi{\'c},
   Lin, Santel, Atamian, Quadrato, Sun, Pa{\textcommabelow s}ca, Camp, Theis and
   Treutlein}]{heIntegratedTranscriptomicCell2024}
@@ -435,6 +393,32 @@
   endoderm-derived organoids}. \bibinfo{publisher}{bioRxiv}.
 \newblock \DOIprefix\doi{10.1101/2023.11.20.567825}.
 %Type = Article
+\bibitem[{Zenk et~al.(2024)Zenk, Fleck, Jansen, Kashanian, Eisinger, Santel,
+  Dupr{\'e}, Camp and Treutlein}]{zenkSinglecellEpigenomicReconstruction2024}
+\bibinfo{author}{Zenk, F.}, \bibinfo{author}{Fleck, J.S.},
+  \bibinfo{author}{Jansen, S.M.J.}, \bibinfo{author}{Kashanian, B.},
+  \bibinfo{author}{Eisinger, B.}, \bibinfo{author}{Santel, M.},
+  \bibinfo{author}{Dupr{\'e}, J.S.}, \bibinfo{author}{Camp, J.G.}, and
+  \bibinfo{author}{Treutlein, B.} (\bibinfo{year}{2024}).
+  \bibinfo{title}{Single-cell epigenomic reconstruction of developmental
+  trajectories from pluripotency in human neural organoid systems}.
+\newblock \bibinfo{journal}{Nat Neurosci} \emph{\bibinfo{volume}{27}},
+  \bibinfo{pages}{1376--1386}. \DOIprefix\doi{10.1038/s41593-024-01652-0}.
+%Type = Article
+\bibitem[{Fleck et~al.(2023{\natexlab{b}})Fleck, Jansen, Wollny, Zenk, Seimiya,
+  Jain, Okamoto, Santel, He, Camp and
+  Treutlein}]{fleckInferringPerturbingCell2023}
+\bibinfo{author}{Fleck, J.S.}, \bibinfo{author}{Jansen, S.M.J.},
+  \bibinfo{author}{Wollny, D.}, \bibinfo{author}{Zenk, F.},
+  \bibinfo{author}{Seimiya, M.}, \bibinfo{author}{Jain, A.},
+  \bibinfo{author}{Okamoto, R.}, \bibinfo{author}{Santel, M.},
+  \bibinfo{author}{He, Z.}, \bibinfo{author}{Camp, J.G.}, and
+  \bibinfo{author}{Treutlein, B.} (\bibinfo{year}{2023}{\natexlab{b}}).
+  \bibinfo{title}{Inferring and perturbing cell fate regulomes in human brain
+  organoids}.
+\newblock \bibinfo{journal}{Nature} \emph{\bibinfo{volume}{621}},
+  \bibinfo{pages}{365--372}. \DOIprefix\doi{10.1038/s41586-022-05279-8}.
+%Type = Article
 \bibitem[{Abdel~Fattah et~al.(2021)Abdel~Fattah, Daza, Rustandi,
   {Berrocal-Rubio}, Gorissen, Poovathingal, Davie, {Barrasa-Fano}, C{\'o}ndor,
   Cao, Rosenzweig, Lei, Finnell, Verfaillie, Sampaolesi, Dedecker,
@@ -452,13 +436,6 @@
   enhances patterning in human neural tube organoids}.
 \newblock \bibinfo{journal}{Nat Commun} \emph{\bibinfo{volume}{12}},
   \bibinfo{pages}{3192}. \DOIprefix\doi{10.1038/s41467-021-22952-0}.
-%Type = Article
-\bibitem[{Sagner and Briscoe(2019)}]{sagnerEstablishingNeuronalDiversity2019}
-\bibinfo{author}{Sagner, A.}, and \bibinfo{author}{Briscoe, J.}
-  (\bibinfo{year}{2019}). \bibinfo{title}{Establishing neuronal diversity in
-  the spinal cord: A time and a place}.
-\newblock \bibinfo{journal}{Development} \emph{\bibinfo{volume}{146}},
-  \bibinfo{pages}{dev182154}. \DOIprefix\doi{10.1242/dev.182154}.
 %Type = Incollection
 \bibitem[{Del{\'a}s and Briscoe(2020)}]{delasRepressiveInteractionsGene2020}
 \bibinfo{author}{Del{\'a}s, M.J.}, and \bibinfo{author}{Briscoe, J.}
@@ -470,59 +447,50 @@
 \newblock ISBN \bibinfo{isbn}{978-0-12-813180-0} pp. \bibinfo{pages}{239--266}.
 \newblock \DOIprefix\doi{10.1016/bs.ctdb.2020.03.003}.
 %Type = Article
-\bibitem[{{Sim{\~o}es-Costa} and
-  Bronner(2015)}]{simoes-costaEstablishingNeuralCrest2015}
-\bibinfo{author}{{Sim{\~o}es-Costa}, M.}, and \bibinfo{author}{Bronner, M.E.}
-  (\bibinfo{year}{2015}). \bibinfo{title}{Establishing neural crest identity: A
-  gene regulatory recipe}.
-\newblock \bibinfo{journal}{Development} \emph{\bibinfo{volume}{142}},
-  \bibinfo{pages}{242--257}. \DOIprefix\doi{10.1242/dev.105445}.
+\bibitem[{Braun et~al.(2023)Braun, {Danan-Gotthold}, Borm, Lee, Vinsland,
+  L{\"o}nnerberg, Hu, Li, He, Andrusivov{\'a}, Lundeberg, Barker, Arenas,
+  Sundstr{\"o}m and Linnarsson}]{braunComprehensiveCellAtlas2023}
+\bibinfo{author}{Braun, E.}, \bibinfo{author}{{Danan-Gotthold}, M.},
+  \bibinfo{author}{Borm, L.E.}, \bibinfo{author}{Lee, K.W.},
+  \bibinfo{author}{Vinsland, E.}, \bibinfo{author}{L{\"o}nnerberg, P.},
+  \bibinfo{author}{Hu, L.}, \bibinfo{author}{Li, X.}, \bibinfo{author}{He, X.},
+  \bibinfo{author}{Andrusivov{\'a}, {\v Z}.}, \bibinfo{author}{Lundeberg, J.},
+  \bibinfo{author}{Barker, R.A.}, \bibinfo{author}{Arenas, E.},
+  \bibinfo{author}{Sundstr{\"o}m, E.}, and \bibinfo{author}{Linnarsson, S.}
+  (\bibinfo{year}{2023}). \bibinfo{title}{Comprehensive cell atlas of the
+  first-trimester developing human brain}.
+\newblock \bibinfo{journal}{Science} \emph{\bibinfo{volume}{382}},
+  \bibinfo{pages}{eadf1226}. \DOIprefix\doi{10.1126/science.adf1226}.
 %Type = Article
-\bibitem[{{Candido-Ferreira} et~al.(2023){Candido-Ferreira}, Lukoseviciute and
-  {Sauka-Spengler}}]{candido-ferreiraMultilayeredTranscriptionalControl2023}
-\bibinfo{author}{{Candido-Ferreira}, I.L.}, \bibinfo{author}{Lukoseviciute,
-  M.}, and \bibinfo{author}{{Sauka-Spengler}, T.} (\bibinfo{year}{2023}).
-  \bibinfo{title}{Multi-layered transcriptional control of cranial neural crest
-  development}.
-\newblock \bibinfo{journal}{Seminars in Cell \& Developmental Biology}
-  \emph{\bibinfo{volume}{138}}, \bibinfo{pages}{1--14}.
-  \DOIprefix\doi{10.1016/j.semcdb.2022.07.010}.
+\bibitem[{Visel et~al.(2007)Visel, Minovitsky, Dubchak and
+  Pennacchio}]{viselVISTAEnhancerBrowsera2007}
+\bibinfo{author}{Visel, A.}, \bibinfo{author}{Minovitsky, S.},
+  \bibinfo{author}{Dubchak, I.}, and \bibinfo{author}{Pennacchio, L.A.}
+  (\bibinfo{year}{2007}). \bibinfo{title}{{{VISTA Enhancer Browser--a}}
+  database of tissue-specific human enhancers}.
+\newblock \bibinfo{journal}{Nucleic Acids Res} \emph{\bibinfo{volume}{35}},
+  \bibinfo{pages}{D88--92}. \DOIprefix\doi{10.1093/nar/gkl822}.
 %Type = Article
-\bibitem[{Del{\'a}s et~al.(2023)Del{\'a}s, Kalaitzis, Fawzi, Demuth, Zhang,
-  Stuart, Costantini, Ivanovitch, Tanaka and
-  Briscoe}]{delasDevelopmentalCellFate2023}
-\bibinfo{author}{Del{\'a}s, M.J.}, \bibinfo{author}{Kalaitzis, C.M.},
-  \bibinfo{author}{Fawzi, T.}, \bibinfo{author}{Demuth, M.},
-  \bibinfo{author}{Zhang, I.}, \bibinfo{author}{Stuart, H.T.},
-  \bibinfo{author}{Costantini, E.}, \bibinfo{author}{Ivanovitch, K.},
-  \bibinfo{author}{Tanaka, E.M.}, and \bibinfo{author}{Briscoe, J.}
-  (\bibinfo{year}{2023}). \bibinfo{title}{Developmental cell fate choice in
-  neural tube progenitors employs two distinct cis-regulatory strategies}.
-\newblock \bibinfo{journal}{Developmental Cell} \emph{\bibinfo{volume}{58}},
-  \bibinfo{pages}{3--17.e8}. \DOIprefix\doi{10.1016/j.devcel.2022.11.016}.
-%Type = Misc
-\bibitem[{Zhang et~al.(2024)Zhang, Boezio, {Cornwall-Scoones}, Frith, Jiang,
-  Howell, {Lovell-Badge}, Sagner, Briscoe and
-  Del{\'a}s}]{zhangCisregulatoryLogicIntegrating2024}
-\bibinfo{author}{Zhang, I.}, \bibinfo{author}{Boezio, G.L.},
-  \bibinfo{author}{{Cornwall-Scoones}, J.}, \bibinfo{author}{Frith, T.},
-  \bibinfo{author}{Jiang, M.}, \bibinfo{author}{Howell, M.},
-  \bibinfo{author}{{Lovell-Badge}, R.}, \bibinfo{author}{Sagner, A.},
-  \bibinfo{author}{Briscoe, J.}, and \bibinfo{author}{Del{\'a}s, M.J.}
-  (\bibinfo{year}{2024}).
-\newblock \bibinfo{title}{The cis-regulatory logic integrating spatial and
-  temporal patterning in the vertebrate neural tube}.
-  \bibinfo{publisher}{bioRxiv}.
-\newblock \DOIprefix\doi{10.1101/2024.04.17.589864}.
-%Type = Misc
-\bibitem[{Hu et~al.(2025)Hu, Mayes, Wang, {Santos-Pereira}, Theis and
-  {Sauka-Spengler}}]{huEndothelialRegulatoryCircuits2025}
-\bibinfo{author}{Hu, Z.}, \bibinfo{author}{Mayes, S.}, \bibinfo{author}{Wang,
-  W.}, \bibinfo{author}{{Santos-Pereira}, J.M.}, \bibinfo{author}{Theis, F.},
-  and \bibinfo{author}{{Sauka-Spengler}, T.} (\bibinfo{year}{2025}).
-\newblock \bibinfo{title}{Endothelial regulatory circuits control cranial
-  neural crest migration and plasticity}. \bibinfo{publisher}{bioRxiv}.
-\newblock \DOIprefix\doi{10.1101/2024.09.17.613303}.
+\bibitem[{Kosicki et~al.(2025)Kosicki, Baltoumas, Kelman, Boverhof, Ong, Cook,
+  Dickel, Pavlopoulos, Pennacchio and Visel}]{kosickiVISTAEnhancerBrowser2025}
+\bibinfo{author}{Kosicki, M.}, \bibinfo{author}{Baltoumas, F.A.},
+  \bibinfo{author}{Kelman, G.}, \bibinfo{author}{Boverhof, J.},
+  \bibinfo{author}{Ong, Y.}, \bibinfo{author}{Cook, L.E.},
+  \bibinfo{author}{Dickel, D.E.}, \bibinfo{author}{Pavlopoulos, G.A.},
+  \bibinfo{author}{Pennacchio, L.A.}, and \bibinfo{author}{Visel, A.}
+  (\bibinfo{year}{2025}). \bibinfo{title}{{{VISTA Enhancer}} browser: An
+  updated database of tissue-specific developmental enhancers}.
+\newblock \bibinfo{journal}{Nucleic Acids Res} \emph{\bibinfo{volume}{53}},
+  \bibinfo{pages}{D324--D330}. \DOIprefix\doi{10.1093/nar/gkae940}.
+%Type = Article
+\bibitem[{Gupta et~al.(2007)Gupta, Stamatoyannopoulos, Bailey and
+  Noble}]{guptaQuantifyingSimilarityMotifs2007}
+\bibinfo{author}{Gupta, S.}, \bibinfo{author}{Stamatoyannopoulos, J.A.},
+  \bibinfo{author}{Bailey, T.L.}, and \bibinfo{author}{Noble, W.S.}
+  (\bibinfo{year}{2007}). \bibinfo{title}{Quantifying similarity between
+  motifs}.
+\newblock \bibinfo{journal}{Genome Biology} \emph{\bibinfo{volume}{8}},
+  \bibinfo{pages}{R24}. \DOIprefix\doi{10.1186/gb-2007-8-2-r24}.
 %Type = Misc
 \bibitem[{Shrikumar et~al.(2018)Shrikumar, Tian, Avsec, Shcherbina, Banerjee,
   Sharmin, Nair and Kundaje}]{shrikumarTechnicalNoteTranscription2018}
@@ -535,6 +503,41 @@
   Discovery}} from {{Importance Scores}} ({{TF-MoDISco}}) version 0.5.6.5}.
   \bibinfo{publisher}{arXiv}.
 \newblock \DOIprefix\doi{10.48550/ARXIV.1811.00416}.
+%Type = Article
+\bibitem[{Jeong and Epstein(2003)}]{jeongDistinctRegulatorsShh2003}
+\bibinfo{author}{Jeong, Y.}, and \bibinfo{author}{Epstein, D.J.}
+  (\bibinfo{year}{2003}). \bibinfo{title}{Distinct regulators of {{Shh}}
+  transcription in the floor plate and notochord indicate separate origins for
+  these tissues in the mouse node}.
+\newblock \bibinfo{journal}{Development} \emph{\bibinfo{volume}{130}},
+  \bibinfo{pages}{3891--3902}. \DOIprefix\doi{10.1242/dev.00590}.
+%Type = Article
+\bibitem[{{Iwafuchi-Doi} et~al.(2016){Iwafuchi-Doi}, Donahue, Kakumanu, Watts,
+  Mahony, Pugh, Lee, Kaestner and
+  Zaret}]{iwafuchi-doiPioneerTranscriptionFactor2016}
+\bibinfo{author}{{Iwafuchi-Doi}, M.}, \bibinfo{author}{Donahue, G.},
+  \bibinfo{author}{Kakumanu, A.}, \bibinfo{author}{Watts, J.A.},
+  \bibinfo{author}{Mahony, S.}, \bibinfo{author}{Pugh, B.F.},
+  \bibinfo{author}{Lee, D.}, \bibinfo{author}{Kaestner, K.H.}, and
+  \bibinfo{author}{Zaret, K.S.} (\bibinfo{year}{2016}). \bibinfo{title}{The
+  {{Pioneer Transcription Factor FoxA Maintains}} an {{Accessible Nucleosome
+  Configuration}} at {{Enhancers}} for {{Tissue-Specific Gene Activation}}}.
+\newblock \bibinfo{journal}{Molecular Cell} \emph{\bibinfo{volume}{62}},
+  \bibinfo{pages}{79--91}. \DOIprefix\doi{10.1016/j.molcel.2016.03.001}.
+%Type = Article
+\bibitem[{Iwafuchi et~al.(2020)Iwafuchi, Cuesta, Donahue, Takenaka, Osipovich,
+  Magnuson, Roder, Seeholzer, Santisteban and
+  Zaret}]{iwafuchiGeneNetworkTransitions2020}
+\bibinfo{author}{Iwafuchi, M.}, \bibinfo{author}{Cuesta, I.},
+  \bibinfo{author}{Donahue, G.}, \bibinfo{author}{Takenaka, N.},
+  \bibinfo{author}{Osipovich, A.B.}, \bibinfo{author}{Magnuson, M.A.},
+  \bibinfo{author}{Roder, H.}, \bibinfo{author}{Seeholzer, S.H.},
+  \bibinfo{author}{Santisteban, P.}, and \bibinfo{author}{Zaret, K.S.}
+  (\bibinfo{year}{2020}). \bibinfo{title}{Gene network transitions in embryos
+  depend upon interactions between a pioneer transcription factor and core
+  histones}.
+\newblock \bibinfo{journal}{Nat Genet} \emph{\bibinfo{volume}{52}},
+  \bibinfo{pages}{418--427}. \DOIprefix\doi{10.1038/s41588-020-0591-8}.
 %Type = Article
 \bibitem[{Grant et~al.(2011)Grant, Bailey and
   Noble}]{grantFIMOScanningOccurrences2011}
@@ -641,33 +644,6 @@
 \newblock \bibinfo{journal}{Journal of Cellular Biochemistry}
   \emph{\bibinfo{volume}{94}}, \bibinfo{pages}{890--898}.
   \DOIprefix\doi{10.1002/jcb.20352}.
-%Type = Article
-\bibitem[{{Iwafuchi-Doi} et~al.(2016){Iwafuchi-Doi}, Donahue, Kakumanu, Watts,
-  Mahony, Pugh, Lee, Kaestner and
-  Zaret}]{iwafuchi-doiPioneerTranscriptionFactor2016}
-\bibinfo{author}{{Iwafuchi-Doi}, M.}, \bibinfo{author}{Donahue, G.},
-  \bibinfo{author}{Kakumanu, A.}, \bibinfo{author}{Watts, J.A.},
-  \bibinfo{author}{Mahony, S.}, \bibinfo{author}{Pugh, B.F.},
-  \bibinfo{author}{Lee, D.}, \bibinfo{author}{Kaestner, K.H.}, and
-  \bibinfo{author}{Zaret, K.S.} (\bibinfo{year}{2016}). \bibinfo{title}{The
-  {{Pioneer Transcription Factor FoxA Maintains}} an {{Accessible Nucleosome
-  Configuration}} at {{Enhancers}} for {{Tissue-Specific Gene Activation}}}.
-\newblock \bibinfo{journal}{Molecular Cell} \emph{\bibinfo{volume}{62}},
-  \bibinfo{pages}{79--91}. \DOIprefix\doi{10.1016/j.molcel.2016.03.001}.
-%Type = Article
-\bibitem[{Iwafuchi et~al.(2020)Iwafuchi, Cuesta, Donahue, Takenaka, Osipovich,
-  Magnuson, Roder, Seeholzer, Santisteban and
-  Zaret}]{iwafuchiGeneNetworkTransitions2020}
-\bibinfo{author}{Iwafuchi, M.}, \bibinfo{author}{Cuesta, I.},
-  \bibinfo{author}{Donahue, G.}, \bibinfo{author}{Takenaka, N.},
-  \bibinfo{author}{Osipovich, A.B.}, \bibinfo{author}{Magnuson, M.A.},
-  \bibinfo{author}{Roder, H.}, \bibinfo{author}{Seeholzer, S.H.},
-  \bibinfo{author}{Santisteban, P.}, and \bibinfo{author}{Zaret, K.S.}
-  (\bibinfo{year}{2020}). \bibinfo{title}{Gene network transitions in embryos
-  depend upon interactions between a pioneer transcription factor and core
-  histones}.
-\newblock \bibinfo{journal}{Nat Genet} \emph{\bibinfo{volume}{52}},
-  \bibinfo{pages}{418--427}. \DOIprefix\doi{10.1038/s41588-020-0591-8}.
 %Type = Article
 \bibitem[{Hansen et~al.(2022)Hansen, Loell and
   Cohen}]{hansenTestPioneerFactor2022}
@@ -1304,6 +1280,11 @@
   {{ChIP-Seq}} ({{MACS}})}.
 \newblock \bibinfo{journal}{Genome Biology} \emph{\bibinfo{volume}{9}},
   \bibinfo{pages}{R137}. \DOIprefix\doi{10.1186/gb-2008-9-9-r137}.
+%Type = Misc
+\bibitem[{McCallum(2002)}]{mccallumMALLETMachineLearning2002}
+\bibinfo{author}{McCallum, A.K.} (\bibinfo{year}{2002}).
+\newblock \bibinfo{title}{{{MALLET}}: {{A Machine Learning}} for {{Language
+  Toolkit}}}. .
 %Type = Inproceedings
 \bibitem[{Mimno et~al.(2011)Mimno, Wallach, Talley, Leenders and
   McCallum}]{mimno-etal-2011-optimizing}
@@ -1424,15 +1405,6 @@
 \newblock ISBN \bibinfo{isbn}{978-1-61779-292-2} pp. \bibinfo{pages}{291--314}.
 \newblock \DOIprefix\doi{10.1007/978-1-61779-292-2_18}.
 %Type = Article
-\bibitem[{Gupta et~al.(2007)Gupta, Stamatoyannopoulos, Bailey and
-  Noble}]{guptaQuantifyingSimilarityMotifs2007}
-\bibinfo{author}{Gupta, S.}, \bibinfo{author}{Stamatoyannopoulos, J.A.},
-  \bibinfo{author}{Bailey, T.L.}, and \bibinfo{author}{Noble, W.S.}
-  (\bibinfo{year}{2007}). \bibinfo{title}{Quantifying similarity between
-  motifs}.
-\newblock \bibinfo{journal}{Genome Biology} \emph{\bibinfo{volume}{8}},
-  \bibinfo{pages}{R24}. \DOIprefix\doi{10.1186/gb-2007-8-2-r24}.
-%Type = Article
 \bibitem[{Harris et~al.(2020)Harris, Millman, Van Der~Walt, Gommers, Virtanen,
   Cournapeau, Wieser, Taylor, Berg, Smith, Kern, Picus, Hoyer, Van~Kerkwijk,
   Brett, Haldane, Del~R{\'i}o, Wiebe, Peterson, {G{\'e}rard-Marchant},
@@ -1454,27 +1426,6 @@
   (\bibinfo{year}{2020}). \bibinfo{title}{Array programming with {{NumPy}}}.
 \newblock \bibinfo{journal}{Nature} \emph{\bibinfo{volume}{585}},
   \bibinfo{pages}{357--362}. \DOIprefix\doi{10.1038/s41586-020-2649-2}.
-%Type = Article
-\bibitem[{Visel et~al.(2007)Visel, Minovitsky, Dubchak and
-  Pennacchio}]{viselVISTAEnhancerBrowsera2007}
-\bibinfo{author}{Visel, A.}, \bibinfo{author}{Minovitsky, S.},
-  \bibinfo{author}{Dubchak, I.}, and \bibinfo{author}{Pennacchio, L.A.}
-  (\bibinfo{year}{2007}). \bibinfo{title}{{{VISTA Enhancer Browser--a}}
-  database of tissue-specific human enhancers}.
-\newblock \bibinfo{journal}{Nucleic Acids Res} \emph{\bibinfo{volume}{35}},
-  \bibinfo{pages}{D88--92}. \DOIprefix\doi{10.1093/nar/gkl822}.
-%Type = Article
-\bibitem[{Kosicki et~al.(2025)Kosicki, Baltoumas, Kelman, Boverhof, Ong, Cook,
-  Dickel, Pavlopoulos, Pennacchio and Visel}]{kosickiVISTAEnhancerBrowser2025}
-\bibinfo{author}{Kosicki, M.}, \bibinfo{author}{Baltoumas, F.A.},
-  \bibinfo{author}{Kelman, G.}, \bibinfo{author}{Boverhof, J.},
-  \bibinfo{author}{Ong, Y.}, \bibinfo{author}{Cook, L.E.},
-  \bibinfo{author}{Dickel, D.E.}, \bibinfo{author}{Pavlopoulos, G.A.},
-  \bibinfo{author}{Pennacchio, L.A.}, and \bibinfo{author}{Visel, A.}
-  (\bibinfo{year}{2025}). \bibinfo{title}{{{VISTA Enhancer}} browser: An
-  updated database of tissue-specific developmental enhancers}.
-\newblock \bibinfo{journal}{Nucleic Acids Res} \emph{\bibinfo{volume}{53}},
-  \bibinfo{pages}{D324--D330}. \DOIprefix\doi{10.1093/nar/gkae940}.
 %Type = Article
 \bibitem[{Pedregosa et~al.(2011)Pedregosa, Varoquaux, Gramfort, Michel,
   Thirion, Grisel, Blondel, Prettenhofer, Weiss, Dubourg, Vanderplas, Passos,

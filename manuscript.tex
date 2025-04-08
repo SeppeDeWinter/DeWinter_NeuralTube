@@ -184,49 +184,49 @@ but also provide a counter examples specifically related to the enhancer-code un
 \section*{RESULTS}
 
 \subsection*{Human neural tube organoids recapitulate early neuronal and neural crest development}
-We generated human neural tube organoids (hNTOs) to model early human neuronal and neural crest development. To this
-end we embedded single cells from two induced pluripotent stem cell (iPSC) lines (Sigma and BJ1) and one embryonic stem
-cell line (ESC; H9) into separate synthetic poly-ethylene glycol (PEG) based extracellular matrices. These were
-incubated for 11 days and we supplemented the medium with retinoic acid (RA) and Smoothened agonist (SAG) from day 3
-until day 5 (\textbf{Fig. 1a}). These conditions were previously shown to generate multiple neuronal progenitor and
-neural crest states\cite{abdelfattahActuationEnhancesPatterning2021}. To characterize the organoid-derived cell types to a greater level of detail at both
-transcriptomic as well as chromatin accessibility level we performed 10x single-cell multiomics (combined scATAC-seq and
-scRNA-seq) at four time points of differentiation (day 4-5, day 6-7, day 8-9 and day 10-11; \textbf{Fig. 1a}),
-resulting in 22,862 high quality cells (\textbf{Fig. 1b}). Note, that similar transcriptomic and chromatin accessibility
-states were obtained from all three cell lines (\textbf{Supplementary Fig. S1a-b}) demonstrating the robustness of the
-organoid system.\par
-To evaluate the biological relevance of the cell types and states obtained from the organoid, we also performed 10x single
-cell multiome on the head of a single four weeks post conception human embryo, resulting in 25,785 high quality cells (
-\textbf{Fig. 1c}). We annotated both the organoid and embryo cells based on the expression of marker genes
-(\textbf{Supplementary Table S1}). In both systems we could identify neuronal progenitor cells, early differentiating neurons,
-neural crest cells, facial mesenchyme cells and early differentiating peripheral neurons (\textbf{Fig. 1b-c}).
-Additionally, in the organoid only we could identify a pluripotent stem cell population (\textbf{Fig. 1b}) and cell
-types missing from the organoid include endothelial cells, perivascular macrophages (PVM) / microglia (MIC) and otic placode (\textbf{Fig. 1c}).\par
-Next, we sub-clustered the neuronal progenitor, early neuron, and neural crest cell types (\textbf{Fig. 1d-f}). Both
-organoid and embryo neuronal progenitors show a gradient of different cell states reflecting dorso-ventral patterning as
-is evident from the expression of dorso-ventral marker TFs (REF): from ventral to dorsal \textit{ARX}, \textit{NKX2-2}, \textit{PAX6}, \textit{IRX3}, \textit{ZIC1} and \textit{GDF7} (\textbf{Fig. 1d}). In both the organoid and embryo system we obtained multiple early neuronal differentiation states.
-A cluster that still expresses the neuronal progenitor marker \textit{SOX2}, cells that express the early neuronal induction
-marker \textit{ASCL1} and distinct clusters marked by the expression of \textit{GAD1}, \textit{UNCX} and \textit{GATA2} (\textbf{Fig. 1e}). Finally,
-focusing on the neural crest cells, in both the organoid and the embryo we obtained a population of pre-migratory neural
-crest (\textit{GRHL2} expression and absence of \textit{ZEB2} expression), migratory neural crest (\textit{SOX10} and \textit{ZEB2} expression), facial
-  mesenchyme cells (\textit{TWIST1} expression) and early differentiation peripheral neurons (\textit{NEUROD1} expression). In the embryo,
-  but not in the organoid, we observed an additional population of cells marked by the expression of \textit{SOX10} and \textit{PAX2}
-reflecting the otic placode (\textbf{Fig. 1f}).\par
-Given that we performed single-cell multiome on the entire head of the four weeks post conception embryo we also
-assessed the expression of anterior-posterior marker TFs. While the organoid cells had either an anterior forebrain
-(\textit{SIX3}) or anterior spinal cord (\textit{HOXB3}) identity, in the embryo we observed a gradient of anterior-to-posterior identities (REF). Marked by the expression of \textit{SIX3}, \textit{EMX2}, \textit{FOXG1}, \textit{BARHL1}, \textit{EN1 }and \textit{HOXB3} (\textbf{Fig. 1g}).\par
-Cell cycle arrest is an important hallmark of the start of neuronal differentiation (REF), for this reason we scored
-both organoid and embryo cells for the expression of marker genes of the G1, G2M and S phase of the cell cycle and
-quantified the fraction of cells in each phase stratified by the main cell types (\textbf{Fig. 1h}). From this it is
-clear that both early differentiating peripheral neurons and to a greater extent early differentiating neurons of the
-central nervous system are in cell cycle arrest, while the other cell types are still cycling (\textbf{Fig. 1h}).\par
-Finally, to assess whether the organoid-derived cell types and states are also similar to the embryo-derived cell types
-and states on a chromatin accessibility level we identified sets of co-accessible regions in the organoid model using
-topic modeling. We focused on topics (i.e., sets of co-accessible regions) that were enriched for marker TF motifs and
-calculated the average expression of marker genes for each cell group where these regions were co-accessible, for both
-organoid and embryo cells. We observed similar patterns of marker gene expression for the same cell state (defined by
-the topic) across the organoid and embryo (\textbf{Fig. 1i}) with an average Pearson correlation coefficient of 0.83
-across identical states (\textbf{Supplementary Fig. S1c-d}).\par
+
+We generated human neural tube organoids to model early human neuronal and neural crest development. 
+To this end we embedded single cells from two induced pluripotent stem cell (iPSC) lines (Sigma and BJ1) and one embryonic stem cell line (ESC; H9) into separate synthetic poly-ethylene glycol (PEG) based extracellular matrices. The organoids were incubated for 11 days and we supplemented the medium with retinoic acid (RA) and Smoothened agonist (SAG) from day 3 until day 5 (\textbf{Fig. 1a}). 
+These conditions were previously shown to generate multiple neuronal progenitor and
+neural crest states\cite{abdelfattahActuationEnhancesPatterning2021}. 
+To characterize the organoid-derived cell types to a greater level of detail at both transcriptomic as well as chromatin accessibility level we performed 10x single-cell multiomics (combined scATAC-seq and
+scRNA-seq) 
+at four time points of differentiation (day 4-5, day 6-7, day 8-9 and day 10-11; \textbf{Fig. 1a}), 
+resulting in 22,862 high quality cells (\textbf{Fig. 1b}). 
+Note, that similar transcriptomic states were obtained from all three cell lines (\textbf{Supplementary Fig. S1a-b}) demonstrating the robustness of the organoid system.\par
+
+To evaluate the biological relevance of the cell types and states obtained from the organoid, 
+we also performed 10x single cell multiome on the head of a single four weeks post conception human embryo, 
+resulting in 25,785 high quality cells (\textbf{Fig. 1c}). 
+We annotated both the organoid and embryo cells based on the expression of marker genes
+(\textbf{Supplementary Table S1}). 
+In both systems we could identify neuronal progenitos, early differentiating neurons,
+neural crest, facial mesenchyme and early differentiating peripheral neurons (\textbf{Fig. 1b-c}).
+Additionally, in the organoid only we could identify a pluripotent stem cell population (\textbf{Fig. 1b}) 
+while perivascular macrophages (PVM) / microglia (MIC) and otic placode cells were missing (\textbf{Fig. 1c}).\par
+
+Next, we sub-clustered the neuronal progenitor, early neuron, and neural crest cell types (\textbf{Fig. 1d-f}). 
+Both organoid and embryo neuronal progenitors show a gradient of different cell states reflecting dorso-ventral patterning, evident from the expression of dorso-ventral marker TFs\cite{delasRepressiveInteractionsGene2020}:
+\textit{ARX}, \textit{NKX2-2}, \textit{PAX6}, \textit{IRX3}, \textit{ZIC1} and \textit{GDF7} (\textbf{Fig. 1d}). 
+In both the organoid and embryo system we obtained multiple early neuronal differentiation states.
+This includes a cluster that expresses the neuronal progenitor marker \textit{SOX2}, cells that express the early neuronal induction marker \textit{ASCL1} and distinct clusters marked by the expression of \textit{GAD1}, \textit{UNCX} and \textit{GATA2} (\textbf{Fig. 1e}). 
+Finally, focusing on the neural crest, in both the organoid and the embryo we identified a population of pre-migratory neural crest (\textit{GRHL2} expression and absence of \textit{ZEB2} expression), migratory neural crest (\textit{SOX10} and \textit{ZEB2} expression), facial mesenchyme (\textit{TWIST1} expression) and early differentiation peripheral neurons (\textit{NEUROD1} expression). 
+In the embryo, but not in the organoid, we observed an additional population of cells marked by the expression of \textit{SOX10} and \textit{PAX2} reflecting the otic placode (\textbf{Fig. 1f}).\par
+
+Next, we assessed the expression of anterior-posterior marker TFs. 
+While the organoid cells had either an anterior forebrain(\textit{SIX3}) or anterior spinal cord (\textit{HOXB3}) identity, 
+in the embryo we observed a gradient of anterior-to-posterior identities. Marked by the expression of \textit{SIX3}, \textit{EMX2}, \textit{FOXG1}, \textit{BARHL1}, \textit{EN1 }and \textit{HOXB3} (\textbf{Fig. 1g})\cite{braunComprehensiveCellAtlas2023}.\par
+
+Scoring cells of both organoid and embryo origin for the expression of cell cylce marker genes, 
+we observed that both early differentiating peripheral neurons and to a greater extent early differentiating neurons of the central nervous system are in cell cycle arrest (\textbf{Fig. 1h}), an important hallmark of neuronal differentiating\cite{
+braunComprehensiveCellAtlas2023}, while other cell types are still in different phases of the cell cycle (\textbf{Fig. 1h})\par
+
+Finally, to assess whether the organoid-derived cell types and states are also similar to the embryo on a chromatin accessibility level 
+we identified sets of co-accessible regions in the organoid model using topic modeling. 
+Focusing on topics that were enriched for marker TF motifs we calculated the average expression of marker genes for each cell group where these regions were co-accessible for both organoid and embryo cells. 
+We observed similar patterns of marker gene expression for the same cell state (defined by
+the topic) across the organoid and embryo (\textbf{Fig. 1i}) 
+with an average Pearson correlation coefficient of 0.83 across identical states (\textbf{Supplementary Fig. S1c-d}).\par
 
 
 %TODO:D) The black outline on green text (EMX2/EN1 etc) makes it difficult to read and see the color. consider making it thinner
@@ -260,56 +260,17 @@ across identical states (\textbf{Supplementary Fig. S1c-d}).\par
     number of regions enriched for the motif (dot size) per topic (x-axis) and motif (y-axis; bottom). PVM/MIC: perivascular
     microphage/microglia.
     Color scales for RGB scatter plots are as follows (in Log(CPM)). 
-    For organoid:
-    ARX [0, 1.5],
-    NKX2-2 [0, 1.5],
-    PAX6 [0, 1.5],
-    IRX3 [0, 1.0],
-    ZIC1 [0, 1.5],
-    GDF7 [0, 1.5],
-    SIX3 [0, 1.5],
-    EMX2 [0, 1.5],
-    FOXG1 [0, 0.8],
-    BARHL1 [0, 1.0],
-    EN1 [0, 1.5],
-    HOXB3 [0, 1.5],
-    SOX2 [0, 1.5],
-    ASCL1 [0, 1.5],
-    ISL1 [0, 1.5],
-    GAD1 [0, 0.8],
-    UNXC [0, 0.8],
-    GATA2 [0, 0.8],
-    GRHL2 [0, 1.5],
-    ZEB2 [0, 3.0],
-    SOX10 [0, 0.8],
-    NEUROD1 [0, 1.5],
-    PAX2 [0, 1.5],
-    TWIST1 [0, 1.5]
-    For embryo:
-    ARX [0, 1.5],
-    NKX2-2 [0, 1.5],
-    PAX6 [0, 1.5],
-    IRX3 [0, 1.5],
-    ZIC1 [0, 1.5],
-    GDF7 [0, 1.5]
-    SIX3 [0, 1.5],
-    EMX2 [0, 1.5],
-    FOXG1 [0, 0.8],
-    BARHL1 [0, 1.5],
-    EN1 [0, 1.5],
-    HOXB3 [0, 1.5],
-    SOX2 [0, 1.5],
-    ASCL1 [0, 1.5],
-    ISL1 [0, 1.0]
-    GAD1 [0, 0.8],
-    UNXC [0, 0.8],
-    GATA2 [0, 0.8]
-    GRHL2 [0, 1.5],
-    ZEB2 [0, 3.0],
-    SOX10 [0, 0.8]
-    NEUROD1 [0, 1.5],
-    PAX2 [0, 1.5],
-    TWIST1 [0, 2.0]
+    For organoid: 
+    Minimum is 0 and maximum is 1.5 Log(CPM) for all genes except:
+    IRX3, BAHRL1: [0, 1.0], 
+    FOXG1, GAD1, UNXC, GATA2, SOX10: [0, 0.8] and 
+    ZEB2 [0, 3.0], 
+    For embryo: 
+    Minimum is 0 and maximum is 1.5 Log(CPM) for all genes except:
+    FOXG1, GAD1, UNCX, GATA2, SOX10 [0, 0.8], 
+    ISL1 [0, 1.0], 
+    ZEB2 [0, 3.0] and
+    TWIST1 [0, 2.0].
   }
 \end{figure}
 
@@ -318,48 +279,52 @@ across identical states (\textbf{Supplementary Fig. S1c-d}).\par
   development
 }
 
-To gain insight into the sequence characteristics underlying cell type-specific activity of neural tube-, neural crest-
-and derived cell type enhancers, we trained two sequence-to-function model convolutional neural networks:
-"$DeepNeuralTube^o$" and "$DeepNeuralTube^e$". The models use DNA sequence of genomic regions as input and
-classify the regions based on their cell type- or state-specific chromatin accessibility (in a multi-label multi-class
-fashion; \textbf(Fig. 2a)). The classes of the models are defined based on topic modeling. To get a fine-grained
-definition of cell states, we performed topic modeling separately for the subset of neuronal progenitors, neural crest
-(incl. facial mesenchyme and peripheral neurons) and early differentiating neurons for both the organoid cells (to
-train $DeepNeuralTube^o$) and embryo cells (to train $DeepNeuralTube^e$). To validate the ability of the models to
-predict cell type-specific enhancer \textit{activity}, we tested their performance on enhancers from the VISTA enhancer
-browser (\textbf{REF}). Relevant for this study, this database contains enhancers active in the neural tube (n=349) and
-facial mesenchyme (n=143). Neural tube enhancers could be classified with an area under the receiver-operator curve
+In order to gain insight into the sequence characteristics underlying cell type-specific activity of neural tube-, 
+neural crest- and derived cell type enhancers, we trained two sequence-to-function model convolutional neural networks:
+"$DeepNeuralTube^o$" and "$DeepNeuralTube^e$". 
+The models use DNA sequence of genomic regions as input and classify regions based on their cell type- or state-specific chromatin accessibility (in a multi-label multi-class fashion; \textbf(Fig. 2a)). 
+The classes of the models are defined based on topic modeling. 
+To get a fine-grained definition of cell states, we performed topic modeling separately for the subset of neuronal progenitors, neural crest (incl. facial mesenchyme and peripheral neurons) and early differentiating neurons for both organoid (to train $DeepNeuralTube^o$) embryo (to train $DeepNeuralTube^e$).\par
+
+We tested the performance of $DeepNeuralTube^o$ and $DeepNeuralTube^e$ to predict cell type-specific activity 
+using data from the VISTA enhancer browser\cite{viselVISTAEnhancerBrowsera2007, kosickiVISTAEnhancerBrowser2025}.
+Enhancers active in the neural tube (n=349) could be classified with an area under the receiver-operator curve
 (auROC) of 0.75 and 0.80 using resp. $DeepNeuralTube^o$ and $DeepNeuralTube^e$ (\textbf{Fig. 2b}; and
-area under the precision-recall curve (auPR) of 0.21 resp. 0.29 (\textbf{Supplementary Fig. S2a-b})), facial mesenchyme
-enhancers with an auROC of 0.78 and 0.79 using resp. $DeepNeuralTube^o$ and $DeepNeuralTube^e$
-(\textbf{Fig. 2c}; and auPR of 0.17 for both models (\textbf{Supplementary Fig. S2a-b})). Of note, a fraction of neural tube
-enhancers (24 \%) are predicted to be specific to pre-migratory neural crest by both models.\par
-%TODO: C.M.: I think the original VISTA enhancers were annotated based on localization only, so it would make sense that premig. NC would be very hard to differentiate from normal neural tube ectoderm. Might be good to point out why this overlap exists?
-Next, we assessed the explainability of the models. Concretely we tested whether the model learned known
-TF binding motifs as features. For this, we performed motif enrichment analysis on all regions for each topic, to find
-known motifs underlying the accessibility of each region. We
-also
-calculated gradients, for each model, on the top 1,000 regions (as predicted by the model) for each topic followed by
-TF-MoDISco (\textbf{REF}) to find \textit{de novo} motifs. For both known motifs and \textit{de novo}
-motifs we calculated pairwise similarities using TOMTOM (\textbf{REF}) followed by clustering, resulting in 56 motif
-clusters (\textbf{Fig. 2d}). Of note, most clusters contain known-motifs enriched in both organoid regions and embryo
-(\textbf{Fig. 2e}) regions with the exception of cluster 13 that is organoid specific (AP1 motif; \textbf{Supplementary Table S2}) and cluster
-26 which is embryo specific (CG-rich motif; \textbf{Supplementary Table S2}). Most clusters (\textbf{Fig. 2f-g} and
-\textbf{Supplementary Table S2}) contain at least one motif learned \textit{de novo} by the organoid and/or embryo model.
+area under the precision-recall curve (auPR) of 0.21 resp. 0.29 (\textbf{Supplementary Fig. S2a-b})). 
+Enhancers active in the facial mesenchyme (n=143) could be classified with an auROC of 0.78 and 0.79 
+using resp. $DeepNeuralTube^o$ and $DeepNeuralTube^e$ (\textbf{Fig. 2c}; 
+and auPR of 0.17 for both models (\textbf{Supplementary Fig. S2a-b})). 
+Of note, a fraction of neural tube enhancers (24 \%) are predicted to be specific to pre-migratory neural crest by
+both models. Given that the VISTA enhancers are annotated based on localization of enhancer activity only, and given
+that is is difficult to visually distinguish between the neural tube and pre-migratory neural crest, this result 
+is not surprising.\par
+
+Next, we assessed the explainability of the models. Concretely we tested if the model learned known
+TF binding motifs as features. To this end, we calculated pairwise similarities\cite{
+  guptaQuantifyingSimilarityMotifs2007} between \textit{de novo} motifs learned by the model, 
+and identified using TF-MoDISco\cite{shrikumarTechnicalNoteTranscription2018}, and known motifs that are enriched in cell type specific regions.
+Clustering this pairwise similarity matrix resulted in 56 clusters (\textbf{Fig. 2d}). 
+Most clusters contain known motifs enriched in regions specific to both organoid and embryo cell types (\textbf{Fig. 2e}), with the exception of cluster 13 that is organoid specific (AP1 motif; \textbf{Supplementary Table S2}) 
+and cluster 26 that is embryo specific (CG-rich motif; \textbf{Supplementary Table S2}). 
+More importantly, Most clusters contain at least one motif learned \textit{de novo} by the organoid and/or embryo model (\textbf{Fig. 2f-g} and \textbf{Supplementary Table S2}). 
+%TODO: add percentages
 Thus, $DeepNeuralTube^o$ and $DeepNeuralTube^e$ use known-motifs as features to classify regions based
 on cell type-specific chromatin accessibility.\par
-As an illustrative example, we investigated an enhancer located in one of the introns of \textit{GLI3} (hs111.0; \textbf{Supplementary Fig. S2c}). This region has neural tube specific activity in E11.5 mouse embryos (\textbf{Fig. 2h}). Both
-$DeepNeuralTube^o$ and $DeepNeuralTube^e$ explain this region similarly (Pearson correlation of x) and
-highlight the importance of multiple SOX TFBS (\textbf{Fig. 2h}). A version of this enhancer where 5\% of the
-nucleotides are changed (hs111.1) does not have neural tube specific enhancer activity and both
-models predict that this loss of activity is due to the loss of a sinlge SOX TFBS (\textbf{Fig. 2h}).\par
-Finally, to also investigate the performance of the models on migratory neural crest, a cell type for which there are no
-validated enhancers in the Vista enhancer browser, we selected a genomic region that is specifically accessible in the
-migratory neural crest cell type of the organoid (\textbf{Supplementary Fig. S2d}). Both models predict this region
-to be specific to the migratory neural crest class (\textbf{Supplementary Fig. S2e}) and nucleotide importance scores
-reveal TFBS for a SOX monomer, a SOX dimer and AP2 (\textbf{Fig. 2i}). We tested the enhancer activity of this region
-using a reporter assay in chicken embryos. Indeed the enhancer was specifically active in migratory neural crest 24
-hours after injection in an HH4 embryo (\textbf{Fig. 2i}).\par
+
+As an illustrative example, we investigated an enhancer located in one of the introns of \textit{GLI3} (hs111.0; \textbf{Supplementary Fig. S2c}). 
+This region has neural tube specific activity in E11.5 mouse embryos (\textbf{Fig. 2h}). 
+Both $DeepNeuralTube^o$ and $DeepNeuralTube^e$ explain this region similarly (Pearson correlation of x) 
+%TODO: Add correlation
+and highlight the importance of multiple SOX TFBS (\textbf{Fig. 2h}). 
+A version of this enhancer where 5\% of the nucleotides are changed (hs111.1) does not have neural tube specific enhancer activity and both models predict that this loss of activity is due to the loss of a sinlge SOX TFBS (\textbf{Fig. 2h}).\par
+
+Finally, to also investigate the performance of the models on migratory neural crest, 
+a cell type for which there are no validated enhancers in the VISTA enhancer browser, 
+we selected a genomic region that is specifically accessible in the migratory neural crest (\textbf{Supplementary Fig. S2d}). 
+Both models predict this region to be specific to the migratory neural crest class (\textbf{Supplementary Fig. S2e})
+and nucleotide importance scores reveal TFBS for a SOX monomer, a SOX dimer and AP2 (\textbf{Fig. 2i}). 
+Next, we tested the enhancer activity of this region using an enhancer-reporter assay in chicken embryos. 
+Indeed the enhancer was specifically active in migratory neural crest 24 hours after injection in an HH4 embryo (\textbf{Fig. 2i}).\par
 
 
 \afterpage{\clearpage}
@@ -393,38 +358,48 @@ hours after injection in an HH4 embryo (\textbf{Fig. 2i}).\par
 \subsection*{
   The enhancer code underlying dorso-ventral patterning of neuronal progenitors
 }
+
 Focusing on neuronal progenitors, we identified topics representing cells and regions of different dorso-ventral
-identities in both the organoid and the embryo data (\textbf{Fig. 3a}). From ventral to dorsal this is topic 36, 38, 33,
-54 and 48 in the organoid data and topic 34, 38, 79, 88 and 58 in the embryo data. As an example we first investigated
-two enhancers of \textit{SHH} that are strongly conserved and specific to the floorplate [\textbf{REF}]; SFPE1 and SFPE2.
-\textit{SHH} is most strongly expressed in the most ventral topic (33 and 34 resp. in the organoids and the embryo; \textbf{Fig. 3b}).
-SFPE1 is located upstream of \textit{SHH} and SFPE2 in its second intron. Both enhancers are indeed most accessible in the cells
-belonging to the ventral topic, in both the organoid and embryo data (\textbf{Fig. 3c}). Explaining the accessibility of both
-enhancers using DeepNeuralTube reveals two FOX (one partial) and two RFX (one partial) binding sites in SFPE1
-and two FOX, a ZEB and a TEAD binding site in SFPE2 (\textbf{Fig. 3d}).\par
+identities in both the organoid and the embryo data (\textbf{Fig. 3a}). 
+From ventral to dorsal this is topic 36, 38, 33, 54 and 48 for the organoids and
+topic 34, 38, 79, 88 and 58 for the embryo. 
+As an example we first investigated two enhancers of \textit{SHH} that are strongly conserved and specific to the 
+floorplate: SFPE1 and SFPE2\cite{jeongDistinctRegulatorsShh2003}. 
+\textit{SHH} is most strongly expressed in the most ventral topic (33 and 34 resp. for the organoids and the embryo; \textbf{Fig. 3b}).
+SFPE1 is located upstream of \textit{SHH} and SFPE2 in its second intron. Both enhancers are indeed most accessible in the cells belonging to the ventral topic (\textbf{Fig. 3c}). 
+Explaining the accessibility of both enhancers using DeepNeuralTube reveals two FOX (one partial) and two RFX (one partial) binding sites in SFPE1 and two FOX, a ZEB and a TEAD binding site in SFPE2 (\textbf{Fig. 3d}).\par
 
-To investigate the enhancer code underlying dorso-ventral patterning of neuronal progenitors further, we calculated
-contribution scores on the top 1,000 regions of each organoid and embryo dorso-ventral topic using respectively $DeepNeuralTube^o$ and $DeepNeuralTube^e$. We then used TF-MoDISco\cite{shrikumarTechnicalNoteTranscription2018} to find reccurring seqlets for each topic (patterns) and we clustered patterns based on pairwise motif similarities. Next, we calculated the average contribution for all identified instances per cluster and for each topic resulting in a dorso-ventral enhancer code-table (\textbf{Fig. 3e}). Both $DeepNeuralTube^o$ and $DeepNeuralTube^e$ found similar patterns
-underlying the different dorso-ventral states and the importance of the instances of these patterns is highly correlated across both
-models (0.75 average Pearson correlation; \textbf{Fig. 3e}). For the most ventral state (organoid topic 33 and embryo topic 34) a combination of FOX, TEAD
-and RFX instances is important (\textbf{Fig. 3e-f}) and the importance of these instances correlates with the expression of respectively \textit{FOXA1/A2/P2/P4}, \textit{TEAD1} and \textit{RFX3/4} in both the organoid and embryo cells (\textbf{Fig. 3g} and Supplementary Fig. S3). In subsequent more dorsal neuronal progenitor domains we observe importance of NKX instances, correlating with \textit{NKX2-1/2} expression (\textbf{(Fig. 3e- g)}); PAX instances, correlating with \textit{PAX3/6} expression (\textbf{Fig. 3e-g} and Supplementary Fig. S3) and ZIC instances, correlating with \textit{ZIC1} expression (\textbf{Fig. 3e-g} and Supplementary Fig. S3). For all dorso-ventral progenitor domains, except the most ventral one (and the most dorsal one in the embryo), SOX instances are important which correlates with \textit{SOX2/3} expression (\textbf{Fig. 3e-g} and Supplementary Fig. S3). Similarly, ZEB instances have a negative importance to the accessibility of regions in dorso-ventral domains except the most ventral one (\textbf{Fig. 3e} and Supplementary Fig. S3). Finally, we calculated the Jaccard index of genomic regions based on the presence of an instance of each identified pattern to investigate which patterns often co-occur in the same regions (\textbf{Fig. 3h}). FOX, TEAD and RFX instances often co-occur in the same genomic region while instances of other patterns tend to be present in separate regions (\textbf{Fig. 3h}).\par
+To investigate the enhancer code underlying dorso-ventral patterning of neuronal progenitors further, we clustered 
+and aligned \textit{de novo} motifs, identified in doros-ventral regions, based on pairwise motif similarities. 
+Next, we caclulated the average contribution for all identified motif instances per cluster and for each topic 
+resulting in a dorso-ventral enhancer code-table (\textbf{Fig. 3e})
+Both $DeepNeuralTube^o$ and $DeepNeuralTube^e$ found similar patterns underlying the dorso-ventral states and the 
+importance of the instances of these patterns is highly correlated across both models (0.75 average Pearson correlation; \textbf{Fig. 3e}). 
+For the most ventral state (organoid topic 33 and embryo topic 34) a combination of FOX, TEAD and RFX instances 
+are important (\textbf{Fig. 3e-f}) and the importance of these instances correlates with the expression of respectively \textit{FOXA1/A2/P2/P4}, \textit{TEAD1} and \textit{RFX3/4} in both the organoid and embryo (\textbf{Fig. 3g} and Supplementary Fig. S3). 
+In subsequent more dorsal neuronal progenitor domains we observe importance of NKX instances, correlating with \textit{NKX2-1/2} expression (\textbf{(Fig. 3e- g)}); 
+PAX instances, correlating with \textit{PAX3/6} expression (\textbf{Fig. 3e-g} and Supplementary Fig. S3) and 
+ZIC instances, correlating with \textit{ZIC1} expression (\textbf{Fig. 3e-g} and Supplementary Fig. S3). 
+For all dorso-ventral progenitor domains, except the most ventral one (and the most dorsal one in the embryo), 
+SOX instances are important that correlates with the expression of\textit{SOX2/3} (\textbf{Fig. 3e-g} and Supplementary Fig. S3). 
+Similarly, ZEB instances have a negative importance to the accessibility of regions in dorso-ventral domains except the most ventral one (\textbf{Fig. 3e} and Supplementary Fig. S3). 
+Finally, we calculated the Jaccard index of genomic regions based on the presence of an instance of each identified pattern to investigate which patterns often co-occur in the same regions (\textbf{Fig. 3h}). 
+FOX, TEAD and RFX instances often co-occur in the same genomic region while instances of other patterns tend to be present in separate regions (\textbf{Fig. 3h}).\par
 
-It has been reported that FOXA1/2 is a pioneer factor (REF). Indeed, when centering on FOX instances in both the organoid and
-embryo data we observe a strong footprint when looking at Tn5 cut-sites (\textbf{Fig. 3i}). We then
-asked if there is any difference between regions that are generally bound by FOXA2 in any cell state that expresses this
-TF and regions, bound by FOXA2, that are specific to the floorplate. For this purpose, we downloaded FOXA2 ChIP-seq
-peaks in HepG2 and A549 and intersected these with floorplate peaks containing FOX instances. The floorplate peaks
-that overlap with both ChIP-seq datasets we classified as regions that are generally bound by FOXA2 and those that
-did not we classified as floorplate specific. Next, we quantified both the number of FOX instances per region and the
-affinity of each individual instance (making use of the FOX motif score calculated using
-FIMO\cite{grantFIMOScanningOccurrences2011, schreiberTangermemeBiologicalSequence2025}) hypothesizing that the overall affinity of regions that are generally
-bound by FOXA2 is higher than floorplate specific regions. Indeed, FOXA2 target regions that are specific to the floorplate mostly
-have a single FOX instance while FOXA2 target regions that are general tend to have more instances (\textbf{Fig. 3j}).
-Furthermore, in case there is a single FOX instance in a general FOXA2 target region the affinity of this instance tends
-to be higher (\textbf{Fig. 3k}). Generating a \textit{de novo} motif from general and specific FOXA2 target regions that
-have a single instance, we observe that FOX instances in regions that are general tend to be of the form
-\textit{TGTTT\underline{AC}} while those instances in specific regions tend to be of the form \textit{TGTTT} (\textbf{Fig. 3l}).\par
-
+It has been reported that FOXA1/2 is a pioneer factor\cite{iwafuchi-doiPioneerTranscriptionFactor2016, iwafuchiGeneNetworkTransitions2020}. 
+Indeed, when centering on FOX instances we observe a strong Tn5 cute-site footprint (\textbf{Fig. 3i}). 
+We then asked if there is any difference between regions that are generally bound by FOXA2 in any cell state that expresses this TF and regions, bound by FOXA2, that are specific to the floorplate. 
+For this purpose, we intersected FOXA2 ChIP-seq peaks in HepG2 and A549  with floorplate peaks containing FOX instances. 
+We classified the regions that overlap with any of the ChIP-seq datasets as regions that are generally bound by FOXA2 and those that did no as floorplate specific. Quantifying both the number of FOX instances per region and 
+the affinity of each individual instance (making use of the FOX motif score calculated using
+FIMO\cite{grantFIMOScanningOccurrences2011, schreiberTangermemeBiologicalSequence2025}) reveals that floorplate 
+specific FOXA2 target regions have fewer FOX instances compared to general FOXA2 target regions (\textbf{Fig. 3j}). 
+Furthermore, in case there is a single FOX instance in a general FOXA2 target region the affinity of this instance 
+tends to be higher (\textbf{Fig. 3k}). These results suggest that the overall affinity of general FOXA2 target regions 
+is higher (either by having a greater number of binding sites or by having binding sites with higher affinity).
+Generating a \textit{de novo} motif from general and specific FOXA2 target regions that have a single FOX instance 
+reveals that FOX instances in regions that are generally bound tend to be of the form \textit{TGTTT\underline{AC}} 
+while those instances in specific regions tend to be of the form \textit{TGTTT} (\textbf{Fig. 3l}).\par
 
 \afterpage{\clearpage}
 \begin{figure}[p]
@@ -447,32 +422,61 @@ have a single instance, we observe that FOX instances in regions that are genera
 
 
 \subsection*{
-  Anterior-posterior patterning in neuronal progenitors is regulated by different homeodomain transcription factors that
-  each recognize a distinct binding site.
+  Anterior-posterior patterning in neuronal progenitors is regulated by different homeodomain transcription factors that each recognize a distinct binding site.
 }
 
-Given that we observed cell states from different AP domains in the neuronal progenitors from the embryo (but not
-organoid; see \textbf{Fig. 1}) we decided to study the gene regulatory code underlying this patterning further. We
-identified seven topics corresponding to different AP domains, from anterior to posterior this is Topic 61, Topic 59,
-Topic 31, Topic 62, Topic 70, Topic 52 and Topic 71 (\textbf{Fig. 4a}). We first asked if the AP-program is distinct
-from the DV program. In other words, is AP patterning encoded in the same or in different genomic regions as DV patterning? For this purpose, we calculated the pairwise correlation between region-topic
-probabilities of all AP and DV topics (\textbf{Fig. 4b}). Both AP and DV patterning as well
-as each of their sub-domains are mostly encoded in distinct genomic regions, with the exception of AP Topic 59 and 31
-that correlate with the region-topic probability of DV Topic 38 (which corresponds to cells expressing \textit{NKX2-1/2}; \textbf{Fig. 4b})\par
+In the embryo we observed neuronal progenitors states of different anterior-posterior (AP) identities (\textbf{Fig. 1g}).
+We identified seven topics corresponding to different AP domains, from anterior to posterior this is Topic 61, Topic 59, Topic 31, Topic 62, Topic 70, Topic 52 and Topic 71 (\textbf{Fig. 4a}). 
+We first asked if the AP-program is distinct from the DV program. 
+In other words, is AP patterning encoded in the same or in different genomic regions as DV patterning? 
+For this purpose, we calculated the pairwise correlation between region-topic probabilities of all AP and DV topics (\textbf{Fig. 4b}). 
+This revealed that both AP and DV patterning are mostly encoded in distinct genomic regions, 
+with the exception of AP Topic 59 and 31 that correlate with the region-topic probability of DV Topic 38 
+(which corresponds to cells expressing \textit{NKX2-1/2}; \textbf{Fig. 4b})\par
 
 $DeepNeuralTube^e$ was able to distinguish the different AP domains but grouped topics of similar domains
-together (i.e., Topic 59, 31 and 62; Topic 52 and 71), resulting in four distinct AP domains (\textbf{Fig.4 c-d}). By
-explaining the predictions of $DeepNeuralTube^e$ on the regions of those domains we found four distinct
-homeodomain TF binding motifs, one for each domain (\textbf{Fig. 4e}). From anterior to posterior this is \textit{TAATTA}, \textit{GGATTA}, \textit{TCATGWTGANTGA} and \textit{CATYMATCA}. Notably, the patterns corresponding to the two posterior most topics correspond to dimer-motifs. Previously it was already hypothesized that genome-wide specific binding of homeodomain TFs is accomplished through cooperative binding of two TFs\cite{mannChapter3Hox2009}. Indeed, the presence of instances of the \textit{TCATGWTGANTGA} motif correlates with the expression of both \textit{PAX5/8} and \textit{EN1/2} and the prescence of instances of the \textit{CATYMATCA} motif correlates with the expression of \textit{MEIS1/2}, \textit{PBX1/2} and \textit{HOXB3} (\textbf{Fig. 4d-e} and Supplementary Fig. S4). In contrast, the patterns corresponding to the two anterior most topics correspond to monomer motifs, correlating with the expression of \textit{LHX2/9}, \textit{RAX} and \textit{SIX3/6} for the most anterior topic and with the expression of \textit{OTX1/2}, \textit{EMX2}, \textit{DMBX1} and \textit{LMX1A} for the second most anterior topic (\textbf{Fig. 4d-e} and Supplementary Fig. S4)
+together (i.e., Topic 59, 31 and 62; Topic 52 and 71), resulting in four distinct AP domains (\textbf{Fig.4 c-d}). 
+By explaining the predictions of $DeepNeuralTube^e$ on the regions of those domains we found four distinct
+homeodomain TF binding motifs, one for each domain (\textbf{Fig. 4e}). 
+From anterior to posterior this is \textit{TAATTA}, \textit{GGATTA}, \textit{TCATGWTGANTGA} and \textit{CATYMATCA}.
+Notably, the patterns corresponding to the two posterior most topics correspond to dimer-motifs. 
+Previously it was already hypothesized that genome-wide specific binding of homeodomain TFs is accomplished through
+cooperative binding of two TFs\cite{mannChapter3Hox2009}. 
+Indeed, the presence of instances of the \textit{TCATGWTGANTGA} motif correlates with the expression of both \textit{PAX5/8} and \textit{EN1/2} 
+and the prescence of instances of the \textit{CATYMATCA} motif correlates with the expression of \textit{MEIS1/2}, \textit{PBX1/2} and \textit{HOXB3} (\textbf{Fig. 4d-e} and Supplementary Fig. S4). 
+In contrast, the patterns corresponding to the two anterior most topics correspond to monomer motifs, 
+correlating with the expression of \textit{LHX2/9}, \textit{RAX} and \textit{SIX3/6} for the most anterior topic and 
+with the expression of \textit{OTX1/2}, \textit{EMX2}, \textit{DMBX1} and \textit{LMX1A} for the second most anterior
+topic (\textbf{Fig. 4d-e} and Supplementary Fig. S4)\par
 %TODO: I'm surprised to see EMX2 (forebrain) together with OTX1/2 and DMBX1 (midbrain)
 
 Focusing on the two most anterior domains, two similar homeodomain TF binding motifs seem to underlie the differential
-accessibility of those domains. Both have the core homeobox motif: \textit{TAAT} but one is flanked by the nucleotides
-\textit{TAG} while the other is flanked by the nucleotides \textit{CCCT}. 
+accessibility of those domains. Both have the core homeobox motif "\textit{TAAT}" 
+but one is flanked by the nucleotides \textit{TAG} while the other is flanked by the nucleotides \textit{CCCT}. 
 %TODO: Do we know which TFs these correspond to? If you do, mention it in the text
-We were surprised that this slight difference in the two motifs would be enough for encoding two separate AP domains. To test this hypothesis, we first did a substitution experiment where we replaced all instances of \textit{CTAAT\underline{TAG}} with \textit{CTAAT\underline{CCCT}} in regions of the most anterior domain and vice versa (\textbf{Fig. 4f}). Indeed, $DeepNeuralTube^e$ predicts an anterior-to-posterior shift of accessibility of those regions after the \textit{CTAAT\underline{TAG}} to \textit{CTAAT\underline{CCCT}} substitution and vice versa a posterior-to-anterior shift of accessibility after the \textit{CTAAT\underline{TAG}} with \textit{CTAAT\underline{CCCT}} to  \textit{CTAAT\underline{TAG}} substitution (\textbf{Fig. 4f}). Next, we designed enhancers from scratch by embedding either the  \textit{CTAAT\underline{TAG}} or \textit{CTAAT\underline{CCCT}} motif\cite{taskiranCelltypedirectedDesignSynthetic2024, kempynckCREstedModelingGenomic2025} and using respectively Topic 61 and Topic 31 as target class (\textbf{Fig. 4g}). Embedding of two instances of either motif was sufficient to reach predicted chromatin accessibility levels of equivalent ranges to the predicted chromatin accessibility levels of genomic regions (\textbf{Fig. 4g}). Next, to eliminate potential model bias we repeated the same experiment but optimized for the opposite class. This is, we optimized for Topic 31 by embedding the \textit{CTAAT\underline{TAG}} motif and we optimized for Topic 61 by embedding the \textit{CTAAT\underline{CCCT}} motif (\textbf{Fig. 4h}). In this case, the synthetic design failed to converge for the target class but instead regions with high prediction score for the AP domain that corresponds to the motif used for embedding were generated. This is embedding of the \textit{CTAAT\underline{TAG}} motif still generated regions with high prediction score for Topic 61 and embedding of the \textit{CTAAT\underline{CCCT}} motif generated regions with high prediction score for Topic 31 (\textbf{Fig. 4h}).\par
+We were surprised that this slight difference in the two motifs would be enough for encoding two separate AP domains.
+To test this hypothesis, we first did a substitution experiment where we replaced all instances of
+\textit{CTAAT\underline{TAG}} with \textit{CTAAT\underline{CCCT}} in regions of the most anterior domain and vice
+versa (\textbf{Fig. 4f}). 
+Indeed, $DeepNeuralTube^e$ predicts an anterior-to-posterior shift of accessibility of those regions after the \textit{CTAAT\underline{TAG}} to \textit{CTAAT\underline{CCCT}} substitution and 
+vice versa a posterior-to-anterior shift of accessibility after the \textit{CTAAT\underline{CCCT}} to
+\textit{CTAAT\underline{TAG}} substitution (\textbf{Fig. 4f}). 
+Next, we designed enhancers from scratch by embedding either the \textit{CTAAT\underline{TAG}} or 
+\textit{CTAAT\underline{CCCT}} motif\cite{taskiranCelltypedirectedDesignSynthetic2024, kempynckCREstedModelingGenomic2025} 
+and using respectively Topic 61 and Topic 31 as target class (\textbf{Fig. 4g}). 
+Embedding of two instances of either motif was sufficient to reach predicted chromatin accessibility levels of equivalent ranges to the predicted chromatin accessibility levels of genomic regions (\textbf{Fig. 4g}). 
+Next, to eliminate potential model bias we repeated the same experiment but optimized for the opposite class. 
+This is, we optimized for Topic 31 by embedding the \textit{CTAAT\underline{TAG}} motif and we optimized for Topic 61
+by embedding the \textit{CTAAT\underline{CCCT}} motif (\textbf{Fig. 4h}). 
+In this case, the synthetic design failed to converge for the target class but instead regions with high prediction 
+score for the AP domain that corresponds to the motif used for embedding were generated. 
+This is embedding of the \textit{CTAAT\underline{TAG}} motif still generated regions with high prediction score for Topic 61 
+and embedding of the \textit{CTAAT\underline{CCCT}} motif generated regions with high prediction score for Topic 31 (\textbf{Fig. 4h}), even though the prediction score was optimized towards the opposite class\par
 
-These results suggest that an unsophisticated code using two distinct motifs is sufficient to distinguish between the two utmost neuronal progenitor AP domains. Encouraged by this finding, we trained a logistic regression model to classify genomic regions of those two domains in either Topic 61 or Topic 31 using as features only the motif scores of the two motifs identified above (\textbf{Fig. 4i}). Surprisingly, this very simple classifier reached high performance with area under the ROC of 0.82 and area under the precision recall curve of 0.80 (\textbf{Fig. 4i}).\par
+These results suggest that an unsophisticated code using two distinct motifs is sufficient to distinguish between the two utmost neuronal progenitor AP domains. 
+Encouraged by this finding, we trained a logistic regression model to classify genomic regions of those two domains 
+in either Topic 61 or Topic 31 using as features only the motif scores of the two motifs identified above (\textbf{Fig. 4i}). 
+Surprisingly, this very simple classifier reached high performance with area under the ROC of 0.82 and area under the precision recall curve of 0.80 (\textbf{Fig. 4i}).\par
 
 \afterpage{\clearpage}
 \begin{figure}[p]
@@ -493,20 +497,37 @@ anterior-posterior topics. \textbf{b}, Heatmap showing pairwise pearson correlat
 
 Focusing on neural crest cells, we identified topics representing cells and regions of both pre- and migratory neural
 crest as well as facial mesenchyme (\textbf{Fig. 5a}). Similar to the neuronal progenitors, we used
-$DeepNeuralTube_{oranoid}$ and $DeepNeuralTube^e$ to explain the top 1,000 regions for each organoid and embryo
-topic and generated a code-table based on the identified pattern instances (\textbf{Fig. 5b}). Again, both
-$DeepNeuralTube^o$ and $DeepNeuralTube^e$ found similar patterns and the importance of the instances of
+$DeepNeuralTube_{oranoid}$ and $DeepNeuralTube^e$ to generate a neural crest code-table (\textbf{Fig. 5b}). 
+Again, both $DeepNeuralTube^o$ and $DeepNeuralTube^e$ found similar patterns and the importance of the instances of
 these patterns is highly correlated across both models (0.73 average Pearson correlation coefficient; \textbf{Fig. 5b}).\par
 
-Organoid Topic 62 and embryo Topic 103 represent the pre-migratory neural crest state and instances of TEAD, GRHL, AP2 and ZEB patterns are important for this state (\textbf{Fig. 5b-c}) the importance of TEAD instances correlates with \textit{TEAD3/4} expression, GRHL with \textit{GRHL1/1} and AP2 with both \textit{TFAP2A} and \textit{TFAP2C} (\textbf{Fig. 5d} and Supplementary Fig. S5). Note that ZEB instances have a positive contribution to the pre-migratory while it has a negative contribution to all other neural crest states (\textbf{Fig. 5b-c}); and moreover all other states of both the neuronal progenitors (\textbf{Fig. 3e}) and neurons (\textbf{Fig. 6b}). The positive contribution of ZEB in the pre-migratory neural crest state coincides with the absence of the expression of both \textit{ZEB1} and \textit{ZEB2} (\textbf{Fig. 5d} and Supplementary Fig. S5). This is in line with the previously reported role of ZEB2 as a chromatin closing repressor \cite{taskiranCelltypedirectedDesignSynthetic2024}.\par
+Organoid Topic 62 and embryo Topic 103 represent the pre-migratory neural crest state and 
+instances of TEAD, GRHL, AP2 and ZEB patterns are important for this state (\textbf{Fig. 5b-c}) 
+the importance of TEAD instances correlates with \textit{TEAD3/4} expression, 
+GRHL with \textit{GRHL1/1} 
+and AP2 with both \textit{TFAP2A} and \textit{TFAP2C} (\textbf{Fig. 5d} and Supplementary Fig. S5). 
+Note that ZEB instances have a positive contribution to the pre-migratory while it has a 
+negative contribution to all other neural crest states (\textbf{Fig. 5b-c}); 
+and moreover a negative contribution to all other cell states of both the neuronal progenitors (\textbf{Fig. 3e}) and neurons (\textbf{Fig. 6b}). 
+The positive contribution of ZEB in the pre-migratory neural crest state coincides with the absence of the expression of both \textit{ZEB1} and \textit{ZEB2} (\textbf{Fig. 5d} and Supplementary Fig. S5). 
+This is in line with the previously reported role of ZEB2 as a chromatin closing repressor \cite{taskiranCelltypedirectedDesignSynthetic2024}.\par
 
-The migratory neural crest cell state is represented by two organoid topics (Topic 65 and 59) and a single embryo topic (Topic 94). Nuclear receptor, AP2, ZIC (only in organoid topics) and SOX-dimer (organoid Topic 59 but not 65) are important for this state (\textbf{Fig. 5b-c}). We could not link the nuclear receptor instances to a specific TF based on the correlation of expression and the importance score of these instances. The importance of AP2 instances correlates with the expression of \textit{TFAP2A}, \textit{TFAP2B} and \textit{TFAP2C} (\textbf{Fig. 5d}), ZIC with \textit{ZIC1} to \textit{ZIC5} and the SOX-dimer with expression of \textit{SOX10} (\textbf{Fig. 5d} and Supplementary Fig. S5). The switch from TFAP2A/C in pre-migratory neural crest to TFAP2A/B in migratory neural crest is consistent with a previously reported function of both heterodimers in respectively neural plate border induction and neural crest specification\cite{rothsteinHeterodimerizationTFAP2Pioneer2020}. After the pre-migratory and before the migratory neural crest state another topic is found in both organoid (Topic 60) and embryo (Topic 105) for which instances of RFX are important (\textbf{Fig. 5b-c}) correlating with the expression of \textit{RFX3/4} (\textbf{Fig. 5d} and Supplementary Fig. S5).\par
+The migratory neural crest cell state is represented by two organoid topics (Topic 65 and 59) and a single embryo topic (Topic 94). 
+Nuclear receptor, AP2, ZIC (only in organoid topics) and SOX-dimer (organoid Topic 59 but not 65) are important for this state (\textbf{Fig. 5b-c}). 
+We could not link the nuclear receptor instances to a specific TF based on the correlation of expression and the importance score of these instances. 
+The importance of AP2 instances correlates with the expression of \textit{TFAP2A}, \textit{TFAP2B} and \textit{TFAP2C} (\textbf{Fig. 5d}), 
+ZIC with \textit{ZIC1} to \textit{ZIC5} and 
+the SOX-dimer with expression of \textit{SOX10} (\textbf{Fig. 5d} and Supplementary Fig. S5). 
+The switch from TFAP2A/C in pre-migratory neural crest to TFAP2A/B in migratory neural crest is consistent with a previously reported function of both heterodimers in respectively neural plate border induction and neural crest specification\cite{rothsteinHeterodimerizationTFAP2Pioneer2020}. 
+After the pre-migratory and before the migratory neural crest state another topic is found in both organoid (Topic 60) and embryo (Topic 105) 
+for which instances of RFX are important (\textbf{Fig. 5b-c}) correlating with the expression of \textit{RFX3/4} (\textbf{Fig. 5d} and Supplementary Fig. S5).\par
 
-Finally, the facial mesenchyme cell state is represented by organoid Topic 58 and embryo Topic 91. Instances of a FOX
-pattern and a dimer consisting of a homeobox and ebox motif are important for this state (\textbf{Fig. 5b}). The
-importance of the FOX instances correlates with the expression of \textit{FOXC2/D1/P1/P2} and that of the dimer motif with the
-expression of both \textit{TWIST1} and \textit{ALX1/4} and \textit{PRRX1} (\textbf{Fig. 5d} and Supplementary Fig. S5). The latter is consistent with a recent study where it has been
-shown that TWIST1 and homeodomain TFs cooperatively bind this specific dimer motif regulating the expression of genes involved in
+Finally, the facial mesenchyme cell state is represented by organoid Topic 58 and embryo Topic 91. 
+Instances of a FOX patterns and a dimer consisting of a homeobox and ebox motif are important for this state (\textbf{Fig. 5b}). 
+The importance of the FOX instances correlates with the expression of \textit{FOXC2/D1/P1/P2} and 
+that of the dimer motif with the expression of both \textit{TWIST1} and \textit{ALX1/4} and \textit{PRRX1} (\textbf{Fig. 5d} and Supplementary Fig. S5). 
+The latter is consistent with a recent study where it has been shown that TWIST1 and homeodomain TFs cooperatively
+bind this specific dimer motif regulating the expression of genes involved in
 facial mesenchyme\cite{kimDNAguidedTranscriptionFactor2024}.\par
 
 Next, we investigated which patterns co-occur in the same genomic regions. For this purpose, we calculated the Jaccard
@@ -516,11 +537,19 @@ instances of TEAD, GRHL and ZEB co-occur, one where instances of Nuclear recepto
 instances co-occur, and one set where instances of FOX and TWIST1/homeodomain co-occur.\par
 %TODO: C.M.: Mesenchyme+NC or calculated over all regions?
 
-Recently, a genome wide association study (GWAS) was published identifying 203 single-nucleotide polymorphisms (SNPs)
-that are associated with facial variation\cite{whiteInsightsGeneticArchitecture2021}. Given that regions surrounding these SNPs were
-enriched for enhancer activity in cranial neural crest cells\cite{whiteInsightsGeneticArchitecture2021} we asked if, using
-$DeepNeuralTube$, we could explain the effect of some of these variants on enhancer activity. Therefore for all
-suggestive SNPs we scored both the reference and alternative allele(s) using both $DeepNeuralTube^o$ and $DeepNeuralTube^e$ and calculated the difference in prediction score across both alleles (delta prediction score). At an absolute delta prediction score threshold of 0.2 we identified 235 SNPs that we deem explainable by either of the two models. Note that only very few (1 out of 203) of these "explainable" SNPs overlap with the 203 lead SNPs identified by White \textit{et al.} (\textbf{Fig. 5f}). Most of the "explainable" SNPs have a high delta prediction score for either organoid neural crest Topic 58 or Topic 59 (\textbf{Supplementary Fig. S6}). As an example we show the explanation of rs1555067 that is located upstream of \textit{PRRX1}. The G \textgreater A substitution of this SNP causes a delta prediction score of 0.64 for organoid Topic 58 (\textbf{Fig. 5g}), increasing the predicted chromatin accessibility of this genomic region in the facial mesenchyme cell state. This predicted increase in chromatin accessibility is caused by generating an EBOX site 6bp downstream of a partial homeobox site potentially creating a new binding site for TWIST1-homeodomain TF dimers (\textbf{Fig. 5h}).\par
+Recently, a genome wide association study (GWAS) identified 203 single-nucleotide polymorphisms (SNPs)
+that are associated with facial variation\cite{whiteInsightsGeneticArchitecture2021}. 
+Given that regions surrounding these SNPs were enriched for enhancer activity in cranial neural crest cells\cite{whiteInsightsGeneticArchitecture2021} 
+we asked if, using $DeepNeuralTube$, we could explain the effect of some of these variants on enhancer activity. Therefore for all suggestive SNPs we scored both the reference and alternative allele(s) using both $DeepNeuralTube^o$ and $DeepNeuralTube^e$ 
+and calculated the difference in prediction score across both alleles (delta prediction score). 
+At an absolute delta prediction score threshold of 0.2 we identified 235 SNPs that are explainable by either of the two models. 
+Note that only very few (1 out of 203) of these "explainable" SNPs overlap with the 203 lead SNPs identified by White \textit{et al.} (\textbf{Fig. 5f}). 
+Most of the "explainable" SNPs have a high delta prediction score for either organoid neural crest Topic 58 or Topic 59 (\textbf{Supplementary Fig. S6}). 
+As an example we show the explanation of rs1555067 that is located upstream of \textit{PRRX1}. 
+The G \textgreater A substitution of this SNP causes a delta prediction score of 0.64 for organoid Topic 58
+(\textbf{Fig. 5g}), increasing the predicted chromatin accessibility of this genomic region in the facial mesenchyme. 
+This predicted increase in chromatin accessibility is caused by generating an EBOX site 6bp downstream of a partial
+homeobox site potentially creating a new binding site for TWIST1-homeodomain TF dimers (\textbf{Fig. 5h}).\par
 
 
 \afterpage{\clearpage}
@@ -539,14 +568,32 @@ suggestive SNPs we scored both the reference and alternative allele(s) using bot
 
 Focusing on early neuronal differentiation, we identified several topics for different stages of neuronal fate
 acquisition in both organoid and embryo cells (\textbf{Fig. 6a}). Again we made use of $DeepNeuralTube^o$ and
-$DeepNeuralTube^e$ to explain the top 1,000 regions for each topic and generated a code table based on the
-identified pattern instances (\textbf{Fig. 6b}). Both models found similar patterns and the importance of the instances
-of these patterns is highly correlated across both models (0.47 average Pearson correlation coefficient; \textbf{Fig. 6b}).\par
+$DeepNeuralTube^e$ to generate a neuron code-table (\textbf{Fig. 6b}). 
+Both models found similar patterns and the importance of the instances of these patterns is highly correlated across
+both models (0.47 average Pearson correlation coefficient; \textbf{Fig. 6b}).\par
 
 For both the organoid and embryo we found two topics (organoid Topic 6 and 4 and embryo Topic 10 and 18) for which
 instances of patterns from neuronal progenitors, more precisely the floorplate, are important (\textbf{Fig. 6b-c}).
-These include instances of TEAD, FOX and RFX (\textbf{Fig. 6b-c}) correlating with the expression of respectively \textit{TEAD1},
-\textit{FOXA2/J3/O1/P1/P2/P4} and \textit{RFX3/4} (\textbf{Fig. 6d} and Supplementary Fig. S7). Instances of a SOX monomer motif is important for one of these topics (\textbf{Fig. 6b-c}), correlating with the expression of \textit{SOX2} (\textbf{Fig. 6d} and Supplementary Fig. S7). Next, in both organoids and embryo cells we identified a topic for which both instances of neuronal progenitor patterns as well as an EBOX pattern is important (organoid Topic 23 and embryo Topic 13 \textbf{Fig. 6b-c}) the importance of this EBOX pattern correlates with the expression of \textit{ASCL1} and \textit{NEUROD4}. For subsequent topics SOX instances are not important anymore (\textbf{Fig. 6b-c}) instead we find topics where a combination of EBOX and EBF instances are important (organoid and embryo Topic 24; \textbf{Fig. 6b-c}) the latter correlating with the expression of \textit{EBF1-3} (\textbf{Fig. 6d} and Supplementary Fig. S7) and topics where a combination of EBF and ONECUT instances are important (organoid Topic 13 and embryo Topic 18; \textbf{Fig. 6b-c}), the latter correlating with the expression of \textit{ONECUT1-3}. Additionally, in the embryo topics, instances of NKX are important in these latter two topics, the importance of these instances is anti-correlated with the expression \textit{NKX2-2} and correlated with the expression of \textit{ISL1} (\textbf{Fig. 6d} and Supplementary Fig. S7). Finally, in the organoids we could identify an additional topic for which instances of GATA are important (\textbf{Fig. 6b-c}) correlating with the expression of \textit{GATA2} (\textbf{Fig. 6d} and Supplementary Fig. S7).\par
+These include instances of TEAD, FOX and RFX (\textbf{Fig. 6b-c}) 
+correlating with the expression of respectively \textit{TEAD1},
+\textit{FOXA2/J3/O1/P1/P2/P4} and \textit{RFX3/4} (\textbf{Fig. 6d} and Supplementary Fig. S7). 
+Instances of a SOX monomer motif is important for one of these topics (\textbf{Fig. 6b-c}), 
+correlating with the expression of \textit{SOX2} (\textbf{Fig. 6d} and Supplementary Fig. S7). 
+Next, in both organoids and embryo cells we identified a topic for which both instances of neuronal progenitor 
+patterns as well as an EBOX pattern is important (organoid Topic 23 and embryo Topic 13 \textbf{Fig. 6b-c}) 
+the importance of this EBOX pattern correlates with the expression of \textit{ASCL1} and \textit{NEUROD4}. 
+For subsequent topics SOX instances are not important anymore (\textbf{Fig. 6b-c}) 
+instead we find topics where a combination of EBOX and EBF instances are important 
+(organoid and embryo Topic 24; \textbf{Fig. 6b-c}) the latter correlating with the expression of \textit{EBF1-3}
+(\textbf{Fig. 6d} and Supplementary Fig. S7) 
+and topics where a combination of EBF and ONECUT instances are important 
+(organoid Topic 13 and embryo Topic 18; \textbf{Fig. 6b-c}), 
+the latter correlating with the expression of \textit{ONECUT1-3}. 
+Additionally, in the embryo topics, instances of NKX are important in these latter two topics, 
+the importance of these instances is anti-correlated with the expression \textit{NKX2-2} 
+and correlated with the expression of \textit{ISL1} (\textbf{Fig. 6d} and Supplementary Fig. S7). 
+Finally, in the organoids we could identify an additional topic for which instances of GATA are important
+(\textbf{Fig. 6b-c}) correlating with the expression of \textit{GATA2} (\textbf{Fig. 6d} and Supplementary Fig. S7).\par
 %TODO: C.M.: NKX2-2 is an important patterning factor in the neural tube, specifically for ventralization so it should only be expressed around the floor plate. That you don't see it in the organoid might indicate that part of this patterning is not present. https://www.nature.com/articles/19315
 %TODO: S.D.W.: I do see it in the DV patterning part, just not in the subset of differentiating neurons.
 %TODO: C.M.: That's interesting, so in the organoid it doesn't seem to persist into neuronal differentiation while the embryo retains that NKX2.2 DV patterning? Are all the same types of neurons there or might it be related to a missing cell type?
@@ -566,10 +613,30 @@ Next, we analyzed the co-occurence of the identified patterns by calculating the
   all cell states related to neuronal progenitors, early neuronal differentiation and neural crest development.
 }
 
-Summarizing our results, we identified a total of sixteen and fifteen distinct cell states in respectively the neural
-tube organoids and the head of a four weeks post conception human embryo with almost one-to-one correspondence based on TFBS importances and TF expression. Additionally, we identified 4 distinct cell states corresponding to AP patterning of the neuronal progenitors in the embryo. To get insight into the minimal set of TFBS that are needed to encode these cell states we trained logistic regression models to classify genomic regions as belonging to the topic representing each state or not, making use of the motif scores of the identified patterns from each code table (\textbf{Fig. 3e}, \textbf{Fig. 4e}, \textbf{Fig. 5b} and \textbf{Fig. 6b}). The overall performance of these models was acceptably high (\textbf{Fig. 7a}) with an average area under the ROC of 0.77 and area under the precision-recall curve of 0.39. Notably, all models for neural crest related states performed best (\textbf{Fig. 7a}). Next, for each cell state, we selected TFBS that had a positive coefficient for at least one of the logistic regression models resulting in a total of twenty one TFBS for fifteen to sixteen states plus the additional four AP states (\textbf{Fig. 7a}). Finally, we used the identified TFBS to design synthetic enhancers for each state using motif embedding\cite{taskiranCelltypedirectedDesignSynthetic2024, kempynckCREstedModelingGenomic2025}. We used at least three TFBS in the design process for each state. In case less than three distinct TFBS had a positive coefficient for a state, we implanted multiple copies of each TFBS to come to a total of at least four TFBS. The resulting synthetic DNA sequences had an overall high prediction score (X.X on average) (\textbf{Fig. 7a}) - and were cell type specific (\textbf{Fig. 7b}) - with the prediction score for neural crest related states being again the highest. Note that some TFBS like FOX and SOX are used by many cell states (\textbf{Fig. 7a}) while other are more specific to certain states. \par
+Summarizing our results, we identified a total of sixteen and fifteen distinct cell states in 
+respectively the neural tube organoids and the head of a four weeks post conception human embryo with 
+almost one-to-one correspondence based on TFBS importances and TF expression. 
+Additionally, we identified 4 distinct cell states corresponding to AP patterning of the neuronal progenitors 
+in the embryo. To get insight into the minimal set of TFBS that are needed to encode these cell states we trained
+logistic regression models to classify genomic regions as belonging to the topic representing each state or not,
+making use of the motif scores of the identified patterns from each code table (\textbf{Fig. 3e}, \textbf{Fig. 4e}, \textbf{Fig. 5b} and \textbf{Fig. 6b}). 
+The overall performance of these models was acceptably high (\textbf{Fig. 7a}) with an average auROC of 0.77 
+and average auPR of 0.39. 
+Notably, all models for neural crest related states performed best (\textbf{Fig. 7a}). 
+Next, for each cell state, we selected TFBS that had a positive coefficient for at least one of the logistic regression models 
+resulting in a total of twenty one TFBS for fifteen to sixteen states plus the additional four AP states (\textbf{Fig. 7a}). 
+Finally, we used the identified TFBS to design synthetic enhancers for each state using motif embedding\cite{taskiranCelltypedirectedDesignSynthetic2024, kempynckCREstedModelingGenomic2025}. 
+We used at least three TFBS in the design process for each state. 
+In case less than three distinct TFBS had a positive coefficient for a state, we implanted multiple copies of each TFBS to come to a total of at least four TFBS. 
+The resulting synthetic DNA sequences had an overall high prediction score (X.X on average) (\textbf{Fig. 7a}) - 
+%TODO: add average prediction score
+and were cell type specific (\textbf{Fig. 7b}) - with the prediction score for neural crest related states being again the highest. 
+Note that some TFBS like FOX and SOX are used by many cell states (\textbf{Fig. 7a}) while other are more specific to certain states. \par
 
-To conclude, our results indicate that enhancers specific to DV-patterning, neural crest states and early neuronal differentiation are encoded in the human genome using around four to five distinct TFBS (\textbf{Fig. 7a}) in regions of on average 134 - 154 bp in size (\textbf{Fig. 7c}), corresponding to the size of one nucleosome depleted region (NDR). AP-patterning enhancers seem to be an exception to this rule, where they are encoded using only two and sometimes even a single TFBS (\textbf{Fig. 7a}).
+To conclude, our results indicate that enhancers specific to DV-patterning, neural crest states and early neuronal differentiation are encoded in the human genome using around four to five distinct TFBS (\textbf{Fig. 7a}) 
+in regions of on average 134 - 154 bp in size (\textbf{Fig. 7c}), 
+corresponding to the size of one nucleosome depleted region (NDR). 
+AP-patterning enhancers seem to be an exception to this rule, where they are encoded using only two and sometimes even a single TFBS (\textbf{Fig. 7a}).
 
 %TODO: number panels, in A middle, move legend so that text/lines do not class with guiding lines. Color for progenitor and neural crest are very similar and difficult to distinguish. I sometimes use this website to pick colors that are also colorblind friendly. https://colorbrewer2.org/#type=qualitative&scheme=Accent&n=4
 
@@ -610,30 +677,69 @@ deviations) for organoid (bottom left) and embryo (bottom right).
 %%% The discussion should explain the significance of the results and place them into a broader context.
 %%% Subheadings are permitted.
 
-We built an enhancer-code atlas of early human neuronal and neural crest development. Providing enhancer-codes of
-neuronal progenitor DV- and AP-patterning, early neuronal fate acquisition and neural crest induction, migration and
-facial mesenchyme specification.\par
+We built a compendium of enhancer-codes underlying early human neuronal and neural crest development. P
+roviding enhancer-codes of neuronal progenitor DV- and AP-patterning, 
+early neuronal fate acquisition and 
+neural crest induction, migration and facial mesenchyme specification.\par
 
-To create this atlas, we generated a single-cell multiome (combined scATAC-seq and scRNA-seq of the same cell) dataset of the head of a four weeks post conception human embryo and we showed that the embryonic cell states can effectively be reproduced using human neural tube organoids on both transcriptomic level and on the level of the enhancer-codes. Specifically, we identified a total of fifteen distinct cell states with one-to-one matches between the organoid and embryo. The fact that cell states were defined in a data driven manner by making use of topic modeling and that each of these states were independently identified in two separate datasets increases the confidence of their biological relevance. Furthermore, this high similarity between the organoid and the embyro derived cell states validates neural tube organoids as a biological model for early human neural tube and neural crest development, biological cell states that are otherwise not easily accessible in humans.\par
+To create this compendium, we generated a single-cell multiome (combined scATAC-seq and scRNA-seq of the same cell) 
+dataset of the head of a four weeks post conception human embryo and we showed that the embryonic cell states can 
+effectively be reproduced using human neural tube organoids on both transcriptomic level and on the level of the 
+enhancer-codes. Specifically, we identified a total of fifteen distinct cell states with one-to-one matches between 
+the organoid and embryo. The fact that cell states were defined in a data driven manner by making use of topic 
+modeling and that each of these states were independently identified in two separate datasets increases the confidence 
+of their biological relevance. Furthermore, this high similarity between the organoid and the embyro derived cell 
+states validates neural tube organoids as a biological model for early human neural tube and neural crest development, 
+biological cell states that are otherwise not easily accessible in humans.\par
 
 The enhancer code remains complicated to study\cite{wassermanAppliedBioinformaticsIdentification2004} especially
-compared to the genetic code\cite{kimDecipheringMultiscaleQuantitative2023, deboerHoldOutGenome2024}. Nonetheless, there
-are some recurrent patterns that are shared among enhancers of different cell types. In particular, enhancers underlying
-DV patterning, early neuronal fate acquisition and neural crest tend to consist of heterotypic clusters of 4-5 different
-TFBS\cite{kimDecipheringMultiscaleQuantitative2023, longEverChangingLandscapesTranscriptional2016} that are located
-within one NDR (+/-147bp). That is to say, cooperative binding of multiple TFs underlies
-the cell type specificity of enhancers\cite{lambertHumanTranscriptionFactors2018}. Here, we see most evidence for a
-model of indirect cooperativity\cite{longEverChangingLandscapesTranscriptional2016} (i.e., flexible billboard enhancer
-model\cite{arnostiTranscriptionalEnhancersIntelligent2005}). However, for multiple cell types we also observed evidence
-of direct coooperativity between TFs in the form of protein-protein interactions between two TFs. This was the case for
-TWIST1 and homeodomain TFs heterodimers in facial mesenchyme\cite{kimDNAguidedTranscriptionFactor2024} and GRHL1/2 dimers, TFAP2A and TFAP2B/C  heterodimer\cite{rothsteinHeterodimerizationTFAP2Pioneer2020} and SOX10 homodimers in neural crest. For all these TFs we found dimer motifs with a fixed number of nucleotides in between the two TFBS instances. Of note, for SOX10 we observed three different dimer motif with either 3, 4 or 5 bps spacing, with instances with 4 bps spacing being the most accessible (\textbf{Supplementary Fig. 8}). Finally, we also observed evidence of pioneer activity, where binding of one TF can facilitate the subsequent binding of other TFs to the same enhancer\cite{longEverChangingLandscapesTranscriptional2016}. This was the case for FOXA2 in the floorplate, consistent with previous findings of FOXA TFs\cite{iwafuchi-doiPioneerTranscriptionFactor2016, iwafuchiGeneNetworkTransitions2020}. Others have hypothesized, however, that pioneer activity is not a qualitative feature of a TF but rather dependent on the affinity of interactions between TF and DNA\cite{hansenTestPioneerFactor2022}. Similarly, we observed that enhancers that are specific to the floorplate contain either less FOXA2 binding sites and/or binding sites of lower affinity. The use of suboptimal TFBS is a reoccurring feature of cell type specific enhancers\cite{farleySuboptimizationDevelopmentalEnhancers2015, crockerChapterTwentySevenSoft2016, limAffinityoptimizingEnhancerVariants2024, naqviTransferLearningReveals2025}.\par
+compared to the genetic code\cite{kimDecipheringMultiscaleQuantitative2023, deboerHoldOutGenome2024}. 
+Nonetheless, there are recurrent patterns that are shared among enhancers of different cell types. 
+In particular, enhancers underlying DV patterning, early neuronal fate acquisition and neural crest 
+tend to consist of heterotypic clusters of 4-5 different TFBS\cite{kimDecipheringMultiscaleQuantitative2023, longEverChangingLandscapesTranscriptional2016} that are located within one NDR (+/-147bp). 
+That is to say, cooperative binding of multiple TFs underlies the cell type specificity of enhancers\cite{lambertHumanTranscriptionFactors2018}. 
+Here, we see most evidence for a model of indirect cooperativity\cite{longEverChangingLandscapesTranscriptional2016} (i.e., flexible billboard enhancer model\cite{arnostiTranscriptionalEnhancersIntelligent2005}). 
+However, for multiple cell types we also observed evidence of direct coooperativity between TFs in the form of protein-protein interactions between two TFs. 
+This was the case for TWIST1 and homeodomain TFs heterodimers in facial mesenchyme\cite{kimDNAguidedTranscriptionFactor2024} 
+and GRHL1/2 dimers, 
+TFAP2A and TFAP2B/C heterodimers\cite{rothsteinHeterodimerizationTFAP2Pioneer2020} 
+and SOX10 homodimers in neural crest. 
+For all these TFs we found dimer motifs with a fixed number of nucleotides in between the two TFBS instances. 
+Of note, for SOX10 we observed three different dimer motif with either 3, 4 or 5 bps spacing,
+with instances with 4 bps spacing being the most accessible (\textbf{Supplementary Fig. 8}). 
+Finally, we also observed evidence of pioneer activity, where binding of one TF can facilitate the 
+subsequent binding of other TFs to the same enhancer\cite{longEverChangingLandscapesTranscriptional2016}. 
+This was the case for FOXA2 in the floorplate, consistent with previous findings of FOXA TFs\cite{iwafuchi-doiPioneerTranscriptionFactor2016, iwafuchiGeneNetworkTransitions2020}. 
+Others have hypothesized, however, that pioneer activity is not a qualitative feature of a TF but rather 
+dependent on the affinity of interactions between TF and DNA\cite{hansenTestPioneerFactor2022}. 
+Similarly, we observed that enhancers that are specific to the floorplate contain either less FOXA2 binding sites 
+and/or binding sites of lower affinity. 
+The use of suboptimal TFBS is a reoccurring feature of cell type specific enhancers\cite{farleySuboptimizationDevelopmentalEnhancers2015, crockerChapterTwentySevenSoft2016, limAffinityoptimizingEnhancerVariants2024, naqviTransferLearningReveals2025}.\par
 %TODO: S.A.: But retain strongest footprint ?!
-Our results indicate that enhancers underlying neuronal progenitor AP-patterning form an exception to the rule that enhancers
-consist of clusters of 4-5 different TFBS. Homotypic clusters of 3-4 homeobox instances were sufficient to both create and identify enhancers specific to a certain AP domain. Similar findings were already reported in fly\cite{crockerLowAffinityBinding2015}. It has been a long standing question how homeodomain TFs achieve specific binding\cite{mannChapter3Hox2009, hubertHoxGenesDevelopment2023} given that all homeodomain TFs seem to bind the same \textit{TAAT} motif\cite{bergerVariationHomeodomainDNA2008, noyesAnalysisHomeodomainSpecificities2008}. It has been hypothesized that specificity is mainly achieved through cooperative binding with other TFs\cite{mannChapter3Hox2009}. Indeed, we observe this for EN1/2 and HOXB3 that are predicted to co-bind with PAX5/8 and MEIS1/2 or PBX1/3 respectively forming specific dimer motifs. In contrast, we suggest a novel mode where specificity is achieved through the homeodomain itself for respectively LHX2/9, RAX or SIX3/6 and OTX1/2, EMX2, DMBX1 or LMX1A that preferentially bind \textit{TAATTA} and \textit{TAATCC} sites. Thus, additional nucleotides, next to the core \textit{TAAT}, form a TFBS that is both necessary and sufficient for genome wide cell type specificity. In general, although there are only around 100 different DNA binding domains across human TFs\cite{lambertHumanTranscriptionFactors2018} and thus many of the 1,639 known human TFs recognize similar motifs\cite{lambertHumanTranscriptionFactors2018} there are slight variations in preferential TFBS of TFs of the same family\cite{lambertHumanTranscriptionFactors2018, jolmaDNABindingSpecificitiesHuman2013, dealmeidaDeepSTARRPredictsEnhancer2022} that could be important for cell type specific binding.\par
+Our results indicate that enhancers underlying neuronal progenitor AP-patterning form an exception to the rule 
+that enhancers consist of clusters of 4-5 different TFBS. 
+Homotypic clusters of 3-4 homeobox instances were sufficient to both create and identify enhancers specific to a certain AP domain. 
+Similar findings were already reported in fly\cite{crockerLowAffinityBinding2015}. 
+It has been a long standing question how homeodomain TFs achieve specific binding\cite{mannChapter3Hox2009, hubertHoxGenesDevelopment2023} 
+given that all homeodomain TFs seem to bind the same \textit{TAAT} motif\cite{bergerVariationHomeodomainDNA2008, noyesAnalysisHomeodomainSpecificities2008}. 
+It has been hypothesized that specificity is mainly achieved through cooperative binding with other TFs\cite{mannChapter3Hox2009}. 
+Indeed, we observe this for EN1/2 and HOXB3 that are predicted to co-bind with PAX5/8 and MEIS1/2 or PBX1/3 respectively forming specific dimer motifs.
+In contrast, we suggest a novel mode where specificity is achieved through the homeodomain itself for respectively LHX2/9, RAX or SIX3/6 and OTX1/2, EMX2, DMBX1 or LMX1A 
+that preferentially bind \textit{TAATTA} and \textit{TAATCC} sites. 
+Thus, additional nucleotides, next to the core \textit{TAAT}, form a TFBS that is both necessary and sufficient for genome wide cell type specificity. 
+In general, although there are only around 100 different DNA binding domains across human TFs\cite{lambertHumanTranscriptionFactors2018} 
+and thus many of the 1,639 known human TFs recognize similar motifs\cite{lambertHumanTranscriptionFactors2018} 
+there are slight variations in preferential TFBS of TFs of the same family\cite{lambertHumanTranscriptionFactors2018, jolmaDNABindingSpecificitiesHuman2013, dealmeidaDeepSTARRPredictsEnhancer2022} 
+that could be important for cell type specific binding.\par
 
-In conclusion, we provide an enhancer-code atlas of early human neuronal and neural crest development. We confirm the
-paradigm that enhancers consist out of heterotypic clusters of TFBS with soft syntactic rules but also provide a counter example to
-this paradigm. Furthermore, we validate the biological relevance of neural tube organoids. Finally, we provide $DeepNeuralTubes$, two sequence-to-chromatin accessibility models, freely to the research community, which can be used to predict, interpret and design enhancers underlying early human neuronal and neural crest development.
+In conclusion, we provide an enhancer-code compendium of early human neuronal and neural crest development. 
+We confirm the paradigm that enhancers consist out of heterotypic clusters of TFBS with soft syntactic rules 
+but also provide a counter example to this paradigm. 
+Furthermore, we validate the biological relevance of neural tube organoids. 
+Finally, we provide $DeepNeuralTubes$, two sequence-to-chromatin accessibility models, 
+freely available to the research community, 
+which can be used to predict, 
+interpret and design enhancers underlying early human neuronal and neural crest development.
 
 % single TF
 % https://genome.cshlp.org/content/26/7/882.short
@@ -658,29 +764,31 @@ this paradigm. Furthermore, we validate the biological relevance of neural tube 
 %%% A "limitations" or "limitations of the study" subsection in the discussion is encouraged and may be required for some
 %%% journals and some article formats.
 
-In this study we focused on predicting TF binding to enhancers, but not so much on their effector function. The effect a
-TF has on target gene expression depends on its effector domain and interactions with
+In this study we focused on predicting TF binding to enhancers, but not so much on their effector function. 
+The effect a TF has on target gene expression depends on its effector domain and interactions with
 co-factors\cite{lambertHumanTranscriptionFactors2018} and this may depend on the sequence context of
-the enhancer itself\cite{jacobsWidespreadRegulatorySpecificities2023}. Large scales studies, in a variety of cell
-states, are now being performed to map TFs to co-factors and downstream effects on gene
-expression\cite{tyckoHighThroughputDiscoveryCharacterization2020, alerasoolIdentificationFunctionalCharacterization2022,
+the enhancer itself\cite{jacobsWidespreadRegulatorySpecificities2023}. 
+Large scales studies, in a variety of cell states, are now being performed to map TFs to co-factors and downstream effects on gene expression\cite{
+  tyckoHighThroughputDiscoveryCharacterization2020, alerasoolIdentificationFunctionalCharacterization2022,
 sotoCompendiumHumanTranscription2022, delrossoLargescaleMappingMutagenesis2023,
 mukundHighthroughputFunctionalCharacterization2023, bellComparativeCofactorScreens2024,
-tyckoDevelopmentCompactTranscriptional2024, doughtySinglemoleculeStatesLink2024}. These studies may especially be
-important to infer repressive roles of TFs on gene expression, an effect that is currently difficult to study with state
-of the art methods\cite{bravogonzalez-blasSCENICSinglecellMultiomic2023, kempynckCREstedModelingGenomic2025,
-dewinterModellingDesignTranscriptional2025}. In particular for the neural tube, it is known that repressive interactions
-in its core GRN are important\cite{delasRepressiveInteractionsGene2020}. In this study we could only predict a strong
-repressive effect of ZEB2, a chromatin closing repressor that is used across a variety of biological
+tyckoDevelopmentCompactTranscriptional2024, doughtySinglemoleculeStatesLink2024}. 
+These studies may especially be important to infer repressive roles of TFs on gene expression, 
+an effect that is currently difficult to study with state of the art methods\cite{bravogonzalez-blasSCENICSinglecellMultiomic2023, kempynckCREstedModelingGenomic2025,
+dewinterModellingDesignTranscriptional2025}. 
+In particular for the neural tube, it is known that repressive interactions in its core GRN are important\cite{delasRepressiveInteractionsGene2020}. 
+In this study we could only predict a strong repressive effect of ZEB2, a chromatin closing repressor that is used across a variety of biological
 systems\cite{minnoyeCrossspeciesAnalysisEnhancer2020, taskiranCelltypedirectedDesignSynthetic2024}
 (\textbf{Supplementary Fig. S9}).\par
 
-Furthermore, the expression of a gene is in general regulated by multiple enhancers in the gene's locus\cite{perryShadowEnhancersFoster2010,
+Furthermore, the expression of a gene is in general regulated by multiple enhancers in the gene's locus\cite{
+  perryShadowEnhancersFoster2010,
 martinez-araSystematicAnalysisIntrinsic2022, bergmanCompatibilityRulesHuman2022, zuinNonlinearControlTranscription2022,
 gschwindEncyclopediaEnhancergeneRegulatory2023, martinez-araLargescaleAnalysisIntegration2024,
-loubiereDevelopmentalHousekeepingTranscriptional2024, thomasEnhancerCooperativityCan2025}. In this study we focused on
-the enhancer code of individual enhancers but not how the signal of multiple enhancers is integrated to control target
-gene expression. Currently efforts are ongoing to build large scale models for modeling gene expression making use of the
+loubiereDevelopmentalHousekeepingTranscriptional2024, thomasEnhancerCooperativityCan2025}.
+In this study we focused on the enhancer code of individual enhancers 
+but not how the signal of multiple enhancers is integrated to control target gene expression. 
+Currently efforts are ongoing to build large scale models for modeling gene expression making use of the
 code of all enhancers in the gene's locus\cite{avsecEffectiveGeneExpression2021,linderPredictingRNAseqCoverage2025a,
 hingerlScoobyModelingMultimodal2024, hingerlFlashzoiEnhancedBorzoi2024, lalDecodingSequenceDeterminants2025}.\par
 
@@ -914,7 +1022,7 @@ During the preparation of this work, the author(s) did not make use of generativ
 
 %All Cell Press \textbf{life and medical science} journals, and the multidisciplinary journal \textbf{iScience}, use the \textbf{\href{https://www.cell.com/star-authors-guide}{STAR Methods}} format for reporting materials and methods. Other Cell Press journals use a non-structured \textbf{methods} format; for those journals, please \textbf{delete} the contents of this page from the template and refer instead to the \textbf{methods} template on page 3.
 
-I%f you are publishing in a STAR Methods journal, please refer to the appropriate guide for authors:
+%f you are publishing in a STAR Methods journal, please refer to the appropriate guide for authors:
 %\begin{itemize}
 %\item \textit{Cell} authors should download the guide for \textit{Cell} authors \href{https://www.cell.com/pb-assets/journals/research/cell/methods/Methods_Guide_Cell-1678470557763.pdf}{available here}
 %\item All other journal authors should use \href{https://www.cell.com/pb-assets/journals/research/cell/methods/Methods_Guide_general-1678470557763.pdf}{this version of the guide}
@@ -1172,7 +1280,7 @@ total of 28,705 cells passing quality control.
 \paragraph*{single-cell ATAC topic modeling}
 Four topic models were generated: one on all cells, one on the subset of cells annotated as neuronal progenitors, one on
 the subset of cells annotated as neuron (Neuron cells and Neuronal progenitor early neuron cells) and one on the subset of cells annotated as neural crest.
-Topic modeling was performed using Mallet\cite{mccallumMALLETMachineLearning} (v202108; RRID:SCR\_026708) using the pycisTopic\cite{bravogonzalez-blasSCENICSinglecellMultiomic2023} (v1.0.3.dev20+g8955c76, \href{https://rrid.site/data/record/nlx_144509-1/SCR_026618/resolver}{RRID:SCR\_026618}) function run\_cgs\_models\_mallet using 500 iterations, alpha equal to 50, eta equal to 0.1, alpha\_by\_topic equal to True and eta\_by\_topic equal to False and using random seed 555. 
+Topic modeling was performed using Mallet\cite{mccallumMALLETMachineLearning2002} (v202108; RRID:SCR\_026708) using the pycisTopic\cite{bravogonzalez-blasSCENICSinglecellMultiomic2023} (v1.0.3.dev20+g8955c76, \href{https://rrid.site/datmccallumMALLETMachineLearning2002618/resolver}{RRID:SCR\_026618}) function run\_cgs\_models\_mallet using 500 iterations, alpha equal to 50, eta equal to 0.1, alpha\_by\_topic equal to True and eta\_by\_topic equal to False and using random seed 555. 
 Topic modeling was performed separately for all cells and for each subset of cells.
 Model evaluation was performed using the pycisTopic function evaluate\_model that calculates model coherence\cite{mimno-etal-2011-optimizing}, log-likelihood\cite{griffithsFindingScientificTopics2004}, model density\cite{arunFindingNaturalNumber2010} and a divergence-based metric\cite{caoDensitybasedMethodAdaptive2009}.
 A model of 50 topics was selected for the model containing all cells,
@@ -1232,7 +1340,7 @@ Sample and barcode level quality control data was calculated using the pycisTopi
 \paragraph*{single-cell ATAC topic modeling}
 Three topic models were generated: one on the subset of cells annotated as neuronal progenitors, on on the subset of
 cells annotated as neuron and one on the subset of cells annotated as neural crest. First, a fragment count matrix was
-generated for each sample using the pycisTopic\cite{bravogonzalez-blasSCENICSinglecellMultiomic2023} (v2.0a, \href{https://rrid.site/data/record/nlx_144509-1/SCR_026618/resolver}{RRID:SCR\_026618}) function create\_fragments\_matrix\_from\_fragments, this matrix was binarized (\textgreater 0), merged in one count matrix using the Scipy\cite{virtanenSciPy10Fundamental2020} (v1.15.2; \href{https://rrid.site/data/record/nlx_144509-1/SCR_008058/resolver}{RRID:SCR\_008058}) function sparse.hstack and subsequently split in a matrix for each of neuronal progenitors, neurons and neural crest cells and saved as matrix market format. A mallet corpus file was generated for each binary matrix using the pycisTopic command pycistopic topic\_modeling mallet create\_corpus and finally topic modeling was run using Mallet\cite{mccallumMALLETMachineLearning} (v202108; RRID:SCR\_026708) using the pycisTopic command: pycistopic topic\_modeling mallet run using 300 iterations and default parameters otherwise. Model evaluation was performed using the pycisTopic command pycistopic topic\_modeling mallet stats that calculates model coherence\cite{mimno-etal-2011-optimizing}, log-likelihood\cite{griffithsFindingScientificTopics2004}, model density\cite{arunFindingNaturalNumber2010} and a divergence-based metric\cite{caoDensitybasedMethodAdaptive2009}.
+generated for each sample using the pycisTopic\cite{bravogonzalez-blasSCENICSinglecellMultiomic2023} (v2.0a, \href{https://rrid.site/data/record/nlx_144509-1/SCR_026618/resolver}{RRID:SCR\_026618}) function create\_fragments\_matrix\_from\_fragments, this matrix was binarized (\textgreater 0), merged in one count matrix using the Scipy\cite{virtanenSciPy10Fundamental2020} (v1.15.2; \href{https://rrid.site/data/record/nlx_144509-1/SCR_008058/resolver}{RRID:SCR\_008058}) function sparse.hstack and subsequently split in a matrix for each of neuronal progenitors, neurons and neural crest cells and saved as matrix market format. A mallet corpus file was generated for each binary matrix using the pycisTopic command pycistopic topic\_modeling mallet create\_corpus and finally topic modeling was run using Mallet\cite{mccallumMALLETMachineLearning2002} (v202108; RRID:SCR\_026708) using the pycisTopic command: pycistopic topic\_modeling mallet run using 300 iterations and default parameters otherwise. Model evaluation was performed using the pycisTopic command pycistopic topic\_modeling mallet stats that calculates model coherence\cite{mimno-etal-2011-optimizing}, log-likelihood\cite{griffithsFindingScientificTopics2004}, model density\cite{arunFindingNaturalNumber2010} and a divergence-based metric\cite{caoDensitybasedMethodAdaptive2009}.
 A model of 60 topics was selected for the model containing neuronal progenitors,
 a model of 30 topics was selected for the model containing neurons and
 a model of 30 topics for the model containing neural crest cells.

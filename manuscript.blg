@@ -3,48 +3,46 @@ Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: manuscript.aux
 The style file: numbered.bst
 Database file #1: references.bib
-Warning--I didn't find a database entry for "mccallumMALLETMachineLearning"
 Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
 Reallocated singl_function (elt_size=4) to 100 items from 50.
-You've used 119 entries,
+You've used 115 entries,
             3197 wiz_defined-function locations,
-            1545 strings with 52284 characters,
-and the built_in function-call counts, 116242 in all, are:
-= -- 6794
-> -- 7762
+            1514 strings with 50439 characters,
+and the built_in function-call counts, 112969 in all, are:
+= -- 6596
+> -- 7559
 < -- 42
-+ -- 5460
-- -- 2216
-* -- 16012
-:= -- 15021
-add.period$ -- 357
-call.type$ -- 119
-change.case$ -- 606
-chr.to.int$ -- 116
-cite$ -- 119
-duplicate$ -- 7691
-empty$ -- 6788
-format.name$ -- 2598
-if$ -- 20858
++ -- 5317
+- -- 2158
+* -- 15563
+:= -- 14592
+add.period$ -- 344
+call.type$ -- 115
+change.case$ -- 586
+chr.to.int$ -- 112
+cite$ -- 115
+duplicate$ -- 7463
+empty$ -- 6594
+format.name$ -- 2524
+if$ -- 20274
 int.to.chr$ -- 4
-int.to.str$ -- 120
-missing$ -- 1953
-newline$ -- 512
-num.names$ -- 365
-pop$ -- 2575
+int.to.str$ -- 116
+missing$ -- 1897
+newline$ -- 493
+num.names$ -- 353
+pop$ -- 2485
 preamble$ -- 1
-purify$ -- 595
+purify$ -- 575
 quote$ -- 0
-skip$ -- 2461
+skip$ -- 2395
 stack$ -- 0
-substring$ -- 4226
-swap$ -- 7994
+substring$ -- 4142
+swap$ -- 7770
 text.length$ -- 17
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 712
+type$ -- 688
 warning$ -- 0
-while$ -- 446
+while$ -- 435
 width$ -- 0
-write$ -- 1702
-(There was 1 warning)
+write$ -- 1644
