@@ -1,4 +1,4 @@
-\begin{thebibliography}{114}
+\begin{thebibliography}{119}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \providecommand{\href}[2]{#2}
@@ -47,13 +47,21 @@
   \bibinfo{publisher}{Elsevier}.
 \newblock ISBN \bibinfo{isbn}{0-08-045557-3}.
 %Type = Article
-\bibitem[{De~Winter et~al.(2025)De~Winter, Konstantakos and
-  Aerts}]{dewinterModellingDesignTranscriptional2025}
-\bibinfo{author}{De~Winter, S.}, \bibinfo{author}{Konstantakos, V.}, and
-  \bibinfo{author}{Aerts, S.} (\bibinfo{year}{2025}). \bibinfo{title}{Modelling
-  and design of transcriptional enhancers}.
-\newblock \bibinfo{journal}{Nat Rev Bioeng}.
-  \DOIprefix\doi{10.1038/s44222-025-00280-y}.
+\bibitem[{Long et~al.(2016)Long, Prescott and
+  Wysocka}]{longEverChangingLandscapesTranscriptional2016}
+\bibinfo{author}{Long, H.K.}, \bibinfo{author}{Prescott, S.L.}, and
+  \bibinfo{author}{Wysocka, J.} (\bibinfo{year}{2016}).
+  \bibinfo{title}{Ever-{{Changing Landscapes}}: {{Transcriptional Enhancers}}
+  in {{Development}} and {{Evolution}}}.
+\newblock \bibinfo{journal}{Cell} \emph{\bibinfo{volume}{167}},
+  \bibinfo{pages}{1170--1187}. \DOIprefix\doi{10.1016/j.cell.2016.09.018}.
+%Type = Article
+\bibitem[{Kim and Wysocka(2023)}]{kimDecipheringMultiscaleQuantitative2023}
+\bibinfo{author}{Kim, S.}, and \bibinfo{author}{Wysocka, J.}
+  (\bibinfo{year}{2023}). \bibinfo{title}{Deciphering the multi-scale,
+  quantitative cis-regulatory code}.
+\newblock \bibinfo{journal}{Molecular Cell} \emph{\bibinfo{volume}{83}},
+  \bibinfo{pages}{373--392}. \DOIprefix\doi{10.1016/j.molcel.2022.12.032}.
 %Type = Article
 \bibitem[{Zeitlinger(2020)}]{zeitlingerSevenMythsHow2020}
 \bibinfo{author}{Zeitlinger, J.} (\bibinfo{year}{2020}). \bibinfo{title}{Seven
@@ -61,6 +69,88 @@
 \newblock \bibinfo{journal}{Current Opinion in Systems Biology}
   \emph{\bibinfo{volume}{23}}, \bibinfo{pages}{22--31}.
   \DOIprefix\doi{10.1016/j.coisb.2020.08.002}.
+%Type = Article
+\bibitem[{Lambert et~al.(2018)Lambert, Jolma, Campitelli, Das, Yin, Albu, Chen,
+  Taipale, Hughes and Weirauch}]{lambertHumanTranscriptionFactors2018}
+\bibinfo{author}{Lambert, S.A.}, \bibinfo{author}{Jolma, A.},
+  \bibinfo{author}{Campitelli, L.F.}, \bibinfo{author}{Das, P.K.},
+  \bibinfo{author}{Yin, Y.}, \bibinfo{author}{Albu, M.}, \bibinfo{author}{Chen,
+  X.}, \bibinfo{author}{Taipale, J.}, \bibinfo{author}{Hughes, T.R.}, and
+  \bibinfo{author}{Weirauch, M.T.} (\bibinfo{year}{2018}). \bibinfo{title}{The
+  {{Human Transcription Factors}}}.
+\newblock \bibinfo{journal}{Cell} \emph{\bibinfo{volume}{172}},
+  \bibinfo{pages}{650--665}. \DOIprefix\doi{10.1016/j.cell.2018.01.029}.
+%Type = Article
+\bibitem[{Alipanahi et~al.(2015)Alipanahi, Delong, Weirauch and
+  Frey}]{alipanahiPredictingSequenceSpecificities2015}
+\bibinfo{author}{Alipanahi, B.}, \bibinfo{author}{Delong, A.},
+  \bibinfo{author}{Weirauch, M.T.}, and \bibinfo{author}{Frey, B.J.}
+  (\bibinfo{year}{2015}). \bibinfo{title}{Predicting the sequence specificities
+  of {{DNA-}} and {{RNA-binding}} proteins by deep learning}.
+\newblock \bibinfo{journal}{Nat Biotechnol} \emph{\bibinfo{volume}{33}},
+  \bibinfo{pages}{831--838}. \DOIprefix\doi{10.1038/nbt.3300}.
+%Type = Article
+\bibitem[{Zhou and Troyanskaya(2015)}]{zhouPredictingEffectsNoncoding2015}
+\bibinfo{author}{Zhou, J.}, and \bibinfo{author}{Troyanskaya, O.G.}
+  (\bibinfo{year}{2015}). \bibinfo{title}{Predicting effects of noncoding
+  variants with deep learning--based sequence model}.
+\newblock \bibinfo{journal}{Nat Methods} \emph{\bibinfo{volume}{12}},
+  \bibinfo{pages}{931--934}. \DOIprefix\doi{10.1038/nmeth.3547}.
+%Type = Article
+\bibitem[{Kelley et~al.(2016)Kelley, Snoek and
+  Rinn}]{kelleyBassetLearningRegulatory2016}
+\bibinfo{author}{Kelley, D.R.}, \bibinfo{author}{Snoek, J.}, and
+  \bibinfo{author}{Rinn, J.L.} (\bibinfo{year}{2016}). \bibinfo{title}{Basset:
+  Learning the regulatory code of the accessible genome with deep convolutional
+  neural networks}.
+\newblock \bibinfo{journal}{Genome Res.} \emph{\bibinfo{volume}{26}},
+  \bibinfo{pages}{990--999}. \DOIprefix\doi{10.1101/gr.200535.115}.
+%Type = Article
+\bibitem[{Quang and Xie(2016)}]{quangDanQHybridConvolutional2016}
+\bibinfo{author}{Quang, D.}, and \bibinfo{author}{Xie, X.}
+  (\bibinfo{year}{2016}). \bibinfo{title}{{{DanQ}}: A hybrid convolutional and
+  recurrent deep neural network for quantifying the function of {{DNA}}
+  sequences}.
+\newblock \bibinfo{journal}{Nucleic Acids Research}
+  \emph{\bibinfo{volume}{44}}, \bibinfo{pages}{e107}.
+  \DOIprefix\doi{10.1093/nar/gkw226}.
+%Type = Article
+\bibitem[{Movva et~al.(2019)Movva, Greenside, Marinov, Nair, Shrikumar and
+  Kundaje}]{movvaDecipheringRegulatoryDNA2019}
+\bibinfo{author}{Movva, R.}, \bibinfo{author}{Greenside, P.},
+  \bibinfo{author}{Marinov, G.K.}, \bibinfo{author}{Nair, S.},
+  \bibinfo{author}{Shrikumar, A.}, and \bibinfo{author}{Kundaje, A.}
+  (\bibinfo{year}{2019}). \bibinfo{title}{Deciphering regulatory {{DNA}}
+  sequences and noncoding genetic variants using neural network models of
+  massively parallel reporter assays}.
+\newblock \bibinfo{journal}{PLoS One} \emph{\bibinfo{volume}{14}},
+  \bibinfo{pages}{e0218073}. \DOIprefix\doi{10.1371/journal.pone.0218073}.
+%Type = Article
+\bibitem[{Kelley et~al.(2018)Kelley, Reshef, Bileschi, Belanger, McLean and
+  Snoek}]{kelleySequentialRegulatoryActivity2018}
+\bibinfo{author}{Kelley, D.R.}, \bibinfo{author}{Reshef, Y.A.},
+  \bibinfo{author}{Bileschi, M.}, \bibinfo{author}{Belanger, D.},
+  \bibinfo{author}{McLean, C.Y.}, and \bibinfo{author}{Snoek, J.}
+  (\bibinfo{year}{2018}). \bibinfo{title}{Sequential regulatory activity
+  prediction across chromosomes with convolutional neural networks}.
+\newblock \bibinfo{journal}{Genome Res} \emph{\bibinfo{volume}{28}},
+  \bibinfo{pages}{739--750}. \DOIprefix\doi{10.1101/gr.227819.117}.
+%Type = Article
+\bibitem[{Yuan and Kelley(2022)}]{yuanScBassetSequencebasedModeling2022}
+\bibinfo{author}{Yuan, H.}, and \bibinfo{author}{Kelley, D.R.}
+  (\bibinfo{year}{2022}). \bibinfo{title}{{{scBasset}}: Sequence-based modeling
+  of single-cell {{ATAC-seq}} using convolutional neural networks}.
+\newblock \bibinfo{journal}{Nat Methods} \emph{\bibinfo{volume}{19}},
+  \bibinfo{pages}{1088--1096}. \DOIprefix\doi{10.1038/s41592-022-01562-8}.
+%Type = Article
+\bibitem[{Chen et~al.(2022)Chen, Wong, Troyanskaya and
+  Zhou}]{chenSequencebasedGlobalMap2022}
+\bibinfo{author}{Chen, K.M.}, \bibinfo{author}{Wong, A.K.},
+  \bibinfo{author}{Troyanskaya, O.G.}, and \bibinfo{author}{Zhou, J.}
+  (\bibinfo{year}{2022}). \bibinfo{title}{A sequence-based global map of
+  regulatory activity for deciphering human genetics}.
+\newblock \bibinfo{journal}{Nat Genet} \emph{\bibinfo{volume}{54}},
+  \bibinfo{pages}{940--949}. \DOIprefix\doi{10.1038/s41588-022-01102-2}.
 %Type = Article
 \bibitem[{Maslova et~al.(2020)Maslova, Ramirez, Ma, Schmutz, Wang, Fox, Ng,
   Benoist, Mostafavi and {Immunological Genome
@@ -74,41 +164,6 @@
 \newblock \bibinfo{journal}{Proceedings of the National Academy of Sciences}
   \emph{\bibinfo{volume}{117}}, \bibinfo{pages}{25655--25666}.
   \DOIprefix\doi{10.1073/pnas.2011795117}.
-%Type = Article
-\bibitem[{Janssens et~al.(2022)Janssens, Aibar, Taskiran, Ismail, Gomez,
-  Aughey, Spanier, De~Rop, {Gonz{\'a}lez-Blas}, Dionne, Grimes, Quan,
-  Papasokrati, Hulselmans, Makhzami, De~Waegeneer, Christiaens, Southall and
-  Aerts}]{janssensDecodingGeneRegulation2022}
-\bibinfo{author}{Janssens, J.}, \bibinfo{author}{Aibar, S.},
-  \bibinfo{author}{Taskiran, I.I.}, \bibinfo{author}{Ismail, J.N.},
-  \bibinfo{author}{Gomez, A.E.}, \bibinfo{author}{Aughey, G.},
-  \bibinfo{author}{Spanier, K.I.}, \bibinfo{author}{De~Rop, F.V.},
-  \bibinfo{author}{{Gonz{\'a}lez-Blas}, C.B.}, \bibinfo{author}{Dionne, M.},
-  \bibinfo{author}{Grimes, K.}, \bibinfo{author}{Quan, X.J.},
-  \bibinfo{author}{Papasokrati, D.}, \bibinfo{author}{Hulselmans, G.},
-  \bibinfo{author}{Makhzami, S.}, \bibinfo{author}{De~Waegeneer, M.},
-  \bibinfo{author}{Christiaens, V.}, \bibinfo{author}{Southall, T.}, and
-  \bibinfo{author}{Aerts, S.} (\bibinfo{year}{2022}). \bibinfo{title}{Decoding
-  gene regulation in the fly brain}.
-\newblock \bibinfo{journal}{Nature} \emph{\bibinfo{volume}{601}},
-  \bibinfo{pages}{630--636}. \DOIprefix\doi{10.1038/s41586-021-04262-z}.
-%Type = Article
-\bibitem[{{Bravo Gonz{\'a}lez-Blas} et~al.(2024){Bravo Gonz{\'a}lez-Blas},
-  Matetovici, Hillen, Taskiran, Vandepoel, Christiaens, {Sansores-Garc{\'i}a},
-  Verboven, Hulselmans, Poovathingal, Demeulemeester, Psatha, Mauduit, Halder
-  and Aerts}]{bravogonzalez-blasSinglecellSpatialMultiomics2024}
-\bibinfo{author}{{Bravo Gonz{\'a}lez-Blas}, C.}, \bibinfo{author}{Matetovici,
-  I.}, \bibinfo{author}{Hillen, H.}, \bibinfo{author}{Taskiran, I.I.},
-  \bibinfo{author}{Vandepoel, R.}, \bibinfo{author}{Christiaens, V.},
-  \bibinfo{author}{{Sansores-Garc{\'i}a}, L.}, \bibinfo{author}{Verboven, E.},
-  \bibinfo{author}{Hulselmans, G.}, \bibinfo{author}{Poovathingal, S.},
-  \bibinfo{author}{Demeulemeester, J.}, \bibinfo{author}{Psatha, N.},
-  \bibinfo{author}{Mauduit, D.}, \bibinfo{author}{Halder, G.}, and
-  \bibinfo{author}{Aerts, S.} (\bibinfo{year}{2024}).
-  \bibinfo{title}{Single-cell spatial multi-omics and deep learning dissect
-  enhancer-driven gene regulatory networks in liver zonation}.
-\newblock \bibinfo{journal}{Nat Cell Biol} \emph{\bibinfo{volume}{26}},
-  \bibinfo{pages}{153--167}. \DOIprefix\doi{10.1038/s41556-023-01316-4}.
 %Type = Article
 \bibitem[{Minnoye et~al.(2020)Minnoye, Taskiran, Mauduit, Fazio, Aerschot,
   Hulselmans, Christiaens, Makhzami, Seltenhammer, Karras, Primot, Cadieu, van
@@ -129,6 +184,76 @@
 \newblock \bibinfo{journal}{Genome Res.} \emph{\bibinfo{volume}{30}},
   \bibinfo{pages}{1815--1834}. \DOIprefix\doi{10.1101/gr.260844.120}.
 %Type = Article
+\bibitem[{Avsec et~al.(2021{\natexlab{a}})Avsec, Weilert, Shrikumar, Krueger,
+  Alexandari, Dalal, Fropf, McAnany, Gagneur, Kundaje and
+  Zeitlinger}]{avsecBaseresolutionModelsTranscriptionfactor2021}
+\bibinfo{author}{Avsec, {\v Z}.}, \bibinfo{author}{Weilert, M.},
+  \bibinfo{author}{Shrikumar, A.}, \bibinfo{author}{Krueger, S.},
+  \bibinfo{author}{Alexandari, A.}, \bibinfo{author}{Dalal, K.},
+  \bibinfo{author}{Fropf, R.}, \bibinfo{author}{McAnany, C.},
+  \bibinfo{author}{Gagneur, J.}, \bibinfo{author}{Kundaje, A.}, and
+  \bibinfo{author}{Zeitlinger, J.} (\bibinfo{year}{2021}{\natexlab{a}}).
+  \bibinfo{title}{Base-resolution models of transcription-factor binding reveal
+  soft motif syntax}.
+\newblock \bibinfo{journal}{Nat Genet} \emph{\bibinfo{volume}{53}},
+  \bibinfo{pages}{354--366}. \DOIprefix\doi{10.1038/s41588-021-00782-6}.
+%Type = Article
+\bibitem[{Avsec et~al.(2021{\natexlab{b}})Avsec, Agarwal, Visentin, Ledsam,
+  {Grabska-Barwinska}, Taylor, Assael, Jumper, Kohli and
+  Kelley}]{avsecEffectiveGeneExpression2021}
+\bibinfo{author}{Avsec, {\v Z}.}, \bibinfo{author}{Agarwal, V.},
+  \bibinfo{author}{Visentin, D.}, \bibinfo{author}{Ledsam, J.R.},
+  \bibinfo{author}{{Grabska-Barwinska}, A.}, \bibinfo{author}{Taylor, K.R.},
+  \bibinfo{author}{Assael, Y.}, \bibinfo{author}{Jumper, J.},
+  \bibinfo{author}{Kohli, P.}, and \bibinfo{author}{Kelley, D.R.}
+  (\bibinfo{year}{2021}{\natexlab{b}}). \bibinfo{title}{Effective gene
+  expression prediction from sequence by integrating long-range interactions}.
+\newblock \bibinfo{journal}{Nat Methods} \emph{\bibinfo{volume}{18}},
+  \bibinfo{pages}{1196--1203}. \DOIprefix\doi{10.1038/s41592-021-01252-x}.
+%Type = Article
+\bibitem[{{de Almeida} et~al.(2022){de Almeida}, Reiter, Pagani and
+  Stark}]{dealmeidaDeepSTARRPredictsEnhancer2022}
+\bibinfo{author}{{de Almeida}, B.P.}, \bibinfo{author}{Reiter, F.},
+  \bibinfo{author}{Pagani, M.}, and \bibinfo{author}{Stark, A.}
+  (\bibinfo{year}{2022}). \bibinfo{title}{{{DeepSTARR}} predicts enhancer
+  activity from {{DNA}} sequence and enables the de novo design of synthetic
+  enhancers}.
+\newblock \bibinfo{journal}{Nat Genet} \emph{\bibinfo{volume}{54}},
+  \bibinfo{pages}{613--624}. \DOIprefix\doi{10.1038/s41588-022-01048-5}.
+%Type = Article
+\bibitem[{Linder et~al.(2025)Linder, Srivastava, Yuan, Agarwal and
+  Kelley}]{linderPredictingRNAseqCoverage2025a}
+\bibinfo{author}{Linder, J.}, \bibinfo{author}{Srivastava, D.},
+  \bibinfo{author}{Yuan, H.}, \bibinfo{author}{Agarwal, V.}, and
+  \bibinfo{author}{Kelley, D.R.} (\bibinfo{year}{2025}).
+  \bibinfo{title}{Predicting {{RNA-seq}} coverage from {{DNA}} sequence as a
+  unifying model of gene regulation}.
+\newblock \bibinfo{journal}{Nat Genet}.
+  \DOIprefix\doi{10.1038/s41588-024-02053-6}.
+%Type = Article
+\bibitem[{Kempynck et~al.(2025)Kempynck, De~Winter, Blaauw, Konstantakos,
+  Dieltiens, Ek{\c s}i, Bercier, Taskiran, Hulselmans, Spanier, Christiaens,
+  Van Den~Bosch, Mahieu and Aerts}]{kempynckCREstedModelingGenomic2025}
+\bibinfo{author}{Kempynck, N.}, \bibinfo{author}{De~Winter, S.},
+  \bibinfo{author}{Blaauw, C.H.}, \bibinfo{author}{Konstantakos, V.},
+  \bibinfo{author}{Dieltiens, S.}, \bibinfo{author}{Ek{\c s}i, E.C.},
+  \bibinfo{author}{Bercier, V.}, \bibinfo{author}{Taskiran, I.I.},
+  \bibinfo{author}{Hulselmans, G.}, \bibinfo{author}{Spanier, K.},
+  \bibinfo{author}{Christiaens, V.}, \bibinfo{author}{Van Den~Bosch, L.},
+  \bibinfo{author}{Mahieu, L.}, and \bibinfo{author}{Aerts, S.}
+  (\bibinfo{year}{2025}). \bibinfo{title}{{{CREsted}}: Modeling genomic and
+  synthetic cell type-specific enhancers across tissues and species}.
+\newblock \bibinfo{journal}{BioRxiv}.
+  \DOIprefix\doi{10.1101/2025.04.02.646812}.
+%Type = Article
+\bibitem[{De~Winter et~al.(2025)De~Winter, Konstantakos and
+  Aerts}]{dewinterModellingDesignTranscriptional2025}
+\bibinfo{author}{De~Winter, S.}, \bibinfo{author}{Konstantakos, V.}, and
+  \bibinfo{author}{Aerts, S.} (\bibinfo{year}{2025}). \bibinfo{title}{Modelling
+  and design of transcriptional enhancers}.
+\newblock \bibinfo{journal}{Nat Rev Bioeng}.
+  \DOIprefix\doi{10.1038/s44222-025-00280-y}.
+%Type = Article
 \bibitem[{Atak et~al.(2021)Atak, Taskiran, Demeulemeester, Flerin, Mauduit,
   Minnoye, Hulselmans, Christiaens, Ghanem, Wouters and
   Aerts}]{atakInterpretationAllelespecificChromatin2021}
@@ -143,19 +268,40 @@
 \newblock \bibinfo{journal}{Genome Res.} \emph{\bibinfo{volume}{31}},
   \bibinfo{pages}{1082--1096}. \DOIprefix\doi{10.1101/gr.260851.120}.
 %Type = Article
-\bibitem[{Mannens et~al.(2024)Mannens, Hu, L{\"o}nnerberg, Schipper, Reagor,
-  Li, He, Barker, Sundstr{\"o}m, Posthuma and
-  Linnarsson}]{mannensChromatinAccessibilityHuman2024}
-\bibinfo{author}{Mannens, C.C.A.}, \bibinfo{author}{Hu, L.},
-  \bibinfo{author}{L{\"o}nnerberg, P.}, \bibinfo{author}{Schipper, M.},
-  \bibinfo{author}{Reagor, C.C.}, \bibinfo{author}{Li, X.},
-  \bibinfo{author}{He, X.}, \bibinfo{author}{Barker, R.A.},
-  \bibinfo{author}{Sundstr{\"o}m, E.}, \bibinfo{author}{Posthuma, D.}, and
-  \bibinfo{author}{Linnarsson, S.} (\bibinfo{year}{2024}).
-  \bibinfo{title}{Chromatin accessibility during human first-trimester
-  neurodevelopment}.
-\newblock \bibinfo{journal}{Nature} pp. \bibinfo{pages}{1--8}.
-  \DOIprefix\doi{10.1038/s41586-024-07234-1}.
+\bibitem[{{Bravo Gonz{\'a}lez-Blas} et~al.(2024){Bravo Gonz{\'a}lez-Blas},
+  Matetovici, Hillen, Taskiran, Vandepoel, Christiaens, {Sansores-Garc{\'i}a},
+  Verboven, Hulselmans, Poovathingal, Demeulemeester, Psatha, Mauduit, Halder
+  and Aerts}]{bravogonzalez-blasSinglecellSpatialMultiomics2024}
+\bibinfo{author}{{Bravo Gonz{\'a}lez-Blas}, C.}, \bibinfo{author}{Matetovici,
+  I.}, \bibinfo{author}{Hillen, H.}, \bibinfo{author}{Taskiran, I.I.},
+  \bibinfo{author}{Vandepoel, R.}, \bibinfo{author}{Christiaens, V.},
+  \bibinfo{author}{{Sansores-Garc{\'i}a}, L.}, \bibinfo{author}{Verboven, E.},
+  \bibinfo{author}{Hulselmans, G.}, \bibinfo{author}{Poovathingal, S.},
+  \bibinfo{author}{Demeulemeester, J.}, \bibinfo{author}{Psatha, N.},
+  \bibinfo{author}{Mauduit, D.}, \bibinfo{author}{Halder, G.}, and
+  \bibinfo{author}{Aerts, S.} (\bibinfo{year}{2024}).
+  \bibinfo{title}{Single-cell spatial multi-omics and deep learning dissect
+  enhancer-driven gene regulatory networks in liver zonation}.
+\newblock \bibinfo{journal}{Nat Cell Biol} \emph{\bibinfo{volume}{26}},
+  \bibinfo{pages}{153--167}. \DOIprefix\doi{10.1038/s41556-023-01316-4}.
+%Type = Article
+\bibitem[{Janssens et~al.(2022)Janssens, Aibar, Taskiran, Ismail, Gomez,
+  Aughey, Spanier, De~Rop, {Gonz{\'a}lez-Blas}, Dionne, Grimes, Quan,
+  Papasokrati, Hulselmans, Makhzami, De~Waegeneer, Christiaens, Southall and
+  Aerts}]{janssensDecodingGeneRegulation2022}
+\bibinfo{author}{Janssens, J.}, \bibinfo{author}{Aibar, S.},
+  \bibinfo{author}{Taskiran, I.I.}, \bibinfo{author}{Ismail, J.N.},
+  \bibinfo{author}{Gomez, A.E.}, \bibinfo{author}{Aughey, G.},
+  \bibinfo{author}{Spanier, K.I.}, \bibinfo{author}{De~Rop, F.V.},
+  \bibinfo{author}{{Gonz{\'a}lez-Blas}, C.B.}, \bibinfo{author}{Dionne, M.},
+  \bibinfo{author}{Grimes, K.}, \bibinfo{author}{Quan, X.J.},
+  \bibinfo{author}{Papasokrati, D.}, \bibinfo{author}{Hulselmans, G.},
+  \bibinfo{author}{Makhzami, S.}, \bibinfo{author}{De~Waegeneer, M.},
+  \bibinfo{author}{Christiaens, V.}, \bibinfo{author}{Southall, T.}, and
+  \bibinfo{author}{Aerts, S.} (\bibinfo{year}{2022}). \bibinfo{title}{Decoding
+  gene regulation in the fly brain}.
+\newblock \bibinfo{journal}{Nature} \emph{\bibinfo{volume}{601}},
+  \bibinfo{pages}{630--636}. \DOIprefix\doi{10.1038/s41586-021-04262-z}.
 %Type = Article
 \bibitem[{Hecker et~al.(2025)Hecker, Kempynck, Mauduit, Abaffyov{\'a},
   Vandepoel, Dieltiens, Borm, Sarropoulos, {Gonz{\'a}lez-Blas}, De~Man, Davie,
@@ -176,68 +322,19 @@
 \newblock \bibinfo{journal}{Science} \emph{\bibinfo{volume}{387}},
   \bibinfo{pages}{eadp3957}. \DOIprefix\doi{10.1126/science.adp3957}.
 %Type = Article
-\bibitem[{Avsec et~al.(2021{\natexlab{a}})Avsec, Weilert, Shrikumar, Krueger,
-  Alexandari, Dalal, Fropf, McAnany, Gagneur, Kundaje and
-  Zeitlinger}]{avsecBaseresolutionModelsTranscriptionfactor2021}
-\bibinfo{author}{Avsec, {\v Z}.}, \bibinfo{author}{Weilert, M.},
-  \bibinfo{author}{Shrikumar, A.}, \bibinfo{author}{Krueger, S.},
-  \bibinfo{author}{Alexandari, A.}, \bibinfo{author}{Dalal, K.},
-  \bibinfo{author}{Fropf, R.}, \bibinfo{author}{McAnany, C.},
-  \bibinfo{author}{Gagneur, J.}, \bibinfo{author}{Kundaje, A.}, and
-  \bibinfo{author}{Zeitlinger, J.} (\bibinfo{year}{2021}{\natexlab{a}}).
-  \bibinfo{title}{Base-resolution models of transcription-factor binding reveal
-  soft motif syntax}.
-\newblock \bibinfo{journal}{Nat Genet} \emph{\bibinfo{volume}{53}},
-  \bibinfo{pages}{354--366}. \DOIprefix\doi{10.1038/s41588-021-00782-6}.
-%Type = Article
-\bibitem[{Taskiran et~al.(2024)Taskiran, Spanier, Dickm{\"a}nken, Kempynck,
-  Pan{\v c}{\'i}kov{\'a}, Ek{\c s}i, Hulselmans, Ismail, Theunis, Vandepoel,
-  Christiaens, Mauduit and Aerts}]{taskiranCelltypedirectedDesignSynthetic2024}
-\bibinfo{author}{Taskiran, I.I.}, \bibinfo{author}{Spanier, K.I.},
-  \bibinfo{author}{Dickm{\"a}nken, H.}, \bibinfo{author}{Kempynck, N.},
-  \bibinfo{author}{Pan{\v c}{\'i}kov{\'a}, A.}, \bibinfo{author}{Ek{\c s}i,
-  E.C.}, \bibinfo{author}{Hulselmans, G.}, \bibinfo{author}{Ismail, J.N.},
-  \bibinfo{author}{Theunis, K.}, \bibinfo{author}{Vandepoel, R.},
-  \bibinfo{author}{Christiaens, V.}, \bibinfo{author}{Mauduit, D.}, and
-  \bibinfo{author}{Aerts, S.} (\bibinfo{year}{2024}).
-  \bibinfo{title}{Cell-type-directed design of synthetic enhancers}.
-\newblock \bibinfo{journal}{Nature} \emph{\bibinfo{volume}{626}},
-  \bibinfo{pages}{212--220}. \DOIprefix\doi{10.1038/s41586-023-06936-2}.
-%Type = Article
-\bibitem[{{de Almeida} et~al.(2024){de Almeida}, Schaub, Pagani, Secchia,
-  Furlong and Stark}]{dealmeidaTargetedDesignSynthetic2024}
-\bibinfo{author}{{de Almeida}, B.P.}, \bibinfo{author}{Schaub, C.},
-  \bibinfo{author}{Pagani, M.}, \bibinfo{author}{Secchia, S.},
-  \bibinfo{author}{Furlong, E.E.M.}, and \bibinfo{author}{Stark, A.}
-  (\bibinfo{year}{2024}). \bibinfo{title}{Targeted design of synthetic
-  enhancers for selected tissues in the {{Drosophila}} embryo}.
-\newblock \bibinfo{journal}{Nature} \emph{\bibinfo{volume}{626}},
-  \bibinfo{pages}{207--211}. \DOIprefix\doi{10.1038/s41586-023-06905-9}.
-%Type = Article
-\bibitem[{Gosai et~al.(2024)Gosai, Castro, Fuentes, Butts, Mouri, Alasoadura,
-  Kales, Nguyen, Noche, Rao, Joy, Sabeti, Reilly and
-  Tewhey}]{gosaiMachineguidedDesignCelltypetargeting2024}
-\bibinfo{author}{Gosai, S.J.}, \bibinfo{author}{Castro, R.I.},
-  \bibinfo{author}{Fuentes, N.}, \bibinfo{author}{Butts, J.C.},
-  \bibinfo{author}{Mouri, K.}, \bibinfo{author}{Alasoadura, M.},
-  \bibinfo{author}{Kales, S.}, \bibinfo{author}{Nguyen, T.T.L.},
-  \bibinfo{author}{Noche, R.R.}, \bibinfo{author}{Rao, A.S.},
-  \bibinfo{author}{Joy, M.T.}, \bibinfo{author}{Sabeti, P.C.},
-  \bibinfo{author}{Reilly, S.K.}, and \bibinfo{author}{Tewhey, R.}
-  (\bibinfo{year}{2024}). \bibinfo{title}{Machine-guided design of
-  cell-type-targeting cis-regulatory elements}.
-\newblock \bibinfo{journal}{Nature} \emph{\bibinfo{volume}{634}},
-  \bibinfo{pages}{1211--1220}. \DOIprefix\doi{10.1038/s41586-024-08070-z}.
-%Type = Misc
-\bibitem[{Yin et~al.(2024)Yin, Hair, Byeon, Bromley, Meuleman and
-  Seelig}]{yinIterativeDeepLearningdesign2024}
-\bibinfo{author}{Yin, C.}, \bibinfo{author}{Hair, S.C.},
-  \bibinfo{author}{Byeon, G.W.}, \bibinfo{author}{Bromley, P.},
-  \bibinfo{author}{Meuleman, W.}, and \bibinfo{author}{Seelig, G.}
-  (\bibinfo{year}{2024}).
-\newblock \bibinfo{title}{Iterative deep learning-design of human enhancers
-  exploits condensed sequence grammar to achieve cell type-specificity}. .
-\newblock \DOIprefix\doi{10.1101/2024.06.14.599076}.
+\bibitem[{Mannens et~al.(2024)Mannens, Hu, L{\"o}nnerberg, Schipper, Reagor,
+  Li, He, Barker, Sundstr{\"o}m, Posthuma and
+  Linnarsson}]{mannensChromatinAccessibilityHuman2024}
+\bibinfo{author}{Mannens, C.C.A.}, \bibinfo{author}{Hu, L.},
+  \bibinfo{author}{L{\"o}nnerberg, P.}, \bibinfo{author}{Schipper, M.},
+  \bibinfo{author}{Reagor, C.C.}, \bibinfo{author}{Li, X.},
+  \bibinfo{author}{He, X.}, \bibinfo{author}{Barker, R.A.},
+  \bibinfo{author}{Sundstr{\"o}m, E.}, \bibinfo{author}{Posthuma, D.}, and
+  \bibinfo{author}{Linnarsson, S.} (\bibinfo{year}{2024}).
+  \bibinfo{title}{Chromatin accessibility during human first-trimester
+  neurodevelopment}.
+\newblock \bibinfo{journal}{Nature} pp. \bibinfo{pages}{1--8}.
+  \DOIprefix\doi{10.1038/s41586-024-07234-1}.
 %Type = Article
 \bibitem[{McCauley and Wells(2017)}]{mccauleyPluripotentStemCellderived2017}
 \bibinfo{author}{McCauley, H.A.}, and \bibinfo{author}{Wells, J.M.}
@@ -463,20 +560,19 @@
   \bibinfo{pages}{63--101}.
 \newblock \DOIprefix\doi{10.1016/S0070-2153(09)88003-4}.
 %Type = Article
-\bibitem[{Kempynck et~al.(2025)Kempynck, De~Winter, Blaauw, Konstantakos,
-  Dieltiens, Ek{\c s}i, Bercier, Taskiran, Hulselmans, Spanier, Christiaens,
-  Van Den~Bosch, Mahieu and Aerts}]{kempynckCREstedModelingGenomic2025}
-\bibinfo{author}{Kempynck, N.}, \bibinfo{author}{De~Winter, S.},
-  \bibinfo{author}{Blaauw, C.H.}, \bibinfo{author}{Konstantakos, V.},
-  \bibinfo{author}{Dieltiens, S.}, \bibinfo{author}{Ek{\c s}i, E.C.},
-  \bibinfo{author}{Bercier, V.}, \bibinfo{author}{Taskiran, I.I.},
-  \bibinfo{author}{Hulselmans, G.}, \bibinfo{author}{Spanier, K.},
-  \bibinfo{author}{Christiaens, V.}, \bibinfo{author}{Van Den~Bosch, L.},
-  \bibinfo{author}{Mahieu, L.}, and \bibinfo{author}{Aerts, S.}
-  (\bibinfo{year}{2025}). \bibinfo{title}{{{CREsted}}: Modeling genomic and
-  synthetic cell type-specific enhancers across tissues and species}.
-\newblock \bibinfo{journal}{BioRxiv}.
-  \DOIprefix\doi{10.1101/2025.04.02.646812}.
+\bibitem[{Taskiran et~al.(2024)Taskiran, Spanier, Dickm{\"a}nken, Kempynck,
+  Pan{\v c}{\'i}kov{\'a}, Ek{\c s}i, Hulselmans, Ismail, Theunis, Vandepoel,
+  Christiaens, Mauduit and Aerts}]{taskiranCelltypedirectedDesignSynthetic2024}
+\bibinfo{author}{Taskiran, I.I.}, \bibinfo{author}{Spanier, K.I.},
+  \bibinfo{author}{Dickm{\"a}nken, H.}, \bibinfo{author}{Kempynck, N.},
+  \bibinfo{author}{Pan{\v c}{\'i}kov{\'a}, A.}, \bibinfo{author}{Ek{\c s}i,
+  E.C.}, \bibinfo{author}{Hulselmans, G.}, \bibinfo{author}{Ismail, J.N.},
+  \bibinfo{author}{Theunis, K.}, \bibinfo{author}{Vandepoel, R.},
+  \bibinfo{author}{Christiaens, V.}, \bibinfo{author}{Mauduit, D.}, and
+  \bibinfo{author}{Aerts, S.} (\bibinfo{year}{2024}).
+  \bibinfo{title}{Cell-type-directed design of synthetic enhancers}.
+\newblock \bibinfo{journal}{Nature} \emph{\bibinfo{volume}{626}},
+  \bibinfo{pages}{212--220}. \DOIprefix\doi{10.1038/s41586-023-06936-2}.
 %Type = Article
 \bibitem[{Rothstein and
   {Simoes-Costa}(2020)}]{rothsteinHeterodimerizationTFAP2Pioneer2020}
@@ -530,39 +626,12 @@
 \newblock \bibinfo{journal}{Nat Rev Genet} \emph{\bibinfo{volume}{5}},
   \bibinfo{pages}{276--287}. \DOIprefix\doi{10.1038/nrg1315}.
 %Type = Article
-\bibitem[{Kim and Wysocka(2023)}]{kimDecipheringMultiscaleQuantitative2023}
-\bibinfo{author}{Kim, S.}, and \bibinfo{author}{Wysocka, J.}
-  (\bibinfo{year}{2023}). \bibinfo{title}{Deciphering the multi-scale,
-  quantitative cis-regulatory code}.
-\newblock \bibinfo{journal}{Molecular Cell} \emph{\bibinfo{volume}{83}},
-  \bibinfo{pages}{373--392}. \DOIprefix\doi{10.1016/j.molcel.2022.12.032}.
-%Type = Article
 \bibitem[{{de Boer} and Taipale(2024)}]{deboerHoldOutGenome2024}
 \bibinfo{author}{{de Boer}, C.G.}, and \bibinfo{author}{Taipale, J.}
   (\bibinfo{year}{2024}). \bibinfo{title}{Hold out the genome: A roadmap to
   solving the cis-regulatory code}.
 \newblock \bibinfo{journal}{Nature} \emph{\bibinfo{volume}{625}},
   \bibinfo{pages}{41--50}. \DOIprefix\doi{10.1038/s41586-023-06661-w}.
-%Type = Article
-\bibitem[{Long et~al.(2016)Long, Prescott and
-  Wysocka}]{longEverChangingLandscapesTranscriptional2016}
-\bibinfo{author}{Long, H.K.}, \bibinfo{author}{Prescott, S.L.}, and
-  \bibinfo{author}{Wysocka, J.} (\bibinfo{year}{2016}).
-  \bibinfo{title}{Ever-{{Changing Landscapes}}: {{Transcriptional Enhancers}}
-  in {{Development}} and {{Evolution}}}.
-\newblock \bibinfo{journal}{Cell} \emph{\bibinfo{volume}{167}},
-  \bibinfo{pages}{1170--1187}. \DOIprefix\doi{10.1016/j.cell.2016.09.018}.
-%Type = Article
-\bibitem[{Lambert et~al.(2018)Lambert, Jolma, Campitelli, Das, Yin, Albu, Chen,
-  Taipale, Hughes and Weirauch}]{lambertHumanTranscriptionFactors2018}
-\bibinfo{author}{Lambert, S.A.}, \bibinfo{author}{Jolma, A.},
-  \bibinfo{author}{Campitelli, L.F.}, \bibinfo{author}{Das, P.K.},
-  \bibinfo{author}{Yin, Y.}, \bibinfo{author}{Albu, M.}, \bibinfo{author}{Chen,
-  X.}, \bibinfo{author}{Taipale, J.}, \bibinfo{author}{Hughes, T.R.}, and
-  \bibinfo{author}{Weirauch, M.T.} (\bibinfo{year}{2018}). \bibinfo{title}{The
-  {{Human Transcription Factors}}}.
-\newblock \bibinfo{journal}{Cell} \emph{\bibinfo{volume}{172}},
-  \bibinfo{pages}{650--665}. \DOIprefix\doi{10.1016/j.cell.2018.01.029}.
 %Type = Article
 \bibitem[{Arnosti and
   Kulkarni(2005)}]{arnostiTranscriptionalEnhancersIntelligent2005}
@@ -720,16 +789,6 @@
   Factors}}}.
 \newblock \bibinfo{journal}{Cell} \emph{\bibinfo{volume}{152}},
   \bibinfo{pages}{327--339}. \DOIprefix\doi{10.1016/j.cell.2012.12.009}.
-%Type = Article
-\bibitem[{{de Almeida} et~al.(2022){de Almeida}, Reiter, Pagani and
-  Stark}]{dealmeidaDeepSTARRPredictsEnhancer2022}
-\bibinfo{author}{{de Almeida}, B.P.}, \bibinfo{author}{Reiter, F.},
-  \bibinfo{author}{Pagani, M.}, and \bibinfo{author}{Stark, A.}
-  (\bibinfo{year}{2022}). \bibinfo{title}{{{DeepSTARR}} predicts enhancer
-  activity from {{DNA}} sequence and enables the de novo design of synthetic
-  enhancers}.
-\newblock \bibinfo{journal}{Nat Genet} \emph{\bibinfo{volume}{54}},
-  \bibinfo{pages}{613--624}. \DOIprefix\doi{10.1038/s41588-022-01048-5}.
 %Type = Article
 \bibitem[{Jacobs et~al.(2023)Jacobs, Pagani, Wenzl and
   Stark}]{jacobsWidespreadRegulatorySpecificities2023}
@@ -980,29 +1039,6 @@
   for loss of activity over large genomic distances}.
 \newblock \bibinfo{journal}{Molecular Cell} \emph{\bibinfo{volume}{85}},
   \bibinfo{pages}{362--375.e9}. \DOIprefix\doi{10.1016/j.molcel.2024.11.008}.
-%Type = Article
-\bibitem[{Avsec et~al.(2021{\natexlab{b}})Avsec, Agarwal, Visentin, Ledsam,
-  {Grabska-Barwinska}, Taylor, Assael, Jumper, Kohli and
-  Kelley}]{avsecEffectiveGeneExpression2021}
-\bibinfo{author}{Avsec, {\v Z}.}, \bibinfo{author}{Agarwal, V.},
-  \bibinfo{author}{Visentin, D.}, \bibinfo{author}{Ledsam, J.R.},
-  \bibinfo{author}{{Grabska-Barwinska}, A.}, \bibinfo{author}{Taylor, K.R.},
-  \bibinfo{author}{Assael, Y.}, \bibinfo{author}{Jumper, J.},
-  \bibinfo{author}{Kohli, P.}, and \bibinfo{author}{Kelley, D.R.}
-  (\bibinfo{year}{2021}{\natexlab{b}}). \bibinfo{title}{Effective gene
-  expression prediction from sequence by integrating long-range interactions}.
-\newblock \bibinfo{journal}{Nat Methods} \emph{\bibinfo{volume}{18}},
-  \bibinfo{pages}{1196--1203}. \DOIprefix\doi{10.1038/s41592-021-01252-x}.
-%Type = Article
-\bibitem[{Linder et~al.(2025)Linder, Srivastava, Yuan, Agarwal and
-  Kelley}]{linderPredictingRNAseqCoverage2025a}
-\bibinfo{author}{Linder, J.}, \bibinfo{author}{Srivastava, D.},
-  \bibinfo{author}{Yuan, H.}, \bibinfo{author}{Agarwal, V.}, and
-  \bibinfo{author}{Kelley, D.R.} (\bibinfo{year}{2025}).
-  \bibinfo{title}{Predicting {{RNA-seq}} coverage from {{DNA}} sequence as a
-  unifying model of gene regulation}.
-\newblock \bibinfo{journal}{Nat Genet}.
-  \DOIprefix\doi{10.1038/s41588-024-02053-6}.
 %Type = Misc
 \bibitem[{Hingerl et~al.(2024{\natexlab{a}})Hingerl, Martens, Karollus, Manz,
   Buenrostro, Theis and Gagneur}]{hingerlScoobyModelingMultimodal2024}

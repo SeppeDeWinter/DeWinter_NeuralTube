@@ -6,45 +6,45 @@ Database file #1: references.bib
 Warning--I didn't find a database entry for "mccallumMALLETMachineLearning"
 Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
 Reallocated singl_function (elt_size=4) to 100 items from 50.
-You've used 114 entries,
+You've used 119 entries,
             3197 wiz_defined-function locations,
-            1512 strings with 51263 characters,
-and the built_in function-call counts, 113415 in all, are:
-= -- 6546
-> -- 7741
-< -- 39
-+ -- 5448
-- -- 2210
-* -- 15658
-:= -- 14646
-add.period$ -- 342
-call.type$ -- 114
-change.case$ -- 581
-chr.to.int$ -- 111
-cite$ -- 114
-duplicate$ -- 7451
-empty$ -- 6538
-format.name$ -- 2571
-if$ -- 20320
+            1545 strings with 52284 characters,
+and the built_in function-call counts, 116242 in all, are:
+= -- 6794
+> -- 7762
+< -- 42
++ -- 5460
+- -- 2216
+* -- 16012
+:= -- 15021
+add.period$ -- 357
+call.type$ -- 119
+change.case$ -- 606
+chr.to.int$ -- 116
+cite$ -- 119
+duplicate$ -- 7691
+empty$ -- 6788
+format.name$ -- 2598
+if$ -- 20858
 int.to.chr$ -- 4
-int.to.str$ -- 115
-missing$ -- 1913
-newline$ -- 493
-num.names$ -- 350
-pop$ -- 2517
+int.to.str$ -- 120
+missing$ -- 1953
+newline$ -- 512
+num.names$ -- 365
+pop$ -- 2575
 preamble$ -- 1
-purify$ -- 570
+purify$ -- 595
 quote$ -- 0
-skip$ -- 2415
+skip$ -- 2461
 stack$ -- 0
-substring$ -- 4028
-swap$ -- 7822
+substring$ -- 4226
+swap$ -- 7994
 text.length$ -- 17
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 682
+type$ -- 712
 warning$ -- 0
-while$ -- 426
+while$ -- 446
 width$ -- 0
-write$ -- 1632
+write$ -- 1702
 (There was 1 warning)
