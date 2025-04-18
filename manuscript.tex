@@ -231,9 +231,6 @@ and identified equivalent cells in the embryo where the same regions were also c
 We observed similar patterns of marker gene expression for the same cell state across the organoid and embryo (\textbf{Fig. 1i}) 
 with an average Pearson correlation coefficient of 0.83 across matched states (\textbf{Supplementary Fig. S1c-d}).\par
 
-
-%TODO:D) The black outline on green text (EMX2/EN1 etc) makes it difficult to read and see the color. consider making it thinner
-
 \afterpage{\clearpage}
 \begin{figure}[p]
   \includegraphics[width=1.0\linewidth]{figures/main/Figure_1.png}
@@ -1740,11 +1737,10 @@ The Scanpy\cite{wolfSCANPYLargescaleSinglecell2018} (v1.11.0; \href{https://rrid
 \paragraph*{Enhancer cloning}
 
 Enhancer candidates were ordered from Twist Bioscience (\href{https://rrid.site/data/record/nlx_144509-1/SCR_025817/resolver}{RRID:SCR\_025817}) with 5\lq 5\lq-GGTACCGAGCTCGAG-3\lq and 3\lq 5\lq-GGGCTCGAGATCTGC-3\lq adaptors.
-Plasmid pTK BsmBI LacZ Citrine Nanotag 24 (\href{https://rrid.site/data/record/nif-0000-11872-1/Addgene_130522/resolver}{RRID:Addgene\_130522}) was linarized using forward primer 5\lq-ggAACTCGAGCTCGGTACCT-3\lq and reverse primer 5\lq-GGGCTCGAGATCTGCGATC-3\lq. Using PCR. A PCR mixture of KAPA HiFi hot start ready mix (Roche, 07958935001 \SI{50}{\percent} V/V), \SI{0.8}{\micro\gram\per\micro\litre} plasmid and \SI{0.3}{\micro\molar} of forward and reverse primer and 
-%TODO: Add concentration
+Plasmid pTK BsmBI LacZ Citrine Nanotag 24 (\href{https://rrid.site/data/record/nif-0000-11872-1/Addgene_130522/resolver}{RRID:Addgene\_130522}) was linarized using forward primer 5\lq-ggAACTCGAGCTCGGTACCT-3\lq and reverse primer 5\lq-GGGCTCGAGATCTGCGATC-3\lq using PCR. A PCR mixture of KAPA HiFi hot start ready mix (Roche, 07958935001 \SI{50}{\percent} V/V), \SI{0.8}{\micro\gram\per\micro\litre} plasmid and \SI{0.3}{\micro\molar} of forward and reverse primer and 
 PCR program: \SI{95}{\degreeCelsius} for 3 minutes, 15 cycles of: \SI{98}{\degreeCelsius} for 20 seconds,
 \SI{58}{\degreeCelsius} for 15 seconds and \SI{72}{\degreeCelsius} for 2.5 minutes, followed by \SI{72}{\degreeCelsius}
-for 5 minutes.
+for 5 minutes was used.
 Linarized plasmids were purified using QIAquick PCR purification kit (Qiagen, 28104), followed by DpnI digestion for 1
 hour at \SI{37}{\degreeCelsius} and gel extraction of 4,5 kb band using QIAquick Gel Extraction Kit (Qiagen, 28704).
 Enhancer candiates were cloned into the target vector using an NEBuilder (New England Biolabs, E5520S) reaction with a linarized plasmid to insert ratio of 1:2 (45 minutes at \SI{50}{\degreeCelsius}). Next, \SI{2.5}{\micro\litre} of the rection mixture was transformed into \SI{25}{\micro\litre} Stellar Competent Cells (Takara Bio, 636763). Cells were thawed 15 minutes on ice, plasmid + cell mixture was kept for an additional 30 minutes on ice followed by 45 second heat shot at \SI{42}{\degreeCelsius} and 5 minutes on ice. 
@@ -1792,8 +1788,7 @@ For each pattern of the same cluster (see \textit{de novo} motif discovery) the 
 
 \subsubsection*{Footprinting analysis}
 TN5 cut site BigWigs were calculated for all organoid topics using the bigwig command from
-scatac\_fragment\_tools ()
-%TODO: add RRID
+scatac\_fragment\_tools (v0.1.3; \href{https://rrid.site/data/record/nlx_144509-1/SCR_026713/resolver?}{RRID:SCR\_026713})
 using the --cut-sites option.
 Next, for each pattern (converted to a PWM) of the FOX cluster of neural progenitors (cluster 6) motif hits were calculated on the top
 1,000 regions of all neural progenitor topics using FIMO\cite{grantFIMOScanningOccurrences2011} implemented in tangermeme (v0.4.0; \href{https://rrid.site/data/record/nlx_144509-1/SCR_026620/resolver}{RRID:SCR\_026620}) using default parameters.
