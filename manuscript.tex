@@ -437,12 +437,7 @@ while those instances in specific regions tend to be of the form \textit{TGTTT} 
     \textbf{f}, Heatmap showing the maximum normalized contribution score for each of the top 1,000 regions per topic (y-axis) and pattern (x-axis) for dorso-ventral topics. 
     \textbf{g}, Heatmap showing scaled expression of transcription factors corresponding to identified patterns in organoid (left) and embryo (right) dorso-ventral topics. 
     \textbf{h}, Heatmap showing Jaccard index of regions based on the presence of instances of the identified patterns. 
-    \textbf{i}, Scaled average and normalized number of cut sites (black, top) and contribution score (red, top) across genomic regions with a FOXA2 instance and heatmap showing normalized number of cut sites (bottom) for individual regions with a FOXA2 instance. Signal is centered on the FOXA2 instance start position. 
-    \textbf{j}, Bar chart showing the fraction of genomic regions that has a given number of FOXA2 instances for FOXA2 regions that overlap with HepG2 or A549 FOXA2 ChIP-seq peaks (general; bottom) and those regions that do not overlap (specific; top). 
-    Two-sided p-value calculated using Mann-Whitney U test between distribution of number of FOX instances in general (n = 2,130) and specific (n = 4,529) regions, for organoid.
-    \textbf{k}, Line shart, showing $-log_{10}(p value)$ of FOXA2 motif hits calculated using FIMO\cite{grantFIMOScanningOccurrences2011,schreiberTangermemeBiologicalSequence2025} for general regions and specific regions stratified by the number of FOXA2 instances per regions. * indicates two-sided p-value (Mann-Whitney U test) < 1e-6 calculated between the distribution of motif scores for specific and general regions stratified by the number of FOX instances per region. 
-    \textbf{l}, de novo motif for regions with a single FOXA2 instance that are specific (left, top) or general (right, top) and heatmap color coded by nucleotide identity for individual regions for both specific (left, bottom) and general (right, bottom) regions that have a single FOXA2 instance.
- }
+}
 \end{figure}
 
 
@@ -467,11 +462,11 @@ Notably, the patterns corresponding to the two posterior most topics correspond 
 Previously it had been hypothesized that genome-wide specific binding of homeodomain TFs is accomplished through
 cooperative binding of two TFs\cite{mannChapter3Hox2009}. 
 Indeed, the presence of instances of the \textit{TCATGWTGANTGA} motif correlates with the expression of both \textit{PAX5/8} and \textit{EN1/2} 
-and the prescence of instances of the \textit{CATYMATCA} motif correlates with the expression of \textit{MEIS1/2}, \textit{PBX1/2} and \textit{HOXB3} (\textbf{Fig. 4d-e} and Supplementary Fig. S4). 
+and the prescence of instances of the \textit{CATYMATCA} motif correlates with the expression of \textit{MEIS1/2}, \textit{PBX1/2} and \textit{HOXB3} (\textbf{Fig. 4d-e} and Supplementary Fig. S5). 
 In contrast, patterns corresponding to the two anterior most topics correspond to monomer motifs, 
 correlating with the expression of \textit{LHX2/9}, \textit{RAX} and \textit{SIX3/6} for the most anterior topic and 
 with the expression of \textit{OTX1/2}, \textit{EMX2}, \textit{DMBX1} and \textit{LMX1A} for the second most anterior
-topic (\textbf{Fig. 4d-e} and Supplementary Fig. S4)\par
+topic (\textbf{Fig. 4d-e} and Supplementary Fig. S5)\par
 %TODO: I'm surprised to see EMX2 (forebrain) together with OTX1/2 and DMBX1 (midbrain)
 
 Focusing on the two most anterior domains, two similar homeodomain TF binding motifs seem to underlie the differential
@@ -539,11 +534,11 @@ Organoid Topic 62 and embryo Topic 103 represent the pre-migratory neural crest 
 instances of TEAD, GRHL, AP2 and ZEB patterns are important for this state (\textbf{Fig. 5b-c}) 
 the importance of TEAD instances correlates with \textit{TEAD3/4} expression, 
 GRHL with \textit{GRHL1/1} 
-and AP2 with both \textit{TFAP2A} and \textit{TFAP2C} (\textbf{Fig. 5d} and Supplementary Fig. S5). 
+and AP2 with both \textit{TFAP2A} and \textit{TFAP2C} (\textbf{Fig. 5d} and Supplementary Fig. S6). 
 Note that ZEB instances have a positive contribution to the pre-migratory while it has a 
 negative contribution to all other neural crest states (\textbf{Fig. 5b-c}); 
 and moreover a negative contribution to all other cell states of both the neural progenitors (\textbf{Fig. 3e}) and neurons (\textbf{Fig. 6b}). 
-The positive contribution of ZEB in the pre-migratory neural crest state coincides with the absence of the expression of both \textit{ZEB1} and \textit{ZEB2} (\textbf{Fig. 5d} and Supplementary Fig. S5). 
+The positive contribution of ZEB in the pre-migratory neural crest state coincides with the absence of the expression of both \textit{ZEB1} and \textit{ZEB2} (\textbf{Fig. 5d} and Supplementary Fig. S6). 
 This is in line with the previously reported role of ZEB2 as a chromatin closing repressor \cite{taskiranCelltypedirectedDesignSynthetic2024}.\par
 
 The migratory neural crest cell state is represented by two organoid topics (Topic 65 and 59) and a single embryo topic (Topic 94). 
@@ -551,15 +546,15 @@ Nuclear receptor, AP2, ZIC (only in organoid topics) and SOX-dimer (organoid Top
 We could not link the nuclear receptor instances to a specific TF based on the correlation of expression and the importance score of these instances. 
 The importance of AP2 instances correlates with the expression of \textit{TFAP2A}, \textit{TFAP2B} and \textit{TFAP2C} (\textbf{Fig. 5d}), 
 ZIC with \textit{ZIC1} to \textit{ZIC5} and 
-the SOX-dimer with expression of \textit{SOX10} (\textbf{Fig. 5d} and Supplementary Fig. S5). 
+the SOX-dimer with expression of \textit{SOX10} (\textbf{Fig. 5d} and Supplementary Fig. S6). 
 The switch from TFAP2A/C in pre-migratory neural crest to TFAP2A/B in migratory neural crest is consistent with a previously reported function of both heterodimers in respectively neural plate border induction and neural crest specification\cite{rothsteinHeterodimerizationTFAP2Pioneer2020}. 
 After the pre-migratory and before the migratory neural crest state another topic is found in both organoid (Topic 60) and embryo (Topic 105) 
-for which instances of RFX are important (\textbf{Fig. 5b-c}) correlating with the expression of \textit{RFX3/4} (\textbf{Fig. 5d} and Supplementary Fig. S5).\par
+for which instances of RFX are important (\textbf{Fig. 5b-c}) correlating with the expression of \textit{RFX3/4} (\textbf{Fig. 5d} and Supplementary Fig. S6).\par
 
 Finally, the facial mesenchyme cell state is represented by organoid Topic 58 and embryo Topic 91. 
 Instances of a FOX patterns and a dimer consisting of a homeobox and ebox motif are important for this state (\textbf{Fig. 5b}). 
 The importance of the FOX instances correlates with the expression of \textit{FOXC2/D1/P1/P2} and 
-that of the dimer motif with the expression of both \textit{TWIST1} and \textit{ALX1/4} and \textit{PRRX1} (\textbf{Fig. 5d} and Supplementary Fig. S5). 
+that of the dimer motif with the expression of both \textit{TWIST1} and \textit{ALX1/4} and \textit{PRRX1} (\textbf{Fig. 5d} and Supplementary Fig. S6). 
 The latter is consistent with a recent study where it has been shown that TWIST1 and homeodomain TFs cooperatively
 bind this specific dimer motif regulating the expression of genes involved in
 facial mesenchyme\cite{kimDNAguidedTranscriptionFactor2024}.\par
@@ -578,7 +573,7 @@ we asked if, using $DeepNeuralTube$, we could explain the effect of some of thes
 and calculated the difference in prediction score between both alleles (delta prediction score). 
 At an absolute delta prediction score threshold of 0.2 we identified 235 SNPs that are explainable by either of the two models. 
 Note that only very few (1 out of 203) of these "explainable" SNPs overlap with the 203 lead SNPs identified by White \textit{et al.} (\textbf{Fig. 5f}). 
-Most of the "explainable" SNPs have a high delta prediction score for either organoid neural crest Topic 58 or Topic 59 (\textbf{Supplementary Fig. S6}). 
+Most of the "explainable" SNPs have a high delta prediction score for either organoid neural crest Topic 58 or Topic 59 (\textbf{Supplementary Fig. S7}). 
 As an example we show the explanation of rs1555067 that is located upstream of \textit{PRRX1}. 
 The G \textgreater A substitution of this SNP causes a delta prediction score of 0.64 for organoid Topic 58
 (\textbf{Fig. 5g}), increasing the predicted chromatin accessibility of this genomic region in the facial mesenchyme. 
@@ -618,24 +613,24 @@ For both the organoid and embryo we found two topics (organoid Topic 6 and 4 and
 instances of patterns from neural progenitors are important (\textbf{Fig. 6b-c}).
 These include instances of TEAD, FOX and RFX (\textbf{Fig. 6b-c}) 
 correlating with the expression of respectively \textit{TEAD1},
-\textit{FOXA2/J3/O1/P1/P2/P4} and \textit{RFX3/4} (\textbf{Fig. 6d} and Supplementary Fig. S7). 
+\textit{FOXA2/J3/O1/P1/P2/P4} and \textit{RFX3/4} (\textbf{Fig. 6d} and Supplementary Fig. S8). 
 Instances of a SOX monomer motif is important for one of these topics (\textbf{Fig. 6b-c}), 
-correlating with the expression of \textit{SOX2} (\textbf{Fig. 6d} and Supplementary Fig. S7). 
+correlating with the expression of \textit{SOX2} (\textbf{Fig. 6d} and Supplementary Fig. S8). 
 Next, in both organoids and embryo cells we identified a topic for which both instances of neural progenitor 
 patterns as well as an EBOX pattern is important (organoid Topic 23 and embryo Topic 13 \textbf{Fig. 6b-c}). 
 The importance of this EBOX pattern correlates with the expression of \textit{ASCL1} and \textit{NEUROD4}. 
 For subsequent topics SOX instances are not important anymore (\textbf{Fig. 6b-c}); 
 instead we find topics where a combination of EBOX and EBF instances are important 
 (organoid and embryo Topic 24; \textbf{Fig. 6b-c}) the latter correlating with the expression of \textit{EBF1-3}
-(\textbf{Fig. 6d} and Supplementary Fig. S7) 
+(\textbf{Fig. 6d} and Supplementary Fig. S8) 
 and topics where a combination of EBF and ONECUT instances are important 
 (organoid Topic 13 and embryo Topic 18; \textbf{Fig. 6b-c}), 
 the latter correlating with the expression of \textit{ONECUT1-3}. 
 Additionally, in the embryo we found topics where instances of NKX are important. 
 The importance of these instances is anti-correlated with the expression \textit{NKX2-2} 
-and correlated with the expression of \textit{ISL1} (\textbf{Fig. 6d} and Supplementary Fig. S7). 
+and correlated with the expression of \textit{ISL1} (\textbf{Fig. 6d} and Supplementary Fig. S8). 
 Finally, in the organoids we could identify an additional topic with instances of GATA
-(\textbf{Fig. 6b-c}), correlating with the expression of \textit{GATA2} (\textbf{Fig. 6d} and Supplementary Fig. S7).\par
+(\textbf{Fig. 6b-c}), correlating with the expression of \textit{GATA2} (\textbf{Fig. 6d} and Supplementary Fig. S8).\par
 %TODO: C.M.: NKX2-2 is an important patterning factor in the neural tube, specifically for ventralization so it should only be expressed around the floor plate. That you don't see it in the organoid might indicate that part of this patterning is not present. https://www.nature.com/articles/19315
 %TODO: S.D.W.: I do see it in the DV patterning part, just not in the subset of differentiating neurons.
 %TODO: C.M.: That's interesting, so in the organoid it doesn't seem to persist into neuronal differentiation while the embryo retains that NKX2.2 DV patterning? Are all the same types of neurons there or might it be related to a missing cell type?
@@ -668,7 +663,7 @@ making use of the motif scores of the identified patterns from each code table (
 The overall performance of these models was acceptably high (\textbf{Fig. 7a}) with an average auROC of 0.77 
 and average auPR of 0.39. 
 Notably, all models for neural crest related states performed best (\textbf{Fig. 7a}). 
-However, the genome wide precision and recall of these models to identify topic regions is still low (Supplementary Fig. S8). \par
+However, the genome wide precision and recall of these models to identify topic regions is still low (Supplementary Fig. S9). \par
 
 Next, for each cell state, we selected TFBS that had a positive coefficient for at least one of the logistic regression models 
 resulting in a total of twenty one TFBS for fifteen to sixteen states plus the additional four AP states (\textbf{Fig. 7a}). 
@@ -753,7 +748,7 @@ TFAP2A and TFAP2B/C heterodimers\cite{rothsteinHeterodimerizationTFAP2Pioneer202
 and SOX10 homodimers in neural crest. 
 For all these TFs we found dimer motifs with a fixed number of nucleotides in between the two TFBS instances. 
 Of note, for SOX10 we observed three different dimer motif with either 3, 4 or 5 bp spacing,
-with instances with 4 bp spacing being the most accessible (\textbf{Supplementary Fig. 9}). 
+with instances with 4 bp spacing being the most accessible (\textbf{Supplementary Fig. 10}). 
 Finally, we also observed evidence of pioneer activity, where binding of one TF can facilitate the 
 subsequent binding of other TFs to the same enhancer\cite{longEverChangingLandscapesTranscriptional2016}. 
 This was the case for FOXA2 in the floorplate, consistent with previous findings of FOXA TFs\cite{iwafuchi-doiPioneerTranscriptionFactor2016, iwafuchiGeneNetworkTransitions2020}. 
@@ -826,7 +821,7 @@ dewinterModellingDesignTranscriptional2025}.
 In particular for the neural tube, it is known that repressive interactions in its core GRN are important\cite{delasRepressiveInteractionsGene2020}. 
 In this study we could only predict a strong repressive effect of ZEB2, a chromatin closing repressor that is used across a variety of biological
 systems\cite{minnoyeCrossspeciesAnalysisEnhancer2020, taskiranCelltypedirectedDesignSynthetic2024}
-(\textbf{Supplementary Fig. S10}).\par
+(\textbf{Supplementary Fig. S11}).\par
 
 Furthermore, the expression of a gene is in general regulated by multiple enhancers in the gene's locus\cite{
   perryShadowEnhancersFoster2010,
@@ -1956,6 +1951,18 @@ The median is used as the center.
 \newpage
 \begin{figure}[p]
   \includegraphics[width=1.0\linewidth]{figures/supplement/Supplemental_figure_4.png}
+  \caption{
+    \textbf{a}, Scaled average and normalized number of cut sites (black, top) and contribution score (red, top) across genomic regions with a FOXA2 instance and heatmap showing normalized number of cut sites (bottom) for individual regions with a FOXA2 instance. Signal is centered on the FOXA2 instance start position. 
+    \textbf{b}, Bar chart showing the fraction of genomic regions that has a given number of FOXA2 instances for FOXA2 regions that overlap with HepG2 or A549 FOXA2 ChIP-seq peaks (general; bottom) and those regions that do not overlap (specific; top). 
+    Two-sided p-value calculated using Mann-Whitney U test between distribution of number of FOX instances in general (n = 2,130) and specific (n = 4,529) regions, for organoid.
+    \textbf{c}, Line shart, showing $-log_{10}(p value)$ of FOXA2 motif hits calculated using FIMO\cite{grantFIMOScanningOccurrences2011,schreiberTangermemeBiologicalSequence2025} for general regions and specific regions stratified by the number of FOXA2 instances per regions. * indicates two-sided p-value (Mann-Whitney U test) < 1e-6 calculated between the distribution of motif scores for specific and general regions stratified by the number of FOX instances per region. 
+  }
+\end{figure}
+
+
+\newpage
+\begin{figure}[p]
+  \includegraphics[width=1.0\linewidth]{figures/supplement/Supplemental_figure_5.png}
   \caption{\textbf{Linking motif to TF in anterior-posterior neural progenitors}.\\
     \textbf{a-e} Scatter plot showing Pearson correlation coefficient of average TF expression and motif importance per
     topic (x-axis) and maximum expression (Max exp; y-axis) across topics and tau index using dot size for organoid (left) and embryo (right) for TFs with DNA binding domain
@@ -1965,7 +1972,7 @@ The median is used as the center.
 
 \newpage
 \begin{figure}[p]
-  \includegraphics[width=1.0\linewidth]{figures/supplement/Supplemental_figure_5.png}
+  \includegraphics[width=1.0\linewidth]{figures/supplement/Supplemental_figure_6.png}
   \caption{
     \textbf{Linking motif to TF in neural crest}.\\
     \textbf{a-j} Scatter plot showing Pearson correlation coefficient of average TF expression and motif importance per
@@ -1986,7 +1993,7 @@ The median is used as the center.
 \end{figure}
 \newpage
 \begin{figure}[p]
-  \includegraphics[width=1.0\linewidth]{figures/supplement/Supplemental_figure_6.png}
+  \includegraphics[width=1.0\linewidth]{figures/supplement/Supplemental_figure_7.png}
   \caption{
     \textbf{Delta prediction score across topics and SNPs}\\
     \textbf{a}, heatmap showing delta prediction score across topics using $DeepNeuralTube_O$ (left) and
@@ -1998,7 +2005,7 @@ The median is used as the center.
 \afterpage{\clearpage}
 \newpage
 \begin{figure}[p]
-  \includegraphics[width=1.0\linewidth]{figures/supplement/Supplemental_figure_7.png}
+  \includegraphics[width=1.0\linewidth]{figures/supplement/Supplemental_figure_8.png}
   \caption{
     \textbf{Linking motif to TF in neurons}.\\
     (Continues next page):
@@ -2031,7 +2038,7 @@ The median is used as the center.
 
 \newpage
 \begin{figure}[p]
-  \includegraphics[width=1.0\linewidth]{figures/supplement/Supplemental_figure_8.png}
+  \includegraphics[width=1.0\linewidth]{figures/supplement/Supplemental_figure_9.png}
   \caption{
     \textbf{Genome wide performance of logistic regression models.}\\
     \textbf{a-b}, Scatter plot showing performance of the logistic regression models as  area under the (AUC) precision recall (PR) curve (\textbf{a}) and receiver operator curve (ROC) (\textbf{b}) for different cell types for organoid (O) and embryo (E) represented by topic numbers. Performance is shown to classify the contrast between topics of the same major class (i.e., neuron progenitor dorso-ventral, neuron progenitor anterior-posterior, neural crest and neuron; x-axis) and genome wide classification of consensus peaks as belonging to a certain topic or not. 
@@ -2042,7 +2049,7 @@ The median is used as the center.
 
 \newpage
 \begin{figure}[p]
-  \includegraphics[width=1.0\linewidth]{figures/supplement/Supplemental_figure_9.png}
+  \includegraphics[width=1.0\linewidth]{figures/supplement/Supplemental_figure_10.png}
   \caption{
     \textbf{SOX dimer instances with 4bp spacing are most accessible in migratory neural crest}\\
     \textbf{a}, \textit{de novo} identified SOX dimer motifs with 3, 4, or 5 bp spacing. 
@@ -2053,7 +2060,7 @@ The median is used as the center.
 
 \newpage
 \begin{figure}[p]
-  \includegraphics[width=1.0\linewidth]{figures/supplement/Supplemental_figure_10.png}
+  \includegraphics[width=1.0\linewidth]{figures/supplement/Supplemental_figure_11.png}
   \caption{
     \textbf{ZEB2 is a chromatin closing transcription repressor.}\\
     \textbf{a}, Network with genes (dots) and regions (outlined-dots) inferred using SCENIC+ colored by gene expression
