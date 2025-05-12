@@ -1,4 +1,4 @@
-\begin{thebibliography}{116}
+\begin{thebibliography}{121}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \providecommand{\href}[2]{#2}
@@ -547,10 +547,10 @@
 \newblock \bibinfo{journal}{Bioinformatics} \emph{\bibinfo{volume}{27}},
   \bibinfo{pages}{1017--1018}. \DOIprefix\doi{10.1093/bioinformatics/btr064}.
 %Type = Misc
-\bibitem[{Schreiber(2025)}]{schreiberTangermemeBiologicalSequence2025}
-\bibinfo{author}{Schreiber, J.} (\bibinfo{year}{2025}).
+\bibitem[{Schreiber(2025{\natexlab{a}})}]{schreiberTangermemeBiologicalSequence2025}
+\bibinfo{author}{Schreiber, J.} (\bibinfo{year}{2025}{\natexlab{a}}).
 \newblock \bibinfo{title}{Tangermeme: {{Biological}} sequence analysis for the
-  modern age.}. .
+  modern age.}. {\natexlab{a}}.
 %Type = Incollection
 \bibitem[{Mann et~al.(2009)Mann, Lelli and Joshi}]{mannChapter3Hox2009}
 \bibinfo{author}{Mann, R.S.}, \bibinfo{author}{Lelli, K.M.}, and
@@ -1413,6 +1413,10 @@
   NJ}: \bibinfo{publisher}{Humana Press}.
 \newblock ISBN \bibinfo{isbn}{978-1-61779-292-2} pp. \bibinfo{pages}{291--314}.
 \newblock \DOIprefix\doi{10.1007/978-1-61779-292-2_18}.
+%Type = Misc
+\bibitem[{Schreiber(2025{\natexlab{b}})}]{schreiberTfmodiscolite2025}
+\bibinfo{author}{Schreiber, J.} (\bibinfo{year}{2025}{\natexlab{b}}).
+\newblock \bibinfo{title}{Tfmodisco-lite}. {\natexlab{b}}.
 %Type = Article
 \bibitem[{Harris et~al.(2020)Harris, Millman, Van Der~Walt, Gommers, Virtanen,
   Cournapeau, Wieser, Taylor, Berg, Smith, Kern, Picus, Hoyer, Van~Kerkwijk,
@@ -1452,6 +1456,19 @@
 \newblock \bibinfo{journal}{Journal of Machine Learning Research}
   \emph{\bibinfo{volume}{12}}, \bibinfo{pages}{2825--2830}.
 %Type = Article
+\bibitem[{Williams et~al.(2019)Williams, {Candido-Ferreira}, Repapi,
+  Gavriouchkina, Senanayake, Ling, Telenius, Taylor, Hughes and
+  {Sauka-Spengler}}]{williamsReconstructionGlobalNeural2019}
+\bibinfo{author}{Williams, R.M.}, \bibinfo{author}{{Candido-Ferreira}, I.},
+  \bibinfo{author}{Repapi, E.}, \bibinfo{author}{Gavriouchkina, D.},
+  \bibinfo{author}{Senanayake, U.}, \bibinfo{author}{Ling, I.T.},
+  \bibinfo{author}{Telenius, J.}, \bibinfo{author}{Taylor, S.},
+  \bibinfo{author}{Hughes, J.}, and \bibinfo{author}{{Sauka-Spengler}, T.}
+  (\bibinfo{year}{2019}). \bibinfo{title}{Reconstruction of the {{Global Neural
+  Crest Gene Regulatory Network In Vivo}}}.
+\newblock \bibinfo{journal}{Developmental Cell} \emph{\bibinfo{volume}{51}},
+  \bibinfo{pages}{255--276.e7}. \DOIprefix\doi{10.1016/j.devcel.2019.10.003}.
+%Type = Article
 \bibitem[{Williams and
   {Sauka-Spengler}(2021)}]{williamsExOvoElectroporation2021}
 \bibinfo{author}{Williams, R.M.}, and \bibinfo{author}{{Sauka-Spengler}, T.}
@@ -1459,5 +1476,73 @@
   early chicken embryos}.
 \newblock \bibinfo{journal}{STAR Protocols} \emph{\bibinfo{volume}{2}},
   \bibinfo{pages}{100424}. \DOIprefix\doi{10.1016/j.xpro.2021.100424}.
+%Type = Article
+\bibitem[{{ENCODE Project
+  Consortium}(2012)}]{encodeprojectconsortiumIntegratedEncyclopediaDNA2012}
+\bibinfo{author}{{ENCODE Project Consortium}} (\bibinfo{year}{2012}).
+  \bibinfo{title}{An integrated encyclopedia of {{DNA}} elements in the human
+  genome}.
+\newblock \bibinfo{journal}{Nature} \emph{\bibinfo{volume}{489}},
+  \bibinfo{pages}{57--74}. \DOIprefix\doi{10.1038/nature11247}.
+%Type = Article
+\bibitem[{Luo et~al.(2020)Luo, Hitz, Gabdank, Hilton, Kagda, Lam, Myers, Sud,
+  Jou, Lin, Baymuradov, Graham, Litton, Miyasato, Strattan, Jolanki, Lee,
+  Tanaka, Adenekan, O'Neill and Cherry}]{luoNewDevelopmentsEncyclopedia2020}
+\bibinfo{author}{Luo, Y.}, \bibinfo{author}{Hitz, B.C.},
+  \bibinfo{author}{Gabdank, I.}, \bibinfo{author}{Hilton, J.A.},
+  \bibinfo{author}{Kagda, M.S.}, \bibinfo{author}{Lam, B.},
+  \bibinfo{author}{Myers, Z.}, \bibinfo{author}{Sud, P.}, \bibinfo{author}{Jou,
+  J.}, \bibinfo{author}{Lin, K.}, \bibinfo{author}{Baymuradov, U.K.},
+  \bibinfo{author}{Graham, K.}, \bibinfo{author}{Litton, C.},
+  \bibinfo{author}{Miyasato, S.R.}, \bibinfo{author}{Strattan, J.S.},
+  \bibinfo{author}{Jolanki, O.}, \bibinfo{author}{Lee, J.W.},
+  \bibinfo{author}{Tanaka, F.Y.}, \bibinfo{author}{Adenekan, P.},
+  \bibinfo{author}{O'Neill, E.}, and \bibinfo{author}{Cherry, J.M.}
+  (\bibinfo{year}{2020}). \bibinfo{title}{New developments on the
+  {{Encyclopedia}} of {{DNA Elements}} ({{ENCODE}}) data portal}.
+\newblock \bibinfo{journal}{Nucleic Acids Res} \emph{\bibinfo{volume}{48}},
+  \bibinfo{pages}{D882--D889}. \DOIprefix\doi{10.1093/nar/gkz1062}.
+%Type = Misc
+\bibitem[{Hitz et~al.(2023)Hitz, Lee, Jolanki, Kagda, Graham, Sud, Gabdank,
+  Seth~Strattan, Sloan, Dreszer, Rowe, Podduturi, Malladi, Chan, Davidson, Ho,
+  Miyasato, Simison, Tanaka, Luo, Whaling, Hong, Lee, Sandstrom, Rynes, Nelson,
+  Nishida, Ingersoll, Buckley, Frerker, Kim, Boley, Trout, Dobin, Rahmanian,
+  Wyman, {Balderrama-Gutierrez}, Reese, Durand, Dudchenko, Weisz, Rao,
+  Blackburn, Gkountaroulis, Sadr, Olshansky, Eliaz, Nguyen, Bochkov, Shamim,
+  Mahajan, Aiden, Gingeras, Heath, Hirst, James~Kent, Kundaje, Mortazavi, Wold
+  and Cherry}]{hitzENCODEUniformAnalysis2023}
+\bibinfo{author}{Hitz, B.C.}, \bibinfo{author}{Lee, J.W.},
+  \bibinfo{author}{Jolanki, O.}, \bibinfo{author}{Kagda, M.S.},
+  \bibinfo{author}{Graham, K.}, \bibinfo{author}{Sud, P.},
+  \bibinfo{author}{Gabdank, I.}, \bibinfo{author}{Seth~Strattan, J.},
+  \bibinfo{author}{Sloan, C.A.}, \bibinfo{author}{Dreszer, T.},
+  \bibinfo{author}{Rowe, L.D.}, \bibinfo{author}{Podduturi, N.R.},
+  \bibinfo{author}{Malladi, V.S.}, \bibinfo{author}{Chan, E.T.},
+  \bibinfo{author}{Davidson, J.M.}, \bibinfo{author}{Ho, M.},
+  \bibinfo{author}{Miyasato, S.}, \bibinfo{author}{Simison, M.},
+  \bibinfo{author}{Tanaka, F.}, \bibinfo{author}{Luo, Y.},
+  \bibinfo{author}{Whaling, I.}, \bibinfo{author}{Hong, E.L.},
+  \bibinfo{author}{Lee, B.T.}, \bibinfo{author}{Sandstrom, R.},
+  \bibinfo{author}{Rynes, E.}, \bibinfo{author}{Nelson, J.},
+  \bibinfo{author}{Nishida, A.}, \bibinfo{author}{Ingersoll, A.},
+  \bibinfo{author}{Buckley, M.}, \bibinfo{author}{Frerker, M.},
+  \bibinfo{author}{Kim, D.S.}, \bibinfo{author}{Boley, N.},
+  \bibinfo{author}{Trout, D.}, \bibinfo{author}{Dobin, A.},
+  \bibinfo{author}{Rahmanian, S.}, \bibinfo{author}{Wyman, D.},
+  \bibinfo{author}{{Balderrama-Gutierrez}, G.}, \bibinfo{author}{Reese, F.},
+  \bibinfo{author}{Durand, N.C.}, \bibinfo{author}{Dudchenko, O.},
+  \bibinfo{author}{Weisz, D.}, \bibinfo{author}{Rao, S.S.P.},
+  \bibinfo{author}{Blackburn, A.}, \bibinfo{author}{Gkountaroulis, D.},
+  \bibinfo{author}{Sadr, M.}, \bibinfo{author}{Olshansky, M.},
+  \bibinfo{author}{Eliaz, Y.}, \bibinfo{author}{Nguyen, D.},
+  \bibinfo{author}{Bochkov, I.}, \bibinfo{author}{Shamim, M.S.},
+  \bibinfo{author}{Mahajan, R.}, \bibinfo{author}{Aiden, E.},
+  \bibinfo{author}{Gingeras, T.}, \bibinfo{author}{Heath, S.},
+  \bibinfo{author}{Hirst, M.}, \bibinfo{author}{James~Kent, W.},
+  \bibinfo{author}{Kundaje, A.}, \bibinfo{author}{Mortazavi, A.},
+  \bibinfo{author}{Wold, B.}, and \bibinfo{author}{Cherry, J.M.}
+  (\bibinfo{year}{2023}).
+\newblock \bibinfo{title}{The {{ENCODE Uniform Analysis Pipelines}}}. .
+\newblock \DOIprefix\doi{10.1101/2023.04.04.535623}.
 
 \end{thebibliography}
