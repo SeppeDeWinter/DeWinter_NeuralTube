@@ -6,3 +6,6 @@ figures_parts/
 *.pdf
 *.ai
 *.docx
+data/*
+geo/*
+*.log
