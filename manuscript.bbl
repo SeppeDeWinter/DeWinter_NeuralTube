@@ -1,4 +1,4 @@
-\begin{thebibliography}{121}
+\begin{thebibliography}{125}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \providecommand{\href}[2]{#2}
@@ -563,6 +563,19 @@
   \bibinfo{pages}{63--101}.
 \newblock \DOIprefix\doi{10.1016/S0070-2153(09)88003-4}.
 %Type = Article
+\bibitem[{Slattery et~al.(2011)Slattery, Riley, Liu, Abe, {Gomez-Alcala}, Dror,
+  Zhou, Rohs, Honig, Bussemaker and Mann}]{slatteryCofactorBindingEvokes2011}
+\bibinfo{author}{Slattery, M.}, \bibinfo{author}{Riley, T.},
+  \bibinfo{author}{Liu, P.}, \bibinfo{author}{Abe, N.},
+  \bibinfo{author}{{Gomez-Alcala}, P.}, \bibinfo{author}{Dror, I.},
+  \bibinfo{author}{Zhou, T.}, \bibinfo{author}{Rohs, R.},
+  \bibinfo{author}{Honig, B.}, \bibinfo{author}{Bussemaker, H.J.}, and
+  \bibinfo{author}{Mann, R.S.} (\bibinfo{year}{2011}). \bibinfo{title}{Cofactor
+  {{Binding Evokes Latent Differences}} in {{DNA Binding Specificity}} between
+  {{Hox Proteins}}}.
+\newblock \bibinfo{journal}{Cell} \emph{\bibinfo{volume}{147}},
+  \bibinfo{pages}{1270--1282}. \DOIprefix\doi{10.1016/j.cell.2011.10.053}.
+%Type = Article
 \bibitem[{Taskiran et~al.(2024)Taskiran, Spanier, Dickm{\"a}nken, Kempynck,
   Pan{\v c}{\'i}kov{\'a}, Ek{\c s}i, Hulselmans, Ismail, Theunis, Vandepoel,
   Christiaens, Mauduit and Aerts}]{taskiranCelltypedirectedDesignSynthetic2024}
@@ -620,6 +633,37 @@
   into the genetic architecture of the human face}.
 \newblock \bibinfo{journal}{Nat Genet} \emph{\bibinfo{volume}{53}},
   \bibinfo{pages}{45--53}. \DOIprefix\doi{10.1038/s41588-020-00741-7}.
+%Type = Article
+\bibitem[{Zhou et~al.(2000)Zhou, Yamamoto and
+  Engel}]{zhouGATA2RequiredGeneration2000}
+\bibinfo{author}{Zhou, Y.}, \bibinfo{author}{Yamamoto, M.}, and
+  \bibinfo{author}{Engel, J.D.} (\bibinfo{year}{2000}).
+  \bibinfo{title}{{{GATA2}} is required for the generation of {{V2}}
+  interneurons}.
+\newblock \bibinfo{journal}{Development} \emph{\bibinfo{volume}{127}},
+  \bibinfo{pages}{3829--3838}. \DOIprefix\doi{10.1242/dev.127.17.3829}.
+%Type = Article
+\bibitem[{Del~Barrio et~al.(2007)Del~Barrio, {Taveira-Marques}, Muroyama, Yuk,
+  Li, {Wines-Samuelson}, Shen, Smith, Xiang, Rowitch and
+  Richardson}]{delbarrioRegulatoryNetworkInvolving2007}
+\bibinfo{author}{Del~Barrio, M.G.}, \bibinfo{author}{{Taveira-Marques}, R.},
+  \bibinfo{author}{Muroyama, Y.}, \bibinfo{author}{Yuk, D.I.},
+  \bibinfo{author}{Li, S.}, \bibinfo{author}{{Wines-Samuelson}, M.},
+  \bibinfo{author}{Shen, J.}, \bibinfo{author}{Smith, H.K.},
+  \bibinfo{author}{Xiang, M.}, \bibinfo{author}{Rowitch, D.}, and
+  \bibinfo{author}{Richardson, W.D.} (\bibinfo{year}{2007}). \bibinfo{title}{A
+  regulatory network involving {{Foxn4}}, {{Mash1}} and delta-like 4/{{Notch1}}
+  generates {{V2a}} and {{V2b}} spinal interneurons from a common progenitor
+  pool}.
+\newblock \bibinfo{journal}{Development} \emph{\bibinfo{volume}{134}},
+  \bibinfo{pages}{3427--3436}. \DOIprefix\doi{10.1242/dev.005868}.
+%Type = Article
+\bibitem[{Sagner and Briscoe(2019)}]{sagnerEstablishingNeuronalDiversity2019}
+\bibinfo{author}{Sagner, A.}, and \bibinfo{author}{Briscoe, J.}
+  (\bibinfo{year}{2019}). \bibinfo{title}{Establishing neuronal diversity in
+  the spinal cord: A time and a place}.
+\newblock \bibinfo{journal}{Development} \emph{\bibinfo{volume}{146}},
+  \bibinfo{pages}{dev182154}. \DOIprefix\doi{10.1242/dev.182154}.
 %Type = Article
 \bibitem[{Wasserman and
   Sandelin(2004)}]{wassermanAppliedBioinformaticsIdentification2004}
