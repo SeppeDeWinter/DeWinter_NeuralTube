@@ -95,6 +95,19 @@ def rgb_scatter_plot(
     ax.text(
         0.8, 0.78, b_name, color="blue", ha="left", va="top", transform=ax.transAxes
     )
+    if r_vmin is None:
+        r_vmin = r_values.min()
+    if r_vmax is None:
+        r_vmax = r_values.max()
+    if g_vmin is None:
+        g_vmin = g_values.min()
+    if g_vmax is None:
+        g_vmax = g_values.max()
+    if b_vmin is None:
+        b_vmin = b_values.min()
+    if b_vmax is None:
+        b_vmax = b_values.max()
+    print(f"R: {r_vmin, r_vmax}\nG: {g_vmin, g_vmax}\nB: {b_vmin, b_vmax}")
 
 
 def topic_name_to_model_index_organoid(t: str) -> int:
@@ -657,6 +670,26 @@ cluster_to_name = {
 
 organoid_embryo = [(6, 10), (4, 8), (23, 13), (24, 24), (13, 18), (2, 29)]
 
+from scipy import stats
+
+corrs_patterns = []
+for cluster in selected_clusters:
+    corrs_patterns.append(
+        stats.pearsonr(
+            [
+                cluster_to_topic_to_avg_pattern_organoid[cluster][o].sum() for o, e in organoid_embryo
+                if not (o is None or e is None)
+            ],
+            [
+                cluster_to_topic_to_avg_pattern_embryo[cluster][e].sum() for o, e in organoid_embryo
+                if not (o is None or e is None)
+            ]
+        ).statistic
+    )
+print(np.mean(corrs_patterns))
+
+
+
 motifs = {
     n: pattern.ppm[range(*pattern.ic_trim(0.2))].T
     for n, pattern in zip(all_pattern_names, all_patterns)
@@ -1080,6 +1113,7 @@ for i, cluster in enumerate(tqdm(selected_clusters)):
         if j == 0:
             _ = ax.set_ylabel(f"cluster_{cluster}")
         axs.append(ax)
+    print(YMIN, YMAX)
     for ax, (organoid_topic, embryo_topic) in zip(axs, organoid_embryo):
         _ = ax.set_ylim(YMIN, YMAX)
         _ = ax.set_axis_off()
@@ -1155,5 +1189,7 @@ sns.heatmap(
     xticklabels=True,
 )
 fig.tight_layout()
+
+
 fig.savefig("Figure_6.png", transparent=False)
 fig.savefig("Figure_6.pdf")

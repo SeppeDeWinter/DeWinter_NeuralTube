@@ -93,6 +93,20 @@ def rgb_scatter_plot(
     ax.text(
         0.8, 0.78, b_name, color="blue", ha="left", va="top", transform=ax.transAxes
     )
+    if r_vmin is None:
+        r_vmin = r_values.min()
+    if r_vmax is None:
+        r_vmax = r_values.max()
+    if g_vmin is None:
+        g_vmin = g_values.min()
+    if g_vmax is None:
+        g_vmax = g_values.max()
+    if b_vmin is None:
+        b_vmin = b_values.min()
+    if b_vmax is None:
+        b_vmax = b_values.max()
+    print(f"R: {r_vmin, r_vmax}\nG: {g_vmin, g_vmax}\nB: {b_vmin, b_vmax}")
+
 
 
 def topic_name_to_model_index_embryo(t) -> int:
@@ -812,6 +826,11 @@ precision, recall, threshold = precision_recall_curve(
 fpr, tpr, thresholds = roc_curve((y_test > 0).ravel(), reg.predict_proba(X_test)[:, 1])
 
 
+from sklearn.metrics import auc
+
+auc(recall, precision)
+auc(fpr, tpr)
+
 motif_embedding_results = pickle.load(open("draft/motif_embedding.pkl", "rb"))
 
 n_seq = 200
@@ -1252,6 +1271,7 @@ for i, cluster in enumerate(clusters_to_show):
     ax_pattern.set_xticks([])
     ax_pattern.set_yticks([])
 #
+
 ax_tf_gex = fig.add_subplot(gs[0:10, 39-3:])
 sns.heatmap(
     (

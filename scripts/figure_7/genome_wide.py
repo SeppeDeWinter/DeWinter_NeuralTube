@@ -1,7 +1,4 @@
 import os
-import matplotlib.pyplot as plt
-import matplotlib
-import scanpy as sc
 import pandas as pd
 import numpy as np
 from dataclasses import dataclass
@@ -9,21 +6,20 @@ import h5py
 from typing import Self
 from tqdm import tqdm
 import pickle
-import logomaker
 from functools import reduce
 import torch
-import seaborn as sns
-from scipy.stats import binomtest
 import json
-from matplotlib.lines import Line2D
 import pysam
 from crested.utils._seq_utils import one_hot_encode_sequence
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import precision_recall_curve, roc_curve, auc
-from scipy.stats import norm
 from tangermeme.tools.fimo import fimo
 from tangermeme.utils import extract_signal
+import matplotlib.pyplot as plt
+from adjustText import adjust_text
+import matplotlib
+
 
 ##########################################################################################
 #
@@ -32,6 +28,76 @@ from tangermeme.utils import extract_signal
 #
 #
 #########################################################################################
+
+def topic_name_to_model_index_organoid(t: str) -> int:
+    cell_type = t.split("_Topic")[0]
+    topic = int(t.split("_")[-1])
+    if cell_type == "neuron":
+        return topic - 1
+    elif cell_type == "progenitor":
+        return topic - 1 + 25
+    elif cell_type == "neural_crest":
+        return topic - 1 + 55
+    else:
+        raise ValueError(f"{t} unknown.")
+
+
+def model_index_to_topic_name_organoid(i: int) -> str:
+    if i >= 0 and i < 25:
+        cell_type = "neuron"
+        topic_number = i + 1
+    elif i >= 25 and i < 55:
+        cell_type = "progenitor"
+        topic_number = i + 1 - 25
+    elif i >= 55 and i < 65:
+        cell_type = "neural_crest"
+        topic_number = i + 1 - 55
+    elif i >= 65 and i < 75:
+        cell_type = "pluripotent"
+        index_to_topic_mapping = {
+            65: 4,
+            66: 5,
+            67: 12,
+            68: 18,
+            69: 20,
+            70: 23,
+            71: 35,
+            72: 37,
+            73: 45,
+            74: 47,
+        }
+        topic_number = index_to_topic_mapping[i]
+    else:
+        raise ValueError("Unknown index")
+    return f"{cell_type}_Topic_{topic_number}"
+
+
+def topic_name_to_model_index_embryo(t) -> int:
+    cell_type = t.split("_Topic")[0]
+    topic = int(t.split("_")[-1])
+    if cell_type == "neuron":
+        return topic - 1
+    elif cell_type == "progenitor":
+        return topic - 1 + 30
+    elif cell_type == "neural_crest":
+        return topic - 1 + 90
+    else:
+        raise ValueError(f"{t} unknown.")
+
+
+def model_index_to_topic_name_embryo(i: int) -> str:
+    if i >= 0 and i < 30:
+        cell_type = "neuron"
+        topic_number = i + 1
+    elif i >= 30 and i < 90:
+        cell_type = "progenitor"
+        topic_number = i + 1 - 30
+    elif i >= 90 and i < 120:
+        cell_type = "neural_crest"
+        topic_number = i + 1 - 90
+    else:
+        raise ValueError("Unknown index")
+    return f"{cell_type}_Topic_{topic_number}"
 
 
 @dataclass
@@ -420,7 +486,7 @@ def ic_trim(ic, min_v: float) -> tuple[int, int]:
 def get_consensus(
     organoid_topics,
     embryo_topics,
-    organoid_pattern_di,
+    organoid_pattern_dir,
     embryo_pattern_dir,
     pattern_metadata_path,
     cluster_col,
@@ -500,8 +566,6 @@ def get_pred_and_l2_for_cell_type(
 
 
 def get_hit_score_for_topics(
-    region_names: list[str],
-    genome: pysam.FastaFile,
     organoid_topics: list[int],
     embryo_topics: list[int],
     selected_clusters: list[float],
@@ -510,17 +574,22 @@ def get_hit_score_for_topics(
     pattern_metadata_path: str,
     cluster_col: str,
     ic_trim_thr: float = 0.2,
+    fimo_threshold: float = 0.5,
+    region_names: list[str] | None = None,
+    genome: pysam.FastaFile | None = None,
+    ohs: np.ndarray | None = None
 ):
-    print("One hot encoding ... ")
-    ohs = np.array(
-        [
-            one_hot_encode_sequence(
-                genome.fetch(r.split(":")[0], *map(int, r.split(":")[1].split("-"))),
-                expand_dim=False,
-            )
-            for r in tqdm(region_names)
-        ]
-    )
+    if ohs is None:
+        print("One hot encoding ... ")
+        ohs = np.array(
+            [
+                one_hot_encode_sequence(
+                    genome.fetch(r.split(":")[0], *map(int, r.split(":")[1].split("-"))),
+                    expand_dim=False,
+                )
+                for r in tqdm(region_names)
+            ]
+        )
     print("loading data")
     patterns_organoid, pattern_names_organoid = load_pattern_from_modisco_for_topics(
         topics=organoid_topics, pattern_dir=organoid_pattern_dir, prefix="organoid_"
@@ -540,7 +609,7 @@ def get_hit_score_for_topics(
         )
     }
     print("Scoring hits ...")
-    l_hits = fimo(motifs=motifs, sequences=ohs.swapaxes(1, 2), threshold=0.5)
+    l_hits = fimo(motifs=motifs, sequences=ohs.swapaxes(1, 2), threshold=fimo_threshold)
     for i in tqdm(range(len(l_hits)), desc="getting max"):
         l_hits[i]["-logp"] = -np.log10(l_hits[i]["p-value"] + 1e-6)
         l_hits[i] = (
@@ -550,9 +619,10 @@ def get_hit_score_for_topics(
             .reset_index()
         )
     hits = pd.concat(l_hits)
-    hits["sequence_name"] = [
-        region_names[x] for x in tqdm(hits["sequence_name"], desc="sequence name")
-    ]
+    if region_names is not None:
+        hits["sequence_name"] = [
+            region_names[x] for x in tqdm(hits["sequence_name"], desc="sequence name")
+        ]
     hits["cluster"] = [
         pattern_metadata.loc[m, cluster_col]
         for m in tqdm(hits["motif_name"], desc="cluster")
@@ -646,126 +716,6 @@ cell_type_to_modisco_result = {
 organoid_dl_motif_dir = "../data_prep_new/organoid_data/MODELS/modisco/"
 embryo_dl_motif_dir = "../data_prep_new/embryo_data/MODELS/modisco/"
 
-for cell_type in cell_type_to_modisco_result:
-    print(cell_type)
-    (
-        (hits_organoid, hits_organoid_non_overlap, region_order_organoid),
-        (hits_embryo, hits_embryo_non_overlap, region_order_embryo),
-    ) = get_hits_for_topics(
-        organoid_pattern_dir=organoid_dl_motif_dir,
-        embryo_pattern_dir=embryo_dl_motif_dir,
-        ic_trim_thr=0.2,
-        organoid_topics=cell_type_to_modisco_result[cell_type].organoid_topics,
-        embryo_topics=cell_type_to_modisco_result[cell_type].embryo_topics,
-        selected_clusters=cell_type_to_modisco_result[cell_type].selected_patterns,
-        pattern_metadata_path=cell_type_to_modisco_result[
-            cell_type
-        ].pattern_metadata_path,
-        cluster_col=cell_type_to_modisco_result[cell_type].cluster_col,
-    )
-    cell_type_to_modisco_result[cell_type].hits_organoid = hits_organoid
-    cell_type_to_modisco_result[
-        cell_type
-    ].hits_organoid_non_overlap = hits_organoid_non_overlap
-    cell_type_to_modisco_result[cell_type].region_order_organoid = region_order_organoid
-    cell_type_to_modisco_result[cell_type].hits_embryo = hits_embryo
-    cell_type_to_modisco_result[
-        cell_type
-    ].hits_embryo_non_overlap = hits_embryo_non_overlap
-    cell_type_to_modisco_result[cell_type].region_order_embryo = region_order_embryo
-
-
-window = 10
-thr = 0.01
-
-all_hits_organoid = []
-for cell_type in cell_type_to_modisco_result:
-    if cell_type_to_modisco_result[cell_type].hits_organoid_non_overlap is None:
-        continue
-    tmp = cell_type_to_modisco_result[cell_type].hits_organoid_non_overlap.copy()
-    tmp["cell_type"] = cell_type
-    all_hits_organoid.append(tmp)
-
-all_hits_organoid = pd.concat(all_hits_organoid).sort_values("start")
-
-all_hits_organoid["passing_thr"] = abs(all_hits_organoid["attribution"]) >= thr
-
-all_hits_organoid["start_bins"] = pd.cut(
-    all_hits_organoid["start"], bins=range(-1, 500, window)
-)
-
-n_hits_per_bin_organoid = all_hits_organoid.groupby("start_bins")["passing_thr"].sum()
-
-n_hits_per_bin_mean_organoid = (
-    np.sum(
-        [
-            iv.mid * count
-            for iv, count in zip(
-                n_hits_per_bin_organoid.index, n_hits_per_bin_organoid.values
-            )
-        ]
-    )
-    / n_hits_per_bin_organoid.values.sum()
-)
-
-n_hits_per_bin_var_organoid = (
-    np.sum(
-        [
-            count * (iv.mid - n_hits_per_bin_mean_organoid) ** 2
-            for iv, count in zip(
-                n_hits_per_bin_organoid.index, n_hits_per_bin_organoid.values
-            )
-        ]
-    )
-    / n_hits_per_bin_organoid.values.sum()
-)
-
-n_hits_per_bin_std_organoid = np.sqrt(n_hits_per_bin_var_organoid)
-
-all_hits_embryo = []
-for cell_type in cell_type_to_modisco_result:
-    if cell_type_to_modisco_result[cell_type].hits_embryo_non_overlap is None:
-        continue
-    tmp = cell_type_to_modisco_result[cell_type].hits_embryo_non_overlap.copy()
-    tmp["cell_type"] = cell_type
-    all_hits_embryo.append(tmp)
-
-all_hits_embryo = pd.concat(all_hits_embryo).sort_values("start")
-
-all_hits_embryo["passing_thr"] = abs(all_hits_embryo["attribution"]) >= thr
-
-all_hits_embryo["start_bins"] = pd.cut(
-    all_hits_embryo["start"], bins=range(-1, 500, window)
-)
-
-n_hits_per_bin_embryo = all_hits_embryo.groupby("start_bins")["passing_thr"].sum()
-
-n_hits_per_bin_mean_embryo = (
-    np.sum(
-        [
-            iv.mid * count
-            for iv, count in zip(
-                n_hits_per_bin_embryo.index, n_hits_per_bin_embryo.values
-            )
-        ]
-    )
-    / n_hits_per_bin_embryo.values.sum()
-)
-
-n_hits_per_bin_var_embryo = (
-    np.sum(
-        [
-            count * (iv.mid - n_hits_per_bin_mean_embryo) ** 2
-            for iv, count in zip(
-                n_hits_per_bin_embryo.index, n_hits_per_bin_embryo.values
-            )
-        ]
-    )
-    / n_hits_per_bin_embryo.values.sum()
-)
-
-n_hits_per_bin_std_embryo = np.sqrt(n_hits_per_bin_var_embryo)
-
 
 ##
 
@@ -789,139 +739,6 @@ for cell_type in cell_type_to_modisco_result:
         selected_patterns,
     ):
         cell_type_to_pattern_consensus[cell_type][cluster] = consensus
-
-cell_type_organoid_to_coef = {
-    cell_type: pd.read_table(
-        f"draft/organoid_{cell_type}_pattern_coef.tsv", index_col=0
-    )
-    for cell_type in cell_type_to_modisco_result
-    if os.path.exists(f"draft/organoid_{cell_type}_pattern_coef.tsv")
-}
-
-cell_type_embryo_to_coef = {
-    cell_type: pd.read_table(f"draft/embryo_{cell_type}_pattern_coef.tsv", index_col=0)
-    for cell_type in cell_type_to_modisco_result
-    if os.path.exists(f"draft/embryo_{cell_type}_pattern_coef.tsv")
-}
-
-cell_type_to_pattern_consensus_filtered = {}
-cell_type_to_pattern_consensus_index = {}
-index_to_cell_type_pattern = {}
-all_patterns = []
-i = 0
-for cell_type in cell_type_to_pattern_consensus:
-    cell_type_to_pattern_consensus_filtered[cell_type] = {}
-    cell_type_to_pattern_consensus_index[cell_type] = {}
-    for pattern in cell_type_to_pattern_consensus[cell_type]:
-        if (
-            cell_type in cell_type_organoid_to_coef
-            and cell_type_organoid_to_coef[cell_type].loc[pattern].max() > 0
-        ) or (
-            cell_type in cell_type_embryo_to_coef
-            and cell_type_embryo_to_coef[cell_type].loc[pattern].max() > 0
-        ):
-            cell_type_to_pattern_consensus_filtered[cell_type][pattern] = (
-                cell_type_to_pattern_consensus[cell_type][pattern]
-            )
-            all_patterns.append(cell_type_to_pattern_consensus[cell_type][pattern])
-            cell_type_to_pattern_consensus_index[cell_type][pattern] = i
-            index_to_cell_type_pattern[i] = (cell_type, pattern)
-            i += 1
-
-
-pattern_metadata = pd.read_table("draft/pattern_metadata.tsv", index_col=0)
-
-all_patterns_names = [
-    " ".join(map(str, index_to_cell_type_pattern[i]))
-    for i in index_to_cell_type_pattern
-]
-
-cluster_to_avg_pattern = {}
-for cluster in set(pattern_metadata["cluster_sub_cluster"]):
-    cluster_idc = np.where(pattern_metadata["cluster_sub_cluster"] == cluster)[0]
-    pwms_aligned = []
-    for i, m in enumerate(cluster_idc):
-        offset = pattern_metadata.loc[all_patterns_names[m], "offset_to_root"]
-        is_rc = pattern_metadata.loc[all_patterns_names[m], "is_rc_to_root"]
-        pwm = all_patterns[m]
-        ic = calc_ic(all_patterns[m])[:, None]
-        if is_rc:
-            pwm = pwm[::-1, ::-1]
-            ic = ic[::-1, ::-1]
-        if offset > 0:
-            pwm = np.concatenate([np.zeros((offset, 4)), pwm])
-            ic = np.concatenate([np.zeros((offset, 1)), ic])
-        elif offset < 0:
-            pwm = pwm[abs(offset) :, :]
-            ic = ic[abs(offset) :, :]
-        pwms_aligned.append(pwm)
-    max_len = max([x.shape[0] for x in pwms_aligned])
-    pwm_avg = np.array(
-        [np.concatenate([p, np.zeros((max_len - p.shape[0], 4))]) for p in pwms_aligned]
-    ).mean(0)
-    ic = calc_ic(pwm_avg)
-    cluster_to_avg_pattern[cluster] = pwm_avg
-
-
-pattern_code = pd.DataFrame(
-    index=pattern_metadata["cluster_sub_cluster"].unique(),
-    columns=[
-        *[
-            "O_" + topic
-            for cell_type in cell_type_organoid_to_coef
-            for topic in cell_type_organoid_to_coef[cell_type]
-        ],
-        *[
-            "E_" + topic
-            for cell_type in cell_type_embryo_to_coef
-            for topic in cell_type_embryo_to_coef[cell_type]
-        ],
-    ],
-).fillna(0)
-
-for cell_type in cell_type_organoid_to_coef:
-    for topic in cell_type_organoid_to_coef[cell_type].columns:
-        patterns = (
-            cell_type_organoid_to_coef[cell_type]
-            .loc[cell_type_organoid_to_coef[cell_type][topic] > 0]
-            .index.to_list()
-        )
-        if len(patterns) == 2:
-            patterns = [*patterns, *patterns]
-        elif len(patterns) == 1:
-            patterns = [*patterns, *patterns, *patterns, *patterns]
-        for pattern in patterns:
-            pattern_code.loc[
-                pattern_metadata.loc[
-                    all_patterns_names[
-                        cell_type_to_pattern_consensus_index[cell_type][pattern]
-                    ],
-                    "cluster_sub_cluster",
-                ],
-                "O_" + topic,
-            ] += 1
-
-for cell_type in cell_type_embryo_to_coef:
-    for topic in cell_type_embryo_to_coef[cell_type].columns:
-        patterns = (
-            cell_type_embryo_to_coef[cell_type]
-            .loc[cell_type_embryo_to_coef[cell_type][topic] > 0]
-            .index.to_list()
-        )
-        if len(patterns) == 2:
-            patterns = [*patterns, *patterns]
-        elif len(patterns) == 1:
-            patterns = [*patterns, *patterns, *patterns, *patterns]
-        for pattern in patterns:
-            pattern_code.loc[
-                pattern_metadata.loc[
-                    all_patterns_names[
-                        cell_type_to_pattern_consensus_index[cell_type][pattern]
-                    ],
-                    "cluster_sub_cluster",
-                ],
-                "E_" + topic,
-            ] += 1
 
 topic_order = [
     # DV
@@ -967,34 +784,6 @@ topic_order = [
     "O_2",
     "E_29",
 ]
-
-sorted_patterns = (
-    pattern_code.T.idxmax()
-    .sort_values(key=lambda X: [topic_order.index(x) for x in X])
-    .index[::-1]
-)
-
-results_per_experiment_organoid = pickle.load(
-    open("draft/motif_embedding_organoid.pkl", "rb")
-)
-
-results_per_experiment_embryo = pickle.load(
-    open("draft/motif_embedding_embryo.pkl", "rb")
-)
-
-cell_type_to_pred_l2_organoid = {
-    "O_" + cell_type.split("_")[-1]: get_pred_and_l2_for_cell_type(
-        results_per_experiment_organoid, cell_type
-    )
-    for cell_type in results_per_experiment_organoid
-}
-
-cell_type_to_pred_l2_embryo = {
-    "E_" + cell_type.split("_")[-1]: get_pred_and_l2_for_cell_type(
-        results_per_experiment_embryo, cell_type
-    )
-    for cell_type in results_per_experiment_embryo
-}
 
 color_dict = json.load(open("../color_maps.json"))["cell_type_classes"]
 
@@ -1257,6 +1046,7 @@ cell_type_to_hits_offset_region_topic = {
     ),
 }
 
+
 cell_type_to_classification_result = {}
 for cell_type in cell_type_to_hits_offset_region_topic:
     print(cell_type)
@@ -1295,322 +1085,304 @@ for cell_type in cell_type_to_hits_offset_region_topic:
         feature_names,
     )
 
-np.mean([cell_type_to_classification_result[cell_type][0][k].auc_pr for cell_type in cell_type_to_classification_result for k in cell_type_to_classification_result[cell_type][0]])
-np.mean([cell_type_to_classification_result[cell_type][0][k].auc_roc for cell_type in cell_type_to_classification_result for k in cell_type_to_classification_result[cell_type][0]])
+import pickle
 
-organoid_topics = [int(x.split("_")[1]) for x in topic_order if x.startswith("O_")]
-
-confusion_organoid = np.array(
-    [
-        np.mean(
-            [
-                results_per_experiment_organoid[cell_type][0][seq]["predictions"][-1][
-                    [t - 1 for t in organoid_topics]
-                ]
-                for seq in range(200)
-            ],
-            axis=0,
-        )
-        for cell_type in results_per_experiment_organoid
-    ]
-)
-
-df_confusion_organoid = pd.DataFrame(
-    confusion_organoid,
-    index=[
-        int(cell_type.split("_")[-1]) for cell_type in results_per_experiment_organoid
-    ],
-    columns=organoid_topics,
-).loc[organoid_topics]
-
-embryo_topics = [int(x.split("_")[1]) for x in topic_order if x.startswith("E_")]
-
-confusion_embryo = np.array(
-    [
-        np.mean(
-            [
-                results_per_experiment_embryo[cell_type][0][seq]["predictions"][-1][
-                    [t - 1 for t in embryo_topics]
-                ]
-                for seq in range(200)
-            ],
-            axis=0,
-        )
-        for cell_type in results_per_experiment_embryo
-    ]
-)
-
-df_confusion_embryo = pd.DataFrame(
-    confusion_embryo,
-    index=[
-        int(cell_type.split("_")[-1]) for cell_type in results_per_experiment_embryo
-    ],
-    columns=embryo_topics,
-).loc[embryo_topics]
-
-
-N_PIXELS_PER_GRID = 25
-
-plt.style.use("../paper.mplstyle")
-
-fig = plt.figure()
-width, height = fig.get_size_inches()
-n_w_pixels = fig.get_dpi() * width
-n_h_pixels = fig.get_dpi() * height
-ncols = int((n_w_pixels) // N_PIXELS_PER_GRID)
-nrows = int((n_h_pixels) // N_PIXELS_PER_GRID)
-gs = fig.add_gridspec(
-    nrows, ncols, wspace=0.05, hspace=0.1, left=0.05, right=0.97, bottom=0.05, top=0.95
-)
-ax = fig.add_subplot(gs[0:4, 8:78])
-for x, topic in enumerate(topic_order):
-    auc_pr = cell_type_to_classification_result[
-        {"O": "organoid_", "E": "embryo_"}[topic.split("_")[0]] + topic_to_ct[topic]
-    ][0][int(topic.split("_")[1])].auc_pr
-    auc_roc = cell_type_to_classification_result[
-        {"O": "organoid_", "E": "embryo_"}[topic.split("_")[0]] + topic_to_ct[topic]
-    ][0][int(topic.split("_")[1])].auc_roc
-    _ = ax.scatter(x, auc_pr, color=color_dict[topic_to_ct[topic]], s=20)
-    _ = ax.scatter(
-        x, auc_roc, color=color_dict[topic_to_ct[topic]], s=20, edgecolor="black", lw=1
+nonAugmented_data_dict_organoid = pickle.load(open("../data_prep_new/organoid_data/MODELS/nonAugmented_data_dict.pkl", "rb"))
+data_set = "organoid"
+cell_type_to_genome_wide_classification = {}
+for cell_type in cell_type_to_modisco_result:
+    print(cell_type)
+    cell_type_to_genome_wide_classification[f"{data_set}_{cell_type}"] = {}
+    hits = get_hit_score_for_topics(
+        ohs = nonAugmented_data_dict_organoid["test_data"],
+        embryo_pattern_dir=embryo_dl_motif_dir ,
+        organoid_pattern_dir=organoid_dl_motif_dir ,
+        ic_trim_thr=0.2,
+        fimo_threshold = 0.0001,
+        embryo_topics=cell_type_to_modisco_result[cell_type].embryo_topics,
+        organoid_topics=cell_type_to_modisco_result[cell_type].organoid_topics,
+        selected_clusters=cell_type_to_modisco_result[cell_type].selected_patterns,
+        pattern_metadata_path=cell_type_to_modisco_result[cell_type].pattern_metadata_path,
+        cluster_col=cell_type_to_modisco_result[cell_type].cluster_col,
     )
-_ = ax.grid(True)
-_ = ax.set_axisbelow(True)
-_ = ax.set_ylim(0, 1)
-_ = ax.set_xlim(-0.5, x + 0.5)
-_ = ax.set_xticks(
-    np.arange(pattern_code.shape[1]),
-    labels=["" for _ in range(pattern_code.shape[1])],
-    rotation=90,
-)
-_ = ax.set_yticks(np.arange(0, 1.25, 0.25), labels=[0.0, "", 0.5, "", 1.0])
-_ = ax.set_ylabel("$AUC_{PR/ROC}$")
-current_y = 5
-for i, pattern_name in enumerate(sorted_patterns[::-1]):
-    ax = fig.add_subplot(gs[current_y + 3 * i : current_y + 3 * i + 3, 0:6])
-    pattern = cluster_to_avg_pattern[pattern_name]
-    _ = logomaker.Logo(
-        pd.DataFrame(
-            pattern * calc_ic(pattern)[:, None],
-            columns=["A", "C", "G", "T"],
-        ),
-        ax=ax,
+    max_hits_per_seq = hits \
+        .groupby(["sequence_name", "cluster"])[["score", "-logp"]].max().reset_index()
+    if f"{data_set}_{cell_type}" in cell_type_to_hits_offset_region_topic:
+        X = max_hits_per_seq  \
+            .pivot(index = "sequence_name", columns = ["cluster"], values = "-logp") \
+            .loc[:, cell_type_to_classification_result[f"{data_set}_{cell_type}"][1]] \
+            .fillna(0)
+        topics = cell_type_to_modisco_result[cell_type].organoid_topics if data_set == "organoid" \
+            else cell_type_to_modisco_result[cell_type].embryo_topics
+        for topic in topics:
+            y = nonAugmented_data_dict_organoid["y_test"][X.index][:, topic - 1]
+            reg = cell_type_to_classification_result[f"{data_set}_{cell_type}"][0][topic].model
+            precision, recall, threshold = precision_recall_curve(
+                y, reg.predict_log_proba(X.values)[:, 1]
+            )
+            fpr, tpr, thresholds = roc_curve(
+                y, reg.predict_log_proba(X.values)[:, 1]
+            )
+            cell_type_to_genome_wide_classification[f"{data_set}_{cell_type}"][topic] = ClassificationResult(
+                model=reg,
+                precision=precision,
+                recall=recall,
+                fpr=fpr,
+                tpr=tpr,
+                auc_roc=auc(fpr, tpr),
+                auc_pr=auc(recall, precision),
+            )
+            fig, axs = plt.subplots(ncols = 2, figsize = (8,4))
+            axs[0].plot(
+                fpr, tpr
+            )
+            axs[1].plot(
+                recall, precision
+            )
+            fig.tight_layout()
+            fig.savefig(f"genome_wide_scoring/{data_set}_{cell_type}_{topic}.png")
+            plt.close(fig)
+
+import gzip
+
+nonAugmented_data_dict_embryo = pickle.load(gzip.open("../data_prep_new/embryo_data/MODELS/nonAugmented_data_dict.pkl.gz", "rb"))
+data_set = "embryo"
+for cell_type in cell_type_to_modisco_result:
+    print(cell_type)
+    cell_type_to_genome_wide_classification[f"{data_set}_{cell_type}"] = {}
+    hits = get_hit_score_for_topics(
+        ohs = nonAugmented_data_dict_embryo["test_data"],
+        embryo_pattern_dir=embryo_dl_motif_dir ,
+        organoid_pattern_dir=organoid_dl_motif_dir ,
+        ic_trim_thr=0.2,
+        fimo_threshold = 0.0001,
+        embryo_topics=cell_type_to_modisco_result[cell_type].embryo_topics,
+        organoid_topics=cell_type_to_modisco_result[cell_type].organoid_topics,
+        selected_clusters=cell_type_to_modisco_result[cell_type].selected_patterns,
+        pattern_metadata_path=cell_type_to_modisco_result[cell_type].pattern_metadata_path,
+        cluster_col=cell_type_to_modisco_result[cell_type].cluster_col,
     )
-    ax.set_axis_off()
-ax = fig.add_subplot(gs[current_y : current_y + len(sorted_patterns) * 3, 8:78])
-XX, YY = np.meshgrid(np.arange(pattern_code.shape[1]), np.arange(pattern_code.shape[0]))
-for j in range(pattern_code.shape[1]):
-    idx = np.where(pattern_code.loc[sorted_patterns, topic_order[j]].values)[0]
-    _ = ax.scatter(
-        XX[idx, j],
-        YY[idx, j],
-        s=pattern_code.loc[sorted_patterns, topic_order[j]].values[idx] * 20,
-        color=color_dict[topic_to_ct[topic_order[j]]],
-        zorder=3,
-        edgecolor="black",
-        lw=1,
-    )
-    _ = ax.plot(
-        [XX[idx[YY[idx, j].argmin()], j], XX[idx[YY[idx, j].argmax()], j]],
-        [YY[idx, j].min(), YY[idx, j].max()],
-        color=color_dict[topic_to_ct[topic_order[j]]],
-        zorder=2,
-    )
-ax.legend(
-    handles=[
-        Line2D(
-            [0], [0], color=color_dict[ct], markerfacecolor="o", label=ct, markersize=10
-        )
-        for ct in color_dict
-    ],
-    loc="lower left",
-    fontsize=8,
+    max_hits_per_seq = hits \
+        .groupby(["sequence_name", "cluster"])[["score", "-logp"]].max().reset_index()
+    if f"{data_set}_{cell_type}" in cell_type_to_hits_offset_region_topic:
+        X = max_hits_per_seq  \
+            .pivot(index = "sequence_name", columns = ["cluster"], values = "-logp") \
+            .loc[:, cell_type_to_classification_result[f"{data_set}_{cell_type}"][1]] \
+            .fillna(0)
+        topics = cell_type_to_modisco_result[cell_type].organoid_topics if data_set == "organoid" \
+            else cell_type_to_modisco_result[cell_type].embryo_topics
+        for topic in topics:
+            y = nonAugmented_data_dict_embryo["y_test"][X.index][:, topic - 1]
+            reg = cell_type_to_classification_result[f"{data_set}_{cell_type}"][0][topic].model
+            precision, recall, threshold = precision_recall_curve(
+                y, reg.predict_log_proba(X.values)[:, 1]
+            )
+            fpr, tpr, thresholds = roc_curve(
+                y, reg.predict_log_proba(X.values)[:, 1]
+            )
+            cell_type_to_genome_wide_classification[f"{data_set}_{cell_type}"][topic] = ClassificationResult(
+                model=reg,
+                precision=precision,
+                recall=recall,
+                fpr=fpr,
+                tpr=tpr,
+                auc_roc=auc(fpr, tpr),
+                auc_pr=auc(recall, precision),
+            )
+            fig, axs = plt.subplots(ncols = 2, figsize = (8,4))
+            axs[0].plot(
+                fpr, tpr
+            )
+            axs[1].plot(
+                recall, precision
+            )
+            fig.tight_layout()
+            fig.savefig(f"genome_wide_scoring/{data_set}_{cell_type}_{topic}.png")
+            plt.close(fig)
+
+
+cell_type = "progenitor_dv"
+hits = get_hit_score_for_topics(
+    ohs = nonAugmented_data_dict_organoid["train_data"],
+    embryo_pattern_dir=embryo_dl_motif_dir ,
+    organoid_pattern_dir=organoid_dl_motif_dir ,
+    ic_trim_thr=0.2,
+    fimo_threshold = 0.0001,
+    embryo_topics=cell_type_to_modisco_result[cell_type].embryo_topics,
+    organoid_topics=cell_type_to_modisco_result[cell_type].organoid_topics,
+    selected_clusters=cell_type_to_modisco_result[cell_type].selected_patterns,
+    pattern_metadata_path=cell_type_to_modisco_result[cell_type].pattern_metadata_path,
+    cluster_col=cell_type_to_modisco_result[cell_type].cluster_col,
 )
-_ = ax.set_xlim(-0.5, XX.max() + 0.5)
-_ = ax.set_xticks(
-    np.arange(pattern_code.shape[1]),
-    labels=["" for _ in range(pattern_code.shape[1])],
-    rotation=90,
+
+topic = cell_type_to_modisco_result[cell_type].organoid_topics[0]
+
+max_hits_per_seq = hits \
+    .groupby(["sequence_name", "cluster"])[["score", "-logp"]].max().reset_index()
+
+X = max_hits_per_seq  \
+    .pivot(index = "sequence_name", columns = ["cluster"], values = "-logp").fillna(0)
+
+
+hits_test = get_hit_score_for_topics(
+    ohs = nonAugmented_data_dict_organoid["test_data"],
+    embryo_pattern_dir=embryo_dl_motif_dir ,
+    organoid_pattern_dir=organoid_dl_motif_dir ,
+    ic_trim_thr=0.2,
+    fimo_threshold = 0.0001,
+    embryo_topics=cell_type_to_modisco_result[cell_type].embryo_topics,
+    organoid_topics=cell_type_to_modisco_result[cell_type].organoid_topics,
+    selected_clusters=cell_type_to_modisco_result[cell_type].selected_patterns,
+    pattern_metadata_path=cell_type_to_modisco_result[cell_type].pattern_metadata_path,
+    cluster_col=cell_type_to_modisco_result[cell_type].cluster_col,
 )
-_ = ax.set_yticks(
-    np.arange(pattern_code.shape[0]), labels=["" for _ in range(pattern_code.shape[0])]
+
+max_hits_per_seq_test = hits_test \
+    .groupby(["sequence_name", "cluster"])[["score", "-logp"]].max().reset_index()
+
+X_test = max_hits_per_seq_test  \
+    .pivot(index = "sequence_name", columns = ["cluster"], values = "-logp").fillna(0)
+
+y = nonAugmented_data_dict_organoid["y_train"][X.index][:, topic - 1]
+y_test =nonAugmented_data_dict_organoid["y_test"][X_test.index][:, topic - 1]
+
+reg = LogisticRegression()
+
+reg.fit(X, y)
+
+precision, recall, threshold = precision_recall_curve(
+    y_test, reg.predict_log_proba(X_test.values)[:, 1]
 )
-ax.grid(True)
-ax.set_axisbelow(True)
-ax = fig.add_subplot(
-    gs[
-        current_y + len(sorted_patterns) * 3 + 1 : current_y
-        + len(sorted_patterns) * 3
-        + 6,
-        8:78,
-    ]
+fpr, tpr, thresholds = roc_curve(
+    y_test, reg.predict_log_proba(X_test.values)[:, 1]
 )
-bplots = ax.boxplot(
-    [
-        {**cell_type_to_pred_l2_organoid, **cell_type_to_pred_l2_embryo}[t][0]
-        for t in topic_order
-    ],
-    patch_artist=True,
-    medianprops=dict(color="black"),
-    flierprops=dict(markersize=1),
+fig, axs = plt.subplots(ncols = 2, figsize = (8,4))
+axs[0].plot(
+    fpr, tpr
 )
-for bplot_patch, topic in zip(bplots["boxes"], topic_order):
-    color = color_dict[topic_to_ct[topic]]
-    bplot_patch.set_facecolor(color)
-_ = ax.set_xticks(np.arange(pattern_code.shape[1]) + 1, labels=topic_order, rotation=90)
-_ = ax.set_ylim(0, 1)
-_ = ax.set_yticks(np.arange(0, 1.25, 0.25), labels=[0, "", 0.5, "", 1])
-ax.grid(True)
-ax.set_axisbelow(True)
-ax.set_ylabel("pred. score")
-current_y = current_y + len(sorted_patterns) * 3 + 11
-ax = fig.add_subplot(gs[current_y:, 0 : nrows - current_y])
-sns.heatmap(
-    df_confusion_organoid,
-    xticklabels=True,
-    yticklabels=True,
-    cmap="viridis",
-    linewidths=0.5,
-    linecolor="black",
-    cbar=False,
-    vmin=0,
-    vmax=1,
+axs[1].plot(
+    recall, precision
 )
-ax = fig.add_subplot(
-    gs[current_y:, nrows - current_y + 3 : (nrows - current_y) * 2 + 6]
+fig.tight_layout()
+fig.savefig(f"genome_wide_scoring/refit_{data_set}_{cell_type}_{topic}.png")
+
+pickle.dump(
+    cell_type_to_genome_wide_classification,
+    open("cell_type_to_genome_wide_classification.pkl", "wb")
 )
-sns.heatmap(
-    df_confusion_embryo,
-    xticklabels=True,
-    yticklabels=True,
-    cmap="viridis",
-    linewidths=0.5,
-    linecolor="black",
-    vmin=0,
-    vmax=1,
-    cbar_kws=dict(shrink=0.5),
+
+cell_type_to_genome_wide_classification = pickle.load(
+    open("cell_type_to_genome_wide_classification.pkl", "rb")
 )
-ax = fig.add_subplot(gs[current_y : current_y + 11, 44 : 44 + 15])
+
+
+matplotlib.rcParams['pdf.fonttype'] = 42
+
+fig, ax = plt.subplots()
+X = [
+    cell_type_to_classification_result[cell_type][0][topic].auc_pr 
+    for cell_type in cell_type_to_classification_result 
+    for topic in cell_type_to_classification_result[cell_type][0]
+]
+Y = [
+    cell_type_to_genome_wide_classification[cell_type][topic].auc_pr 
+    for cell_type in cell_type_to_classification_result 
+    for topic in cell_type_to_classification_result[cell_type][0]
+]
+cell_types = [
+    ("E_" if "embryo" in cell_type else "O_") + str(topic)
+    for cell_type in cell_type_to_classification_result 
+    for topic in cell_type_to_classification_result[cell_type][0]
+]
 ax.scatter(
-    all_hits_organoid.start,
-    all_hits_organoid.attribution,
-    c=all_hits_organoid["-logp"],
-    s=1,
-)
-ax.grid(True)
-ax.set_axisbelow(True)
-_ = ax.set_xticks(np.arange(0, 550, 50), labels=["" for _ in np.arange(0, 550, 50)])
-_ = ax.set_ylabel("Contribution")
-ax = fig.add_subplot(gs[current_y + 12 :, 44 : 44 + 15])
-ax_pdf = ax.twinx()
-mean_organoid = n_hits_per_bin_mean_organoid
-std_organoid = n_hits_per_bin_std_organoid
-ax.bar(
-    x=[x.left for x in n_hits_per_bin_organoid.index],
-    height=n_hits_per_bin_organoid.values,
-    width=window,
-    color=[
-        "white"
-        if iv.mid > mean_organoid + std_organoid * 2
-        or iv.mid < mean_organoid - std_organoid * 2
-        else "darkgray"
-        if iv.mid > mean_organoid + std_organoid * 1
-        or iv.mid < mean_organoid - std_organoid * 1
-        else "dimgray"
-        for iv in n_hits_per_bin_organoid.index
+    x = X,
+    y = Y,
+    color = [
+        color_dict[cell_type.split("_", 1)[1]] for cell_type in cell_type_to_classification_result for topic in cell_type_to_classification_result[cell_type][0]
     ],
-    edgecolor=[
-        "lightgray"
-        if iv.mid > mean_organoid + std_organoid * 2
-        or iv.mid < mean_organoid - std_organoid * 2
-        else "gray"
-        if iv.mid > mean_organoid + std_organoid * 1
-        or iv.mid < mean_organoid - std_organoid * 1
-        else "black"
-        for iv in n_hits_per_bin_organoid.index
-    ],
-    lw=1,
+    lw = [1 if "organoid" in cell_type else 0 for cell_type in cell_type_to_classification_result for topic in cell_type_to_classification_result[cell_type][0]],
+    edgecolor = "black"
 )
-ax_pdf.plot(
-    [x.left for x in n_hits_per_bin_organoid.index],
-    norm(loc=mean_organoid, scale=std_organoid).pdf(
-        [x.left for x in n_hits_per_bin_organoid.index]
-    ),
-    color="black",
+texts = []
+for x, y, s in zip(X, Y, cell_types):
+    texts.append(
+        ax.text(
+            x, y, s
+        )
+    )
+_ = adjust_text(
+    texts,
+    arrowprops = dict(arrowstyle = "-", color = "black")
 )
-ax_pdf.text(
-    0.05,
-    0.5,
-    s=f"μ = {int(mean_organoid)}\nσ = {int(std_organoid)}",
-    transform=ax_pdf.transAxes,
-)
-ax_pdf.set_ylim(0, ax_pdf.get_ylim()[1])
-ax_pdf.set_yticks([])
-_ = ax.set_xticks(
-    np.arange(0, 550, 50), ["", 50, "", 150, "", 250, "", 350, "", 450, ""]
-)
-_ = ax.set_xlabel("Start position")
-ax.grid(True)
-ax.set_axisbelow(True)
-ax = fig.add_subplot(gs[current_y : current_y + 11, 63 : 63 + 15])
-ax.scatter(
-    all_hits_embryo.start, all_hits_embryo.attribution, c=all_hits_embryo["-logp"], s=1
-)
-ax.grid(True)
-ax.set_axisbelow(True)
-_ = ax.set_xticks(np.arange(0, 550, 50), labels=["" for _ in np.arange(0, 550, 50)])
-# _ = ax.set_ylabel("Contribution")
-ax = fig.add_subplot(gs[current_y + 12 :, 63 : 63 + 15])
-ax_pdf = ax.twinx()
-mean_embryo = n_hits_per_bin_mean_embryo
-std_embryo = n_hits_per_bin_std_embryo
-ax.bar(
-    x=[x.left for x in n_hits_per_bin_embryo.index],
-    height=n_hits_per_bin_embryo.values,
-    width=window,
-    color=[
-        "white"
-        if iv.mid > mean_embryo + std_embryo * 2
-        or iv.mid < mean_embryo - std_embryo * 2
-        else "darkgray"
-        if iv.mid > mean_embryo + std_embryo * 1
-        or iv.mid < mean_embryo - std_embryo * 1
-        else "dimgray"
-        for iv in n_hits_per_bin_embryo.index
-    ],
-    edgecolor=[
-        "lightgray"
-        if iv.mid > mean_embryo + std_embryo * 2
-        or iv.mid < mean_embryo - std_embryo * 2
-        else "gray"
-        if iv.mid > mean_embryo + std_embryo * 1
-        or iv.mid < mean_embryo - std_embryo * 1
-        else "black"
-        for iv in n_hits_per_bin_embryo.index
-    ],
-    lw=1,
-)
-ax_pdf.plot(
-    [x.left for x in n_hits_per_bin_embryo.index],
-    norm(loc=mean_embryo, scale=std_embryo).pdf(
-        [x.left for x in n_hits_per_bin_embryo.index]
-    ),
-    color="black",
-)
-ax_pdf.text(
-    0.05,
-    0.5,
-    s=f"μ = {int(mean_embryo)}\nσ = {int(std_embryo)}",
-    transform=ax_pdf.transAxes,
-)
-ax_pdf.set_ylim(0, ax_pdf.get_ylim()[1])
-ax_pdf.set_yticks([])
-_ = ax.set_xticks(
-    np.arange(0, 550, 50), ["", 50, "", 150, "", 250, "", 350, "", 450, ""]
-)
-_ = ax.set_xlabel("Start position")
+ax.set_xlabel("Contrast based aucPR")
+ax.set_ylabel("Genome wide aucPR")
 ax.grid(True)
 ax.set_axisbelow(True)
 fig.tight_layout()
-fig.savefig("Figure_7.png", transparent=False)
-fig.savefig("Figure_7.pdf")
+fig.savefig("genome_wide_scoring/aucPR_contrast_v_genome_wide.pdf")
+
+fig, ax = plt.subplots()
+X = [
+    cell_type_to_classification_result[cell_type][0][topic].auc_roc
+    for cell_type in cell_type_to_classification_result 
+    for topic in cell_type_to_classification_result[cell_type][0]
+]
+Y = [
+    cell_type_to_genome_wide_classification[cell_type][topic].auc_roc
+    for cell_type in cell_type_to_classification_result 
+    for topic in cell_type_to_classification_result[cell_type][0]
+]
+cell_types = [
+    ("E_" if "embryo" in cell_type else "O_") + str(topic)
+    for cell_type in cell_type_to_classification_result 
+    for topic in cell_type_to_classification_result[cell_type][0]
+]
+ax.scatter(
+    x = X,
+    y = Y,
+    color = [
+        color_dict[cell_type.split("_", 1)[1]] for cell_type in cell_type_to_classification_result for topic in cell_type_to_classification_result[cell_type][0]
+    ],
+    lw = [1 if "organoid" in cell_type else 0 for cell_type in cell_type_to_classification_result for topic in cell_type_to_classification_result[cell_type][0]],
+    edgecolor = "black"
+)
+texts = []
+for x, y, s in zip(X, Y, cell_types):
+    texts.append(
+        ax.text(
+            x, y, s
+        )
+    )
+_ = adjust_text(
+    texts,
+    arrowprops = dict(arrowstyle = "-", color = "black")
+)
+ax.set_xlabel("Contrast based aucROC")
+ax.set_ylabel("Genome wide aucROC")
+ax.grid(True)
+ax.set_axisbelow(True)
+fig.tight_layout()
+fig.savefig("genome_wide_scoring/aucROC_contrast_v_genome_wide.pdf")
+
+
+
+
+fig, ax = plt.subplots()
+ax.scatter(
+    x = [cell_type_to_classification_result[cell_type][0][topic].auc_roc for cell_type in cell_type_to_classification_result for topic in cell_type_to_classification_result[cell_type][0]],
+    y = [cell_type_to_genome_wide_classification[cell_type][topic].auc_roc for cell_type in cell_type_to_classification_result for topic in cell_type_to_classification_result[cell_type][0]],
+    color = [
+        color_dict[cell_type.split("_", 1)[1]] for cell_type in cell_type_to_classification_result for topic in cell_type_to_classification_result[cell_type][0]
+    ],
+    lw = [1 if "organoid" in cell_type else 0 for cell_type in cell_type_to_classification_result for topic in cell_type_to_classification_result[cell_type][0]],
+    edgecolor = "black"
+)
+ax.set_xlabel("Contrast based aucROC")
+ax.set_ylabel("Genome wide aucROC")
+ax.grid(True)
+ax.set_axisbelow(True)
+fig.tight_layout()
+fig.savefig("genome_wide_scoring/aucROC_contrast_v_genome_wide.pdf")
+
+
+

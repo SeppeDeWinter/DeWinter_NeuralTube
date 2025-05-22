@@ -156,7 +156,6 @@ embryo_progenitor_cell_topic.index = [
     for x in embryo_progenitor_cell_topic.index
 ]
 
-
 def rgb_scatter_plot(
     x,
     y,
@@ -218,6 +217,21 @@ def rgb_scatter_plot(
     ax.text(
         0.8, 0.78, b_name, color="blue", ha="left", va="top", transform=ax.transAxes
     )
+    if r_vmin is None:
+        r_vmin = r_values.min()
+    if r_vmax is None:
+        r_vmax = r_values.max()
+    if g_vmin is None:
+        g_vmin = g_values.min()
+    if g_vmax is None:
+        g_vmax = g_values.max()
+    if b_vmin is None:
+        b_vmin = b_values.min()
+    if b_vmax is None:
+        b_vmax = b_values.max()
+    print(f"R: {r_vmin, r_vmax}\nG: {g_vmin, g_vmax}\nB: {b_vmin, b_vmax}")
+
+
 
 
 cell_topic_bin_organoid = pd.read_table(
@@ -754,6 +768,18 @@ organoid_embryo = [
     (54, 88),
     (48, 58),
 ]
+
+from scipy import stats
+
+corrs_patterns = []
+for cluster in selected_clusters:
+    corrs_patterns.append(
+        stats.pearsonr(
+            [cluster_to_topic_to_avg_pattern_organoid[cluster][o].sum() for o, _ in organoid_embryo],
+            [cluster_to_topic_to_avg_pattern_embryo[cluster][e].sum() for _, e in organoid_embryo]
+        ).statistic
+    )
+print(np.mean(corrs_patterns))
 
 n_clusters = len(selected_clusters)
 
@@ -2736,6 +2762,7 @@ for i, cluster in enumerate(tqdm(selected_clusters)):
         if j == 0:
             _ = ax.set_ylabel(f"cluster_{cluster}")
         axs.append(ax)
+    print(f"{YMIN}, {YMAX}")
     for ax, (organoid_topic, embryo_topic) in zip(axs, organoid_embryo):
         _ = ax.set_ylim(YMIN, YMAX)
         _ = ax.set_axis_off()
@@ -3109,6 +3136,28 @@ ax_FOX_logo_organoid.set_xticks(
 ax_FOX_logo_organoid.set_xlim(-0.5, MX + 0.5)
 ax_FOX_logo_organoid_hm.set_xlim(0, MX + 1)
 #
+
+
 fig.tight_layout()
 fig.savefig("Figure_3_v2.png", transparent=False)
 fig.savefig("Figure_3_v2.pdf")
+
+
+fig, ax = plt.subplots()
+sns.heatmap(
+    np.nan_to_num(
+        FOX_organoid_cov_mn[
+            np.argsort(np.nan_to_num(FOX_organoid_cov_mn).mean(1))[::-1]
+        ]
+    ),
+    ax=ax,
+    cmap="Spectral_r",
+    robust=True,
+    cbar=True,
+    yticklabels=False,
+)
+_ = ax_hm.set_xticks(
+    np.arange(0, S, 10),
+)
+fig.savefig("footprint.png")
+

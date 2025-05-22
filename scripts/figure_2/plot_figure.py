@@ -196,10 +196,8 @@ class Grouper:
                 self._groups.add(_id)
             else:
                 self._grp_to_idx[_id].append(i)
-
     def __repr__(self) -> str:
         return f"Grouper with {len(self._groups)} elements."
-
     def get_groups(self, verbose=True):
         for group in tqdm(self._groups, disable=not verbose):
             yield group, self._grp_to_idx[group]
@@ -337,7 +335,7 @@ def get_start_end_max_stretch(arr):
 
 @cache
 def prepare_vista_data():
-    genome_dir = "/data/projects/c20/sdewin/resources/"
+    genome_dir = "../../../../../resources/"
     hg38 = crested.Genome(
         pathlib.Path(os.path.join(genome_dir, "hg38/hg38.fa")),
         pathlib.Path(os.path.join(genome_dir, "hg38/hg38.chrom.sizes")),
@@ -637,7 +635,7 @@ def prepare_ref_alt_data_vista():
     classes_to_consider = [
         topic_name_to_model_index_organoid(x) for x in neural_tube_topics_organoid
     ]
-    genome_dir = "/data/projects/c20/sdewin/resources/"
+    genome_dir = "../../../../../resources"
     hg38 = crested.Genome(
         pathlib.Path(os.path.join(genome_dir, "hg38/hg38.fa")),
         pathlib.Path(os.path.join(genome_dir, "hg38/hg38.chrom.sizes")),
@@ -781,9 +779,7 @@ def plot_w_cache(key):
             else:
                 ax = plot_func(fig, gs, y, x)
                 ax_cache[key] = ax
-
         return wrapper
-
     return decorator
 
 
@@ -1103,6 +1099,27 @@ def plot_PR_vista_neural_tube(
     ax.set_ylabel("Precision")
     ax.legend()
     return ax
+
+(
+    prediction_scores_organoid_max,
+    prediction_scores_embryo_max,
+    neural_tube_pos_enhancers,
+    facial_mesenchyme_pos_enhancers,
+) = prepare_vista_data()
+
+organoid_topics = np.array([
+    6, 4, 23, 24, 13, 2, 33, 38, 36, 54, 48, 62, 60, 65, 59, 58
+]) - 1
+
+embryo_topics = np.array(
+    [10, 8, 13, 24, 18, 29, 34, 38, 79, 88, 58, 61, 59, 31, 62, 70, 52, 71, 103, 105, 94, 91]
+) - 1
+
+np.unique(organoid_topics[prediction_scores_organoid_max[neural_tube_pos_enhancers, :][:, organoid_topics].argmax(1)] + 1, return_counts = True)
+
+np.unique(embryo_topics[prediction_scores_embryo_max[neural_tube_pos_enhancers, :][:, embryo_topics].argmax(1)] + 1, return_counts = True)
+
+np.logical_and(np.isin(embryo_topics[prediction_scores_embryo_max[neural_tube_pos_enhancers, :][:, embryo_topics].argmax(1)] + 1, [103, 105, 94]), np.isin(organoid_topics[prediction_scores_organoid_max[neural_tube_pos_enhancers, :][:, organoid_topics].argmax(1)]+ 1, [62, 60, 65])).sum() / len(neural_tube_pos_enhancers)
 
 
 @plot_w_cache(key="ROC_vista_neural_tube")
@@ -2117,3 +2134,117 @@ plot_DE_NC_embr(
 fig.tight_layout()
 fig.savefig("Figure_2.png", transparent=False)
 fig.savefig("Figure_2.pdf")
+
+
+
+path_to_organoid_model = "../data_prep_new/organoid_data/MODELS/"
+organoid_model = tf.keras.models.model_from_json(
+    open(os.path.join(path_to_organoid_model, "model.json")).read(),
+    custom_objects={"Functional": tf.keras.models.Model},
+)
+genome_dir = "../../../../../resources"
+organoid_model.load_weights(
+    os.path.join(path_to_organoid_model, "model_epoch_23.hdf5")
+)
+hg38 = crested.Genome(
+    pathlib.Path(os.path.join(genome_dir, "hg38/hg38.fa")),
+    pathlib.Path(os.path.join(genome_dir, "hg38/hg38.chrom.sizes")),
+)
+mm10 = crested.Genome(
+    pathlib.Path(os.path.join(genome_dir, "mm10/mm10.fa")),
+    pathlib.Path(os.path.join(genome_dir, "mm10/mm10.chrom.sizes")),
+)
+
+VISTA_experiments = pd.read_table(
+    "../data_prep_new/validation_data/VISTA_VALIDATION/VISTA_experiments.tsv.gz"
+)
+experiment_ids, sequences, metadata = [], [], []
+for _, vista_experiment in tqdm(
+    VISTA_experiments.iterrows(),
+    total=len(VISTA_experiments),
+):
+    for result in get_sequence_and_metadata(
+        vista_experiment, {"Human": hg38, "Mouse": mm10}, 500
+    ):
+        if result is not None:
+            experiment_ids.append(result[0])
+            sequences.append(result[1])
+            metadata.append(result[2])
+# oh_sequences = np.array(
+#    [one_hot_encode_sequence(s, expand_dim=False) for s in tqdm(sequences)]
+# )
+
+prediction_score_organoid = np.load(
+    "../data_prep_new/organoid_data/MODELS/VISTA_VALIDATION/prediction_score_organoid.npz"
+)["prediction_score"]
+
+ref_alt_to_data = prepare_ref_alt_data_vista()
+
+ref_enhancer, alt_enhancer = "001700010002", "001700060001"
+vista_id = VISTA_experiments.query("exp_hier == @ref_enhancer")["vista_id"].values[
+    0
+]
+ref_enhancer_idx = ref_alt_to_data[(ref_enhancer, alt_enhancer)]["ref_enhancer_idx"]
+class_idx = ref_alt_to_data[(ref_enhancer, alt_enhancer)]["class_idx"]
+pred_score = prediction_score_organoid[ref_enhancer_idx, class_idx]
+explainer = Explainer(model=organoid_model, class_index=int(class_idx))
+oh_sequence = one_hot_encode_sequence(sequences[ref_enhancer_idx], expand_dim=False)
+ref_gradients_integrated_organoid = explainer.integrated_grad(X=oh_sequence[None]).squeeze()
+
+organoid_de = oh_sequence  * ref_gradients_integrated_organoid 
+
+
+path_to_embryo_model = "../data_prep_new/embryo_data/MODELS/"
+embryo_model = tf.keras.models.model_from_json(
+    open(os.path.join(path_to_embryo_model, "model.json")).read(),
+    custom_objects={"Functional": tf.keras.models.Model},
+)
+embryo_model.load_weights(os.path.join(path_to_embryo_model, "model_epoch_36.hdf5"))
+hg38 = crested.Genome(
+    pathlib.Path(os.path.join(genome_dir, "hg38/hg38.fa")),
+    pathlib.Path(os.path.join(genome_dir, "hg38/hg38.chrom.sizes")),
+)
+mm10 = crested.Genome(
+    pathlib.Path(os.path.join(genome_dir, "mm10/mm10.fa")),
+    pathlib.Path(os.path.join(genome_dir, "mm10/mm10.chrom.sizes")),
+)
+VISTA_experiments = pd.read_table(
+    "../data_prep_new/validation_data/VISTA_VALIDATION/VISTA_experiments.tsv.gz"
+)
+experiment_ids, sequences, metadata = [], [], []
+for _, vista_experiment in tqdm(
+    VISTA_experiments.iterrows(),
+    total=len(VISTA_experiments),
+):
+    for result in get_sequence_and_metadata(
+        vista_experiment, {"Human": hg38, "Mouse": mm10}, 500
+    ):
+        if result is not None:
+            experiment_ids.append(result[0])
+            sequences.append(result[1])
+            metadata.append(result[2])
+# oh_sequences = np.array(
+#    [one_hot_encode_sequence(s, expand_dim=False) for s in tqdm(sequences)]
+# )
+prediction_score_embryo = np.load(
+    "../data_prep_new/embryo_data/MODELS/VISTA_VALIDATION/prediction_score_embryo.npz"
+)["prediction_score"]
+ref_alt_to_data = prepare_ref_alt_data_vista()
+ref_enhancer, alt_enhancer = "001700010002", "001700060001"
+vista_id = VISTA_experiments.query("exp_hier == @ref_enhancer")["vista_id"].values[
+    0
+]
+ref_enhancer_idx = ref_alt_to_data[(ref_enhancer, alt_enhancer)]["ref_enhancer_idx"]
+class_idx = prediction_score_embryo[ref_enhancer_idx].argmax()
+pred_score = prediction_score_embryo[ref_enhancer_idx, class_idx]
+explainer = Explainer(model=embryo_model, class_index=int(class_idx))
+oh_sequence = one_hot_encode_sequence(sequences[ref_enhancer_idx], expand_dim=False)
+ref_gradients_integrated_embryo = explainer.integrated_grad(X=oh_sequence[None]).squeeze()
+
+
+embryo_de = oh_sequence  * ref_gradients_integrated_embryo 
+
+
+from scipy.stats import pearsonr
+
+print( pearsonr(embryo_de.sum(1), organoid_de.sum(1)))
