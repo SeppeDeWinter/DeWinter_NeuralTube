@@ -1,38 +1,807 @@
-import os
-
-os.environ["CUDA_VISIBALE_DEVICES"] = "0"
+import anndata
 import matplotlib.pyplot as plt
-import matplotlib
-import scanpy as sc
-import pandas as pd
 import numpy as np
-from dataclasses import dataclass
-import h5py
-from typing import Self
-import tensorflow as tf
-from tqdm import tqdm
-from crested.tl._explainer_tf import Explainer
-from crested.utils._seq_utils import one_hot_encode_sequence
-import pickle
-import logomaker
-from functools import reduce
-from tangermeme.tools.fimo import fimo
-from tangermeme.utils import extract_signal
-import torch
+import pandas as pd
+import subprocess
 import seaborn as sns
-from pycisTopic.topic_binarization import binarize_topics
-import networkx as nx
-from scipy.stats import binomtest
-import json
-import requests
-import time
+from tqdm import tqdm
+import os
+import scanpy as sc
+import scipy
+import logomaker
 
-###############################################################################################################
-#                                                                                                             #
-#                                                   FUNCTIONS                                                 #
-#                                                                                                             #
-###############################################################################################################
+import matplotlib
+matplotlib.rcParams['pdf.fonttype'] = 42
 
+def region_name_to_chrom_start_end(r: str) -> tuple[str, int, int]:
+    chrom, start, end = r.replace("-", ":").split(":")
+    return (chrom, int(start), int(end))
+
+def seqlets_to_bed(
+    df: pd.DataFrame,
+    out_f: str,
+    c_region_name: str = "region_name",
+    c_start: str = "start",
+    c_end: str = "end",
+    c_name: str = "dbd_per_leiden",
+    c_score: str = "mean_contrib"
+) -> None:
+    g_chroms = []
+    g_starts = []
+    g_ends   = []
+    scores   = []
+    names    = []
+    for _, (region_name, start, end, name, score) in df[
+        [c_region_name, c_start, c_end, c_name, c_score]
+    ].iterrows():
+        g_chrom, g_start, _ = region_name_to_chrom_start_end(region_name)
+        g_chroms.append(g_chrom)
+        g_starts.append(g_start + start)
+        g_ends.append(g_start + end)
+        scores.append(score)
+        names.append(name)
+    pd.DataFrame(
+        data = {
+            "chrom": g_chroms,
+            "start": g_starts,
+            "end": g_ends,
+            "name": names,
+            "score": scores
+        }
+    ).sort_values(["chrom", "start", "end"]) \
+    .to_csv(
+        path_or_buf=out_f,
+        sep="\t",
+        header=False,
+        index=False
+    )
+
+def sanitize(s):
+    return s.replace(' ', '_').replace('/', '_').replace(';', '')
+
+def get_intersect(
+        a: str,
+        b: str
+) -> int:
+    r = subprocess.run(
+        f"bedtools intersect -a {a} -b {b} -wa | sort -u | wc -l",
+        shell=True, capture_output=True, text=True
+    )
+    return int(r.stdout.strip())
+
+
+#####
+# tSNE
+####
+
+seq_organoid = anndata.read_h5ad("../data_prep_new/organoid_data/mindi/organoid_seqlet_adata_no_na.h5ad")
+seq_embryo = anndata.read_h5ad("../data_prep_new/embryo_data/mindi/embryo_seqlet_adata_no_na.h5ad")
+
+a = seq_organoid.obs.groupby("dbd_per_leiden", observed = True).size()
+b = seq_embryo.obs.groupby("dbd_per_leiden", observed = True).size()
+
+common_dbd = list(set(a.index) & set(b.index))
+
+scipy.stats.pearsonr(a.loc[common_dbd], b.loc[common_dbd])
+
+dbd, count = np.unique(
+    [*seq_organoid.obs["dbd_per_leiden"], *seq_embryo.obs["dbd_per_leiden"]],
+    return_counts=True
+)
+
+dbd_to_color = {
+    dbd: plt.cm.tab20b(i) if i % 2 else plt.cm.tab20(i)
+    for i, dbd in enumerate(dbd[np.argsort(-count)])
+}
+
+seq = seq_organoid
+
+fig, ax = plt.subplots(figsize = (8,8))
+ax.scatter(
+    seq.obsm["X_tsne"][:, 0], seq.obsm["X_tsne"][:, 1],
+    c = [dbd_to_color[dbd] for dbd in seq.obs["dbd_per_leiden"]],
+    s = 1
+)
+ax.set_axis_off()
+fig.tight_layout()
+fig.savefig(
+    "tSNE_organoid.png",
+    dpi = 500,
+    transparent=True
+)
+
+seq = seq_embryo
+
+fig, ax = plt.subplots(figsize = (8,8))
+ax.scatter(
+    seq.obsm["X_tsne"][:, 0], seq.obsm["X_tsne"][:, 1],
+    c = [dbd_to_color[dbd] for dbd in seq.obs["dbd_per_leiden"]],
+    s = 1
+)
+ax.set_axis_off()
+fig.tight_layout()
+fig.savefig(
+    "tSNE_embryo.png",
+    dpi = 500,
+    transparent=True
+)
+
+fig, ax = plt.subplots()
+for d in dbd[np.argsort(-count)]:
+    color = dbd_to_color[d]
+    ax.scatter([], [], color = color, label = d)
+ax.legend()
+ax.set_axis_off()
+fig.tight_layout()
+fig.savefig("dbd_legend.pdf")
+fig.savefig("dbd_legend.png")
+
+###
+# jaccard seqlets
+##
+
+
+common_regions = list(
+    set(seq_organoid.obs["region_name"]) & \
+    set(seq_embryo.obs["region_name"])
+)
+
+seq_org_sub = seq_organoid.obs.query("region_name in @common_regions")
+seq_emb_sub = seq_embryo.obs.query("region_name in @common_regions")
+
+for seq, d_out in zip(
+    [seq_org_sub, seq_emb_sub],
+    ["organoid_bed_sub", "embryo_bed_sub"]
+):
+    if not os.path.exists(d_out):
+        os.makedirs(d_out)
+    for dbd in tqdm(seq["dbd_per_leiden"].unique(), desc=d_out):
+        seqlets_to_bed(
+            df=seq.loc[seq["dbd_per_leiden"] == dbd],
+            out_f=os.path.join(d_out, f"{sanitize(dbd)}.bed")
+        )
+
+
+org_dbd = seq_org_sub["dbd_per_leiden"].unique()
+emb_dbd = seq_emb_sub["dbd_per_leiden"].unique()
+
+common_dbd = list(set(org_dbd) & set(emb_dbd))
+
+intersect_count = np.zeros(
+    (len(org_dbd), len(emb_dbd)),
+    dtype=int
+)
+
+for i in tqdm(range(len(org_dbd))):
+    for j in range(len(emb_dbd)):
+        a = f"organoid_bed_sub/{sanitize(org_dbd[i])}.bed"
+        b = f"embryo_bed_sub/{sanitize(emb_dbd[j])}.bed"
+        intersect_count[i, j] = get_intersect(a, b)
+
+union_count = np.zeros_like(intersect_count)
+
+for i in tqdm(range(len(org_dbd))):
+    for j in range(len(emb_dbd)):
+        dbd1 = org_dbd[i]
+        dbd2 = emb_dbd[j]
+        union_count[i, j] = (
+            sum(seq_org_sub["dbd_per_leiden"] == dbd1) \
+            + sum(seq_emb_sub["dbd_per_leiden"] == dbd2) \
+            - intersect_count[i, j]
+        )
+
+df_jaccard= pd.DataFrame(
+    np.divide(intersect_count, union_count),
+    index = org_dbd,
+    columns = emb_dbd
+).loc[common_dbd, common_dbd]
+
+
+
+annot_labels = np.empty(
+    (df_jaccard.shape[0], df_jaccard.shape[1]),
+    dtype="<U4"
+)
+for i in range(df_jaccard.shape[0]):
+    for j in range(df_jaccard.shape[1]):
+        if df_jaccard.iloc[i, j] > 0.07:
+            annot_labels[i, j] = str(np.round(df_jaccard.iloc[i, j], 2))
+
+
+fig, ax = plt.subplots(figsize = (8, 8))
+sns.heatmap(
+    df_jaccard,
+    vmin = 0, vmax = 0.35,
+    ax = ax,
+    xticklabels=True, yticklabels=True,
+    annot = annot_labels, fmt = "",
+    square=True, cbar_kws = dict(label = "Jaccard"),
+    linewidths=1, linecolor="white",
+    cmap = "viridis"
+)
+fig.tight_layout()
+fig.savefig("jaccard_seqlets_common_regions.pdf")
+fig.savefig("jaccard_seqlets_common_regions.png", dpi = 500)
+
+##
+# DOTPLOT
+##
+
+
+seq_organoid.obs["model_class"] = seq_organoid.obs["model_class"].str.split(",")
+seq_embryo.obs["model_class"] = seq_embryo.obs["model_class"].str.split(",")
+
+seq_org = seq_organoid.obs.explode("model_class")
+seq_emb = seq_embryo.obs.explode("model_class")
+
+org_topics_to_show = [
+    33, 38, 36, 54, 48,
+    62, 60, 65, 59, 58,
+    6, 4, 23, 24, 13, 2
+]
+
+org_topics_to_show = [
+    f"Topic_{x}" for x in org_topics_to_show
+]
+
+emb_topics_to_show = [
+    34, 38, 79, 88, 58,
+    61, 59, 31, 62, 70, 52, 71,
+    103, 105, 94, 91,
+    10, 8, 13, 24, 18, 29
+]
+
+emb_topics_to_show = [
+    f"Topic_{x}" for x in emb_topics_to_show
+]
+
+
+org_count = pd.crosstab(
+    seq_org["model_class"].values,
+    seq_org["dbd_per_leiden"].values
+).loc[org_topics_to_show].T
+
+org_count = org_count / org_count.sum()
+
+dbd_order = org_count.T.idxmax().sort_values(
+    key = lambda X: [org_topics_to_show.index(x) for x in X],
+    ascending=False
+).index
+
+org_count = org_count.loc[dbd_order]
+
+org_avg_count_per_seq = seq_org \
+    .groupby(['region_name', 'model_class', 'dbd_per_leiden']).size().reset_index(name='count') \
+    .query("count != 0") \
+    .groupby(["model_class", "dbd_per_leiden"])["count"].mean() \
+    .reset_index() \
+    .pivot(index = "dbd_per_leiden", columns = "model_class")["count"] \
+    .fillna(0) \
+    .round() \
+    .astype(int)
+
+org_avg_count_per_seq = org_avg_count_per_seq.loc[dbd_order, org_topics_to_show]
+
+cmap = matplotlib.cm.ScalarMappable(
+    norm = matplotlib.colors.Normalize(vmin = 1, vmax = org_avg_count_per_seq.max().max() + 1),
+    cmap = matplotlib.cm.gnuplot2
+)
+
+x, y = np.meshgrid(
+    np.arange(org_count.shape[1]),
+    np.arange(org_count.shape[0])
+)
+
+x_flat = x.flatten()
+y_flat = y.flatten()
+values = org_count.to_numpy().flatten()
+values_c = org_avg_count_per_seq.to_numpy().flatten()
+
+fig, ax = plt.subplots(figsize = (8,8))
+ax.scatter(
+    x_flat, y_flat,
+    s = values * 500,
+    c = [cmap.to_rgba(x) for x in values_c],
+    edgecolors="black", lw = 2
+)
+ax.set_xticks(
+    np.arange(x_flat.max() + 1),
+    org_count.columns,
+    rotation = 90
+)
+ax.set_yticks(
+    np.arange(y_flat.max() + 1),
+    org_count.index
+)
+ax.grid(True)
+ax.set_axisbelow(True)
+fig.tight_layout()
+fig.savefig("organoid_dotplot.pdf")
+fig.savefig("organoid_dotplot.png")
+
+
+emb_count = pd.crosstab(
+    seq_emb["model_class"].values,
+    seq_emb["dbd_per_leiden"].values
+).loc[emb_topics_to_show].T
+
+emb_count = emb_count / emb_count.sum()
+
+emb_count = emb_count.loc[dbd_order]
+
+emb_avg_count_per_seq = seq_emb \
+    .groupby(['region_name', 'model_class', 'dbd_per_leiden']).size().reset_index(name='count') \
+    .query("count != 0") \
+    .groupby(["model_class", "dbd_per_leiden"])["count"].mean() \
+    .reset_index() \
+    .pivot(index = "dbd_per_leiden", columns = "model_class")["count"] \
+    .fillna(0) \
+    .round() \
+    .astype(int)
+
+emb_avg_count_per_seq = emb_avg_count_per_seq.loc[dbd_order, emb_topics_to_show]
+
+cmap = matplotlib.cm.ScalarMappable(
+    norm = matplotlib.colors.Normalize(vmin = 1, vmax = emb_avg_count_per_seq.max().max() + 1),
+    cmap = matplotlib.cm.gnuplot2
+)
+
+x, y = np.meshgrid(
+    np.arange(emb_count.shape[1]),
+    np.arange(emb_count.shape[0])
+)
+
+x_flat = x.flatten()
+y_flat = y.flatten()
+values = emb_count.to_numpy().flatten()
+values_c = emb_avg_count_per_seq.to_numpy().flatten()
+
+fig, ax = plt.subplots(figsize = (8,8))
+ax.scatter(
+    x_flat, y_flat,
+    s = values * 500,
+    c = [cmap.to_rgba(x) for x in values_c],
+    edgecolors="black", lw = 2
+)
+ax.set_xticks(
+    np.arange(x_flat.max() + 1),
+    emb_count.columns,
+    rotation = 90
+)
+ax.set_yticks(
+    np.arange(y_flat.max() + 1),
+    emb_count.index
+)
+ax.grid(True)
+ax.set_axisbelow(True)
+fig.tight_layout()
+fig.savefig("embryo_dotplot.png")
+fig.savefig("embryo_dotplot.pdf")
+
+corr_count = np.zeros((org_count.shape[1], emb_count.shape[1]), dtype = float)
+for i in range(corr_count.shape[0]):
+    for j in range(corr_count.shape[1]):
+        corr_count[i, j] = scipy.stats.pearsonr(
+            org_count.iloc[:, i], emb_count.iloc[:, j]
+        ).statistic
+
+fig = sns.clustermap(
+    corr_count,
+    yticklabels = org_count.columns,
+    xticklabels = emb_count.columns,
+    annot = True
+)
+fig.savefig("test.png")
+
+##
+# location
+##
+window = 10
+
+seq_organoid.obs["start_bins"] = pd.cut(
+    seq_organoid.obs["start"], bins=range(-1, 500, window)
+)
+
+n_hits_per_bin_organoid = seq_organoid.obs.groupby("start_bins", observed=False).size()
+
+n_hits_per_bin_mean_organoid = (
+    np.sum(
+        [
+            iv.mid * count
+            for iv, count in zip(
+                n_hits_per_bin_organoid.index, n_hits_per_bin_organoid.values
+            )
+        ]
+    )
+    / n_hits_per_bin_organoid.values.sum()
+)
+
+n_hits_per_bin_var_organoid = (
+    np.sum(
+        [
+            count * (iv.mid - n_hits_per_bin_mean_organoid) ** 2
+            for iv, count in zip(
+                n_hits_per_bin_organoid.index, n_hits_per_bin_organoid.values
+            )
+        ]
+    )
+    / n_hits_per_bin_organoid.values.sum()
+)
+
+n_hits_per_bin_std_organoid = np.sqrt(n_hits_per_bin_var_organoid)
+
+mean_organoid = n_hits_per_bin_mean_organoid
+std_organoid = n_hits_per_bin_std_organoid
+fig, ax = plt.subplots(figsize = (7.5, 5))
+ax_bar = ax.twinx()
+ax.scatter(
+    seq_organoid.obs.query("start > 0")["start"],
+    seq_organoid.obs.query("start > 0")["attribution"],
+    s = 1, color = "black", zorder = 1
+)
+ax_bar.bar(
+    x=[x.left for x in n_hits_per_bin_organoid.index],
+    height=n_hits_per_bin_organoid.values / n_hits_per_bin_organoid.values.sum(),
+    width=window,
+    color=[
+        "white"
+        if iv.mid > mean_organoid + std_organoid * 2
+        or iv.mid < mean_organoid - std_organoid * 2
+        else "darkgray"
+        if iv.mid > mean_organoid + std_organoid * 1
+        or iv.mid < mean_organoid - std_organoid * 1
+        else "dimgray"
+        for iv in n_hits_per_bin_organoid.index
+    ],
+    edgecolor=[
+        "lightgray"
+        if iv.mid > mean_organoid + std_organoid * 2
+        or iv.mid < mean_organoid - std_organoid * 2
+        else "gray"
+        if iv.mid > mean_organoid + std_organoid * 1
+        or iv.mid < mean_organoid - std_organoid * 1
+        else "black"
+        for iv in n_hits_per_bin_organoid.index
+    ],
+    lw=1,
+    alpha = 0.8,
+)
+ax_bar.text(
+    0.05,
+    0.05,
+    s=f"μ = {int(mean_organoid) - 250}\nσ = {int(std_organoid)}",
+    transform=ax_bar.transAxes,
+    zorder = 2
+)
+ax.set_xticks(
+    np.arange(0, 550, 50),
+    np.arange(0, 550, 50) - 250
+)
+ax.set_rasterization_zorder(2)
+ax.grid()
+ax.set_axisbelow(True)
+ax.set_xlabel("Position relative to summit")
+ax.set_ylabel("Attribution")
+ax_bar.set_ylabel("Frequency")
+fig.tight_layout()
+fig.savefig("seqlet_loc_organoid.pdf")
+fig.savefig("seqlet_loc_organoid.png")
+
+
+seq_embryo.obs["start_bins"] = pd.cut(
+    seq_embryo.obs["start"], bins=range(-1, 500, window)
+)
+
+n_hits_per_bin_embryo = seq_embryo.obs.groupby("start_bins", observed=False).size()
+
+n_hits_per_bin_mean_embryo = (
+    np.sum(
+        [
+            iv.mid * count
+            for iv, count in zip(
+                n_hits_per_bin_embryo.index, n_hits_per_bin_embryo.values
+            )
+        ]
+    )
+    / n_hits_per_bin_embryo.values.sum()
+)
+
+n_hits_per_bin_var_embryo = (
+    np.sum(
+        [
+            count * (iv.mid - n_hits_per_bin_mean_embryo) ** 2
+            for iv, count in zip(
+                n_hits_per_bin_embryo.index, n_hits_per_bin_embryo.values
+            )
+        ]
+    )
+    / n_hits_per_bin_embryo.values.sum()
+)
+
+n_hits_per_bin_std_embryo = np.sqrt(n_hits_per_bin_var_embryo)
+
+mean_embryo = n_hits_per_bin_mean_embryo
+std_embryo = n_hits_per_bin_std_embryo
+fig, ax = plt.subplots(figsize = (7.5, 5))
+ax_bar = ax.twinx()
+ax.scatter(
+    seq_embryo.obs.query("start > 0")["start"],
+    seq_embryo.obs.query("start > 0")["attribution"],
+    s = 1, color = "black", zorder = 1
+)
+ax_bar.bar(
+    x=[x.left for x in n_hits_per_bin_embryo.index],
+    height=n_hits_per_bin_embryo.values / n_hits_per_bin_embryo.values.sum(),
+    width=window,
+    color=[
+        "white"
+        if iv.mid > mean_embryo + std_embryo * 2
+        or iv.mid < mean_embryo - std_embryo * 2
+        else "darkgray"
+        if iv.mid > mean_embryo + std_embryo * 1
+        or iv.mid < mean_embryo - std_embryo * 1
+        else "dimgray"
+        for iv in n_hits_per_bin_embryo.index
+    ],
+    edgecolor=[
+        "lightgray"
+        if iv.mid > mean_embryo + std_embryo * 2
+        or iv.mid < mean_embryo - std_embryo * 2
+        else "gray"
+        if iv.mid > mean_embryo + std_embryo * 1
+        or iv.mid < mean_embryo - std_embryo * 1
+        else "black"
+        for iv in n_hits_per_bin_embryo.index
+    ],
+    lw=1,
+    alpha = 0.8,
+)
+ax_bar.text(
+    0.05,
+    0.05,
+    s=f"μ = {int(mean_embryo) - 250}\nσ = {int(std_embryo)}",
+    transform=ax_bar.transAxes,
+    zorder = 2
+)
+ax.set_xticks(
+    np.arange(0, 550, 50),
+    np.arange(0, 550, 50) - 250
+)
+ax.set_rasterization_zorder(2)
+ax.grid()
+ax.set_axisbelow(True)
+ax.set_xlabel("Position relative to summit")
+ax.set_ylabel("Attribution")
+ax_bar.set_ylabel("Frequency")
+fig.tight_layout()
+fig.savefig("seqlet_loc_embryo.pdf")
+fig.savefig("seqlet_loc_embryo.png")
+
+##
+# Zebrafish seqlet tSNE
+##
+
+seq_zebrafish = anndata.read_h5ad(
+    "../data_prep_new/zebrafish_data/mindi/seqlet_adata_no_na.h5ad"
+)
+
+a = seq_organoid.obs.groupby("dbd_per_leiden", observed = True).size()
+b = seq_embryo.obs.groupby("dbd_per_leiden", observed = True).size()
+c = seq_zebrafish.obs.groupby("dbd_per_leiden", observed = True).size()
+
+common_dbd = list(
+    set(a.index) & \
+    set(b.index) & \
+    set(c.index)
+)
+
+print(scipy.stats.pearsonr(a.loc[common_dbd], c.loc[common_dbd]))
+print(scipy.stats.pearsonr(b.loc[common_dbd], c.loc[common_dbd]))
+
+dbd_to_color["ARID/BRIGHT"] = plt.cm.Pastel1(0)
+dbd_to_color["C2H2 ZF; Homeodomain"] = plt.cm.Pastel1(1)
+dbd_to_color["E2F"] = plt.cm.Pastel1(2)
+dbd_to_color["SMAD"] = plt.cm.Pastel1(3)
+dbd_to_color["T-box"] = plt.cm.Pastel1(4)
+dbd_to_color["nan"] = "black"
+
+seq = seq_zebrafish
+
+fig, ax = plt.subplots(figsize = (8,8))
+ax.scatter(
+    seq.obsm["X_tsne"][:, 0], seq.obsm["X_tsne"][:, 1],
+    c = [dbd_to_color[dbd] for dbd in seq.obs["dbd_per_leiden"]],
+    s = 1
+)
+ax.set_axis_off()
+fig.tight_layout()
+fig.savefig(
+    "tSNE_zebrafish.png",
+    dpi = 500,
+    transparent=True
+)
+
+fig, ax = plt.subplots(figsize = (7, 7))
+for d in dbd[np.argsort(-count)]:
+    color = dbd_to_color[d]
+    ax.scatter([], [], color = color, label = d)
+for d in set(seq_zebrafish.obs["dbd_per_leiden"]) - set(dbd):
+    color = dbd_to_color[d]
+    ax.scatter([], [], color = color, label = d)
+ax.legend()
+ax.set_axis_off()
+fig.tight_layout()
+fig.savefig("dbd_legend.pdf")
+fig.savefig("dbd_legend.png")
+
+##
+# cell umap
+##
+
+cell_topic = anndata.read_h5ad("../data_prep_new/zebrafish_data/300_iter.100_topics_cell_topic_adata.h5ad")
+
+avg_loc = pd.DataFrame(cell_topic.obsm["X_umap"], index = cell_topic.obs_names) \
+    .groupby(cell_topic.obs["annotation_ML_coarse"], observed=True).mean()
+
+avg_loc = (avg_loc - avg_loc.min()) / (avg_loc.max() - avg_loc.min())
+
+sorted_cell_types = list(avg_loc.sum(1).sort_values().index)
+
+cell_type_to_color = {
+    c: plt.cm.tab20b(i) if i < 20 else plt.cm.tab20c(i - 20)
+    for i, c in enumerate(sorted_cell_types)
+}
+
+cell_to_keep = cell_topic.obs.dropna(subset = "annotation_ML_coarse").index
+
+fig, ax = plt.subplots(figsize = (8,8))
+ax.scatter(
+    cell_topic[cell_to_keep].obsm["X_umap"][:, 0], 
+    cell_topic[cell_to_keep].obsm["X_umap"][:, 1],
+    c = [
+        cell_type_to_color[ct] for ct in cell_topic[cell_to_keep].obs["annotation_ML_coarse"]
+    ],
+    s = 1
+)
+ax.set_axis_off()
+fig.tight_layout()
+fig.savefig(
+    "tSNE_zebrafish_cells.png",
+    dpi = 500,
+    transparent=True
+)
+
+fig, ax = plt.subplots(figsize = (10, 10))
+for ct in sorted_cell_types:
+    color = cell_type_to_color[ct]
+    ax.scatter([], [], color = color, label = ct)
+ax.legend()
+ax.set_axis_off()
+fig.tight_layout()
+fig.savefig("ct_legend_zeb.pdf")
+fig.savefig("ct_legend_zeb.png")
+
+sc.pl.umap(
+    cell_topic,
+    color = cell_topic.var_names,
+    ncols = 10,
+    save = "_cell_topic.png"
+)
+
+zebrafish_topics = [
+    73, 
+    35,15, 60, 39, 11 ,25, 64, 41, 86, 90, 32, 65, 74, 54, 42, 17,          
+    56, 93, 6, 71, 
+    33, 30
+]
+
+zebrafish_topics = [str(t) for t in zebrafish_topics]
+
+sc.pl.umap(
+    cell_topic,
+    color = [f"Topic{x}" for x in zebrafish_topics],
+    ncols = 5,
+    save = "_cell_topic_selected.png"
+)
+
+zeb_count = pd.crosstab(
+    seq_zebrafish.obs["class"].values,
+    seq_zebrafish.obs["dbd_per_leiden"].values
+).loc[zebrafish_topics].T
+
+zeb_count = zeb_count / zeb_count.sum()
+
+dbd_order_zeb = [d for d in dbd_order if d in zeb_count.index]
+
+zeb_count = zeb_count.loc[dbd_order_zeb]
+
+zeb_avg_count_per_seq = seq_zebrafish.obs \
+    .groupby(['region_names', 'class', 'dbd_per_leiden']).size().reset_index(name='count') \
+    .query("count != 0") \
+    .groupby(["class", "dbd_per_leiden"])["count"].mean() \
+    .reset_index() \
+    .pivot(index = "dbd_per_leiden", columns = "class")["count"] \
+    .fillna(0) \
+    .round() \
+    .astype(int)
+
+zeb_avg_count_per_seq = zeb_avg_count_per_seq.loc[
+    dbd_order_zeb, zebrafish_topics]
+
+cmap = matplotlib.cm.ScalarMappable(
+    norm = matplotlib.colors.Normalize(vmin = 1, vmax = 5),
+    cmap = matplotlib.cm.gnuplot2
+)
+
+x, y = np.meshgrid(
+    np.arange(zeb_count.shape[1]),
+    np.arange(zeb_count.shape[0])
+)
+
+x_flat = x.flatten()
+y_flat = y.flatten()
+values = zeb_count.to_numpy().flatten()
+values_c = zeb_avg_count_per_seq.to_numpy().flatten()
+
+fig, ax = plt.subplots(figsize = (8,8))
+ax.scatter(
+    x_flat, y_flat,
+    s = values * 500,
+    c = [cmap.to_rgba(x) for x in values_c],
+    edgecolors="black", lw = 2
+)
+ax.set_xticks(
+    np.arange(x_flat.max() + 1),
+    zeb_count.columns,
+    rotation = 90
+)
+ax.set_yticks(
+    np.arange(y_flat.max() + 1),
+    zeb_count.index
+)
+ax.grid(True)
+ax.set_axisbelow(True)
+fig.tight_layout()
+fig.savefig("zeb_dotplot.pdf")
+fig.savefig("zeb_dotplot.png")
+
+
+avg_ct = cell_topic[cell_to_keep].to_df() \
+    .groupby(cell_topic[cell_to_keep].obs["annotation_ML_coarse"], observed = True).mean()[
+        [f"Topic{t}" for t in zebrafish_topics]
+    ]
+
+sorted_cell_types = [
+    'floor_plate',
+    'spinal_cord',
+    'neural_posterior',
+    'neural_floor_plate',
+    'neurons',
+    'hindbrain',
+    'neural',
+    'midbrain_hindbrain_boundary',
+    'neural_optic',
+    'neural_telencephalon',
+    'neural_crest',
+    'differentiating_neurons',
+    'enteric_neurons',
+]
+
+avg_ct_z = (avg_ct - avg_ct.min()) / (avg_ct.max() - avg_ct.min())
+fig, ax = plt.subplots(figsize = (8,4))
+sns.heatmap(
+    avg_ct_z.loc[sorted_cell_types],
+    ax = ax,
+    #vmax = 0.08,
+    cmap = "viridis",
+    lw = 1, linecolor = "black"
+)
+fig.tight_layout()
+fig.savefig("avg_cell_topic.pdf")
+fig.savefig("avg_cell_topic.png")
+
+
+##
 
 def rgb_scatter_plot(
     x,
@@ -109,1087 +878,244 @@ def rgb_scatter_plot(
         b_vmax = b_values.max()
     print(f"R: {r_vmin, r_vmax}\nG: {g_vmin, g_vmax}\nB: {b_vmin, b_vmax}")
 
-
-def topic_name_to_model_index_organoid(t: str) -> int:
-    cell_type = t.split("_Topic")[0]
-    topic = int(t.split("_")[-1])
-    if cell_type == "neuron":
-        return topic - 1
-    elif cell_type == "progenitor":
-        return topic - 1 + 25
-    elif cell_type == "neural_crest":
-        return topic - 1 + 55
-    else:
-        raise ValueError(f"{t} unknown.")
+df = cell_topic[cell_to_keep].to_df()
 
 
-def model_index_to_topic_name_organoid(i: int) -> str:
-    if i >= 0 and i < 25:
-        cell_type = "neuron"
-        topic_number = i + 1
-    elif i >= 25 and i < 55:
-        cell_type = "progenitor"
-        topic_number = i + 1 - 25
-    elif i >= 55 and i < 65:
-        cell_type = "neural_crest"
-        topic_number = i + 1 - 55
-    elif i >= 65 and i < 75:
-        cell_type = "pluripotent"
-        index_to_topic_mapping = {
-            65: 4,
-            66: 5,
-            67: 12,
-            68: 18,
-            69: 20,
-            70: 23,
-            71: 35,
-            72: 37,
-            73: 45,
-            74: 47,
-        }
-        topic_number = index_to_topic_mapping[i]
-    else:
-        raise ValueError("Unknown index")
-    return f"{cell_type}_Topic_{topic_number}"
+fig, ax = plt.subplots(figsize = (8, 8))
+rgb_scatter_plot(
+    x=cell_topic[cell_to_keep].obsm["X_umap"][:, 0],
+    y=cell_topic[cell_to_keep].obsm["X_umap"][:, 1],
+    ax=ax,
+    g_cut=0,
+    r_values=df["Topic73"].values,
+    g_values=df["Topic71"].values,
+    b_values=df["Topic30"].values,
+    r_name="",
+    g_name="",
+    b_name="",
+)
+fig.tight_layout()
+fig.savefig("zeb_topic_tricolor.png",dpi = 500,
+    transparent=True)
+
+##
+# corr
+##
+
+common_dbd = list(set(zeb_count.index) & set(org_count.index))
+zeb_org_corr = np.zeros(
+    (org_count.shape[1], zeb_count.shape[1]),
+    dtype = float
+)
+for i in tqdm(range(org_count.shape[1])):
+    for j in range(zeb_count.shape[1]):
+        zeb_org_corr[i, j] = scipy.stats.pearsonr(
+            org_count.iloc[:, i].loc[common_dbd],
+            zeb_count.iloc[:, j].loc[common_dbd]
+        ).statistic
+
+fig, ax = plt.subplots()
+sns.heatmap(
+    zeb_org_corr,
+    xticklabels = zeb_count.columns,
+    yticklabels = org_count.columns,
+    ax = ax,
+    cmap = "magma",
+    vmin = 0, vmax = 1,
+    lw = 1, linecolor = "gray"
+)
+fig.tight_layout()
+fig.savefig("test.png")
 
 
-def topic_name_to_model_index_embryo(t) -> int:
-    cell_type = t.split("_Topic")[0]
-    topic = int(t.split("_")[-1])
-    if cell_type == "neuron":
-        return topic - 1
-    elif cell_type == "progenitor":
-        return topic - 1 + 30
-    elif cell_type == "neural_crest":
-        return topic - 1 + 90
-    else:
-        raise ValueError(f"{t} unknown.")
+###
+# jaccard seqlets
+##
 
 
-def model_index_to_topic_name_embryo(i: int) -> str:
-    if i >= 0 and i < 30:
-        cell_type = "neuron"
-        topic_number = i + 1
-    elif i >= 30 and i < 90:
-        cell_type = "progenitor"
-        topic_number = i + 1 - 30
-    elif i >= 90 and i < 120:
-        cell_type = "neural_crest"
-        topic_number = i + 1 - 90
-    else:
-        raise ValueError("Unknown index")
-    return f"{cell_type}_Topic_{topic_number}"
 
 
-def region_to_chrom_start_end(r):
-    chrom, start, end = r.replace(":", "-").split("-")
-    return chrom, int(start), int(end)
+seq_zebrafish_org = anndata.read_h5ad(
+    "../../../../ZEBRAFISH_DEV/ZEBRAHUB/TFMINDI_ORG/seqlet_adata_no_na.h5ad"
+)
 
+common_regions = list(
+    set(seq_zebrafish_org.obs["region_names"]) & \
+    set(seq_organoid.obs["region_name"])
+)
 
-@dataclass
-class Seqlet:
-    contrib_scores: np.ndarray
-    hypothetical_contrib_scores: np.ndarray
-    ppm: np.ndarray
-    start: int
-    end: int
-    region_name: str
-    region_one_hot: np.ndarray
-    is_revcomp: bool
-    def __init__(
-        self,
-        p: h5py._hl.group.Group,
-        seqlet_idx: int,
-        ohs: np.ndarray,
-        region_names: list[str],
-    ):
-        self.contrib_scores = p["contrib_scores"][seqlet_idx]
-        self.hypothetical_contrib_scores = p["hypothetical_contribs"][seqlet_idx]
-        self.ppm = p["sequence"][seqlet_idx]
-        self.start = p["start"][seqlet_idx]
-        self.end = p["end"][seqlet_idx]
-        self.is_revcomp = p["is_revcomp"][seqlet_idx]
-        region_idx = p["example_idx"][seqlet_idx]
-        self.region_name = region_names[region_idx]
-        self.region_one_hot = ohs[region_idx]
-        if (
-            not np.all(self.ppm == self.region_one_hot[self.start : self.end])
-            and not self.is_revcomp
-        ) or (
-            not np.all(
-                self.ppm[::-1, ::-1] == self.region_one_hot[self.start : self.end]
-            )
-            and self.is_revcomp
-        ):
-            raise ValueError(
-                f"ppm does not match onehot\n"
-                + f"region_idx\t{region_idx}\n"
-                + f"start\t\t{self.start}\n"
-                + f"end\t\t{self.end}\n"
-                + f"is_revcomp\t{self.is_revcomp}\n"
-                + f"{self.ppm.argmax(1)}\n"
-                + f"{self.region_one_hot[self.start: self.end].argmax(1)}"
-            )
-    def __repr__(self):
-        return f"Seqlet on {self.region_name} {self.start}:{self.end}"
+seq_org = seq_organoid.obs.query("region_name in @common_regions")
+seq_zeb = seq_zebrafish_org.obs.rename({"region_names": "region_name"}, axis = 1).query("region_name in @common_regions")
 
-
-@dataclass
-class ModiscoPattern:
-    contrib_scores: np.ndarray
-    hypothetical_contrib_scores: np.ndarray
-    ppm: np.ndarray
-    is_pos: bool
-    seqlets: list[Seqlet]
-    subpatterns: list[Self] | None = None
-    def __init__(
-        self,
-        p: h5py._hl.group.Group,
-        is_pos: bool,
-        ohs: np.ndarray,
-        region_names: list[str],
-    ):
-        self.contrib_scores = p["contrib_scores"][:]
-        self.hypothetical_contrib_scores = p["hypothetical_contribs"][:]
-        self.ppm = p["sequence"][:]
-        self.is_pos = is_pos
-        self.seqlets = [
-            Seqlet(p["seqlets"], i, ohs, region_names)
-            for i in range(p["seqlets"]["n_seqlets"][0])
-        ]
-        self.subpatterns = [
-            ModiscoPattern(p[sub], is_pos, ohs, region_names)
-            for sub in p.keys()
-            if sub.startswith("subpattern_")
-        ]
-    def __repr__(self):
-        return f"ModiscoPattern with {len(self.seqlets)} seqlets"
-    def ic(self, bg=np.array([0.27, 0.23, 0.23, 0.27]), eps=1e-3) -> np.ndarray:
-        return (
-            self.ppm * np.log(self.ppm + eps) / np.log(2) - bg * np.log(bg) / np.log(2)
-        ).sum(1)
-    def ic_trim(self, min_v: float, **kwargs) -> tuple[int, int]:
-        delta = np.where(np.diff((self.ic(**kwargs) > min_v) * 1))[0]
-        if len(delta) == 0:
-            return 0, 0
-        start_index = min(delta)
-        end_index = max(delta)
-        return start_index, end_index + 1
-
-
-def load_pattern_from_modisco(filename, ohs, region_names):
-    with h5py.File(filename) as f:
-        for pos_neg in ["pos_patterns", "neg_patterns"]:
-            if pos_neg not in f.keys():
-                continue
-            for pattern in f[pos_neg].keys():
-                yield (
-                    filename.split("/")[-1].rsplit(".", 1)[0]
-                    + "_"
-                    + pos_neg.split("_")[0]
-                    + "_"
-                    + pattern,
-                    ModiscoPattern(
-                        f[pos_neg][pattern],
-                        pos_neg == "pos_patterns",
-                        ohs,
-                        region_names,
-                    ),
-                )
-
-
-def get_value_seqlets(seqlets: list[Seqlet], v: np.ndarray):
-    if v.shape[0] != len(seqlets):
-        raise ValueError(f"{v.shape[0]} != {len(seqlets)}")
-    for i, seqlet in enumerate(seqlets):
-        if seqlet.is_revcomp:
-            yield v[i, seqlet.start : seqlet.end, :][::-1, ::-1]
-        else:
-            yield v[i, seqlet.start : seqlet.end, :]
-
-
-def allign_patterns_of_cluster_for_topic(
-    pattern_to_topic_to_grad: dict[str, dict[int, np.ndarray]],
-    pattern_metadata: pd.DataFrame,
-    cluster_id: int,
-    topic: int,
+for seq, d_out in zip(
+    [seq_org, seq_zeb],
+    ["organoid_zeb_bed", "zebrafish_org_bed"]
 ):
-    P = []
-    O = []
-    cluster_patterns = pattern_metadata.query(
-        "cluster_sub_cluster == @cluster_id"
-    ).index.to_list()
-    for pattern_name in cluster_patterns:
-        pattern_grads, pattern_ohs = pattern_to_topic_to_grad[pattern_name][topic]
-        ic_start, ic_end, is_rc_to_root, offset_to_root = pattern_metadata.loc[
-            pattern_name, ["ic_start", "ic_stop", "is_rc_to_root", "offset_to_root"]
-        ]
-        pattern_grads_ic = [p[ic_start:ic_end] for p in pattern_grads]
-        pattern_ohs_ic = [o[ic_start:ic_end] for o in pattern_ohs]
-        if is_rc_to_root:
-            pattern_grads_ic = [p[::-1, ::-1] for p in pattern_grads_ic]
-            pattern_ohs_ic = [o[::-1, ::-1] for o in pattern_ohs_ic]
-        if offset_to_root > 0:
-            pattern_grads_ic = [
-                np.concatenate([np.zeros((offset_to_root, 4)), p_ic])
-                for p_ic in pattern_grads_ic
-            ]
-            pattern_ohs_ic = [
-                np.concatenate([np.zeros((offset_to_root, 4)), o_ic])
-                for o_ic in pattern_ohs_ic
-            ]
-        elif offset_to_root < 0:
-            pattern_grads_ic = [p[abs(offset_to_root) :, :] for p in pattern_grads_ic]
-            pattern_ohs_ic = [o[abs(offset_to_root) :, :] for o in pattern_ohs_ic]
-        P.extend(pattern_grads_ic)
-        O.extend(pattern_ohs_ic)
-    max_len = max([p.shape[0] for p in P])
-    P = [np.concatenate([p, np.zeros((max_len - p.shape[0], 4))]) for p in P]
-    O = [np.concatenate([o, np.zeros((max_len - o.shape[0], 4))]) for o in O]
-    return np.array(P), np.array(O)
+    if not os.path.exists(d_out):
+        os.makedirs(d_out)
+    for dbd in tqdm(seq["dbd_per_leiden"].unique(), desc=d_out):
+        seqlets_to_bed(
+            df=seq.loc[seq["dbd_per_leiden"] == dbd],
+            out_f=os.path.join(d_out, f"{sanitize(dbd)}.bed")
+        )
 
 
-def absmax(a, axis=None):
-    amax = a.max(axis)
-    amin = a.min(axis)
-    return np.where(-amin > amax, amin, amax)
+org_dbd = seq_org["dbd_per_leiden"].unique()
+zeb_dbd = seq_zeb["dbd_per_leiden"].unique()
 
+common_dbd = list(set(org_dbd) & set(zeb_dbd))
 
-def merge_and_absmax(left, right, on, max_on, l):
-    global a
-    if a:
-        print(" " * (l - 1) + "|", end="\r", flush=True)
-        a = False
-    print("x", end="", flush=True)
-    x = pd.merge(left, right, on=on, how="outer")
-    x[max_on] = x[[f"{max_on}_x", f"{max_on}_y"]].fillna(0).T.apply(absmax)
-    return x.drop([f"{max_on}_x", f"{max_on}_y"], axis=1).copy()
-
-
-def merge_and_max(left, right, on, max_on, l):
-    global a
-    if a:
-        print(" " * (l - 1) + "|", end="\r", flush=True)
-        a = False
-    print("x", end="", flush=True)
-    x = pd.merge(left, right, on=on, how="outer")
-    x[max_on] = x[[f"{max_on}_x", f"{max_on}_y"]].fillna(0).max(1)
-    return x.drop([f"{max_on}_x", f"{max_on}_y"], axis=1).copy()
-
-
-# load organoid RNA data and subset for ATAC cells
-adata_organoid = sc.read_h5ad("../figure_1/adata_organoid.h5ad")
-
-sample_id_to_num = {
-    s: adata_organoid.obs.query("sample_id == @s").index[0].split("-")[-1]
-    for s in set(adata_organoid.obs.sample_id)
-}
-
-adata_organoid_neuron = sc.read_h5ad("../figure_1/adata_organoid_neuron.h5ad")
-
-adata_embryo_neuron = sc.read_h5ad("../figure_1/adata_embryo_neuron.h5ad")
-
-# load cell topic
-
-organoid_neuron_cell_topic = pd.read_table(
-    "../data_prep_new/organoid_data/ATAC/neuron_cell_topic_contrib.tsv",
-    index_col=0,
+intersect_count = np.zeros(
+    (len(org_dbd), len(zeb_dbd)),
+    dtype=int
 )
 
-organoid_neuron_cell_topic.columns = [
-    f"neuron_Topic_{c.replace('Topic', '')}" for c in organoid_neuron_cell_topic
-]
+for i in tqdm(range(len(org_dbd))):
+    for j in range(len(zeb_dbd)):
+        a = f"organoid_zeb_bed/{sanitize(org_dbd[i])}.bed"
+        b = f"zebrafish_org_bed/{sanitize(zeb_dbd[j])}.bed"
+        intersect_count[i, j] = get_intersect(a, b)
+
+union_count = np.zeros_like(intersect_count)
+
+for i in tqdm(range(len(org_dbd))):
+    for j in range(len(zeb_dbd)):
+        dbd1 = org_dbd[i]
+        dbd2 = zeb_dbd[j]
+        union_count[i, j] = (
+            sum(seq_org["dbd_per_leiden"] == dbd1) \
+            + sum(seq_zeb["dbd_per_leiden"] == dbd2) \
+            - intersect_count[i, j]
+        )
+
+df_jaccard= pd.DataFrame(
+    np.divide(intersect_count, union_count),
+    index = org_dbd,
+    columns = zeb_dbd
+).loc[common_dbd, common_dbd]
 
 
-def rename_organoid_atac_cell(l):
-    bc, sample_id = l.strip().split("-1", 1)
-    sample_id = sample_id.split("___")[-1]
-    return bc + "-1" + "-" + sample_id_to_num[sample_id]
 
-
-organoid_neuron_cell_topic.index = [
-    rename_organoid_atac_cell(x) for x in organoid_neuron_cell_topic.index
-]
-
-embryo_neuron_cell_topic = pd.read_table(
-    "../data_prep_new/embryo_data/ATAC/neuron_cell_topic_contrib.tsv",
-    index_col=0,
+annot_labels = np.empty(
+    (df_jaccard.shape[0], df_jaccard.shape[1]),
+    dtype="<U4"
 )
-
-embryo_neuron_cell_topic.columns = [
-    f"neuron_Topic_{c.replace('Topic', '')}" for c in embryo_neuron_cell_topic
-]
-
-embryo_neuron_cell_topic.index = [
-    x.split("___")[0] + "-1" + "___" + x.split("___")[1]
-    for x in embryo_neuron_cell_topic.index
-]
-
-# load and score patterns
-
-neuron_topics_organoid = [6, 4, 23, 24, 13, 2]
-
-neuron_topics_embryo = [10, 8, 13, 24, 18, 29]
-
-all_neuron_topics_organoid = [
-    1,
-    2,
-    3,
-    4,
-    6,
-    8,
-    10,
-    11,
-    12,
-    13,
-    15,
-    16,
-    18,
-    19,
-    23,
-    24,
-    25,
-]
-
-all_neuron_topics_embryo = [
-    1,
-    3,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    15,
-    17,
-    18,
-    19,
-    22,
-    24,
-    26,
-    27,
-    29,
-    30,
-]
+for i in range(df_jaccard.shape[0]):
+    for j in range(df_jaccard.shape[1]):
+        if df_jaccard.iloc[i, j] > 0.05:
+            annot_labels[i, j] = str(np.round(df_jaccard.iloc[i, j], 2))
 
 
-path_to_organoid_model = "../data_prep_new/organoid_data/MODELS/"
-
-organoid_model = tf.keras.models.model_from_json(
-    open(os.path.join(path_to_organoid_model, "model.json")).read(),
-    custom_objects={"Functional": tf.keras.models.Model},
+fig, ax = plt.subplots(figsize = (8, 8))
+sns.heatmap(
+    df_jaccard,
+    vmin = 0, vmax = 0.35,
+    ax = ax,
+    xticklabels=True, yticklabels=True,
+    annot = annot_labels, fmt = "",
+    square=True, cbar_kws = dict(label = "Jaccard"),
+    linewidths=1, linecolor="white",
+    cmap = "viridis"
 )
-
-organoid_model.load_weights(os.path.join(path_to_organoid_model, "model_epoch_23.hdf5"))
+fig.tight_layout()
+fig.savefig("jaccard_seqlets_org_zeb.pdf")
+fig.savefig("jaccard_seqlets_org_zeb.png", dpi = 500)
 
 ##
 
-path_to_embryo_model = "../data_prep_new/embryo_data/MODELS/"
+ORGANOID_GRAD_DIR="../../../../De_Winter_hNTorg/DEEPTOPIC_w_20221004/tfmodisco_new_all_topics/outs"
+EMBRYO_GRAD_DIR="../../../../De_Winter_hNTorg/EMBRYO_ANALYSIS/DEEPTOPIC/tfmodisco_all_topics/outs"
 
-embryo_model = tf.keras.models.model_from_json(
-    open(os.path.join(path_to_embryo_model, "model.json")).read(),
-    custom_objects={"Functional": tf.keras.models.Model},
-)
+KEY_CONTRIB     =   "gradients_integrated"
+KEY_OH          =   "oh"
+KEY_REGION_N    =   "region_names"
 
-embryo_model.load_weights(os.path.join(path_to_embryo_model, "model_epoch_36.hdf5"))
-
-organoid_dl_motif_dir = "../data_prep_new/organoid_data/MODELS/modisco/"
-
-patterns_dl_organoid = []
-pattern_names_dl_organoid = []
-for topic in tqdm(all_neuron_topics_organoid):
-    ohs = np.load(os.path.join(organoid_dl_motif_dir, f"gradients_Topic_{topic}.npz"))[
-        "oh"
-    ]
-    region_names = np.load(
-        os.path.join(organoid_dl_motif_dir, f"gradients_Topic_{topic}.npz")
-    )["region_names"]
-    for name, pattern in load_pattern_from_modisco(
-        filename=os.path.join(
-            organoid_dl_motif_dir,
-            f"patterns_Topic_{topic}.hdf5",
-        ),
-        ohs=ohs,
-        region_names=region_names,
-    ):
-        pattern_names_dl_organoid.append("organoid_" + name)
-        patterns_dl_organoid.append(pattern)
-
-embryo_dl_motif_dir = "../data_prep_new/embryo_data/MODELS/modisco/"
-
-patterns_dl_embryo = []
-pattern_names_dl_embryo = []
-for topic in tqdm(all_neuron_topics_embryo):
-    ohs = np.load(os.path.join(embryo_dl_motif_dir, f"gradients_Topic_{topic}.npz"))[
-        "oh"
-    ]
-    region_names = np.load(
-        os.path.join(embryo_dl_motif_dir, f"gradients_Topic_{topic}.npz")
-    )["region_names"]
-    for name, pattern in load_pattern_from_modisco(
-        filename=os.path.join(
-            embryo_dl_motif_dir,
-            f"patterns_Topic_{topic}.hdf5",
-        ),
-        ohs=ohs,
-        region_names=region_names,
-    ):
-        pattern_names_dl_embryo.append("embryo_" + name)
-        patterns_dl_embryo.append(pattern)
-
-all_patterns = [*patterns_dl_organoid, *patterns_dl_embryo]
-all_pattern_names = [*pattern_names_dl_organoid, *pattern_names_dl_embryo]
-
-pattern_metadata = pd.read_table("draft/pattern_metadata.tsv", index_col=0)
-
-if not os.path.exists("pattern_to_topic_to_grad_organoid.pkl"):
-    pattern_to_topic_to_grad_organoid = {}
-    for pattern_name in tqdm(pattern_metadata.index):
-        pattern = all_patterns[all_pattern_names.index(pattern_name)]
-        oh_sequences = np.array(
-            [x.region_one_hot for x in pattern.seqlets]
-        )  # .astype(np.int8)
-        pattern_ohs = list(get_value_seqlets(pattern.seqlets, oh_sequences))
-        pattern_to_topic_to_grad_organoid[pattern_name] = {}
-        for topic in tqdm(all_neuron_topics_organoid, leave=False):
-            class_idx = topic - 1
-            explainer = Explainer(model=organoid_model, class_index=int(class_idx))
-            # gradients_integrated = explainer.integrated_grad(X = oh_sequences) change to this for real fig
-            gradients_integrated = explainer.saliency_maps(X=oh_sequences)
-            pattern_grads = list(
-                get_value_seqlets(pattern.seqlets, gradients_integrated.squeeze())
-            )
-            pattern_to_topic_to_grad_organoid[pattern_name][topic] = (
-                pattern_grads,
-                pattern_ohs,
-            )
-    pickle.dump(
-        pattern_to_topic_to_grad_organoid,
-        open("pattern_to_topic_to_grad_organoid.pkl", "wb"),
-    )
-else:
-    pattern_to_topic_to_grad_organoid = pickle.load(
-        open("pattern_to_topic_to_grad_organoid.pkl", "rb")
-    )
-
-if not os.path.exists("pattern_to_topic_to_grad_embryo.pkl"):
-    pattern_to_topic_to_grad_embryo = {}
-    for pattern_name in tqdm(pattern_metadata.index):
-        pattern = all_patterns[all_pattern_names.index(pattern_name)]
-        oh_sequences = np.array(
-            [x.region_one_hot for x in pattern.seqlets]
-        )  # .astype(np.int8)
-        pattern_ohs = list(get_value_seqlets(pattern.seqlets, oh_sequences))
-        pattern_to_topic_to_grad_embryo[pattern_name] = {}
-        for topic in tqdm(all_neuron_topics_embryo, leave=False):
-            class_idx = topic - 1
-            explainer = Explainer(model=embryo_model, class_index=int(class_idx))
-            # gradients_integrated = explainer.integrated_grad(X = oh_sequences) change to this for real fig
-            gradients_integrated = explainer.saliency_maps(X=oh_sequences)
-            pattern_grads = list(
-                get_value_seqlets(pattern.seqlets, gradients_integrated.squeeze())
-            )
-            pattern_to_topic_to_grad_embryo[pattern_name][topic] = (
-                pattern_grads,
-                pattern_ohs,
-            )
-    pickle.dump(
-        pattern_to_topic_to_grad_embryo,
-        open("pattern_to_topic_to_grad_embryo.pkl", "wb"),
-    )
-else:
-    pattern_to_topic_to_grad_embryo = pickle.load(
-        open("pattern_to_topic_to_grad_embryo.pkl", "rb")
-    )
-
-pattern_metadata["ic_start"] = 0
-pattern_metadata["ic_stop"] = 30
-
-
-def ic(ppm, bg=np.array([0.27, 0.23, 0.23, 0.27]), eps=1e-3) -> np.ndarray:
-    return (ppm * np.log(ppm + eps) / np.log(2) - bg * np.log(bg) / np.log(2)).sum(1)
-
-
-def ic_trim(ic, min_v: float) -> tuple[int, int]:
-    delta = np.where(np.diff((ic > min_v) * 1))[0]
-    if len(delta) == 0:
-        return 0, 0
-    start_index = min(delta)
-    end_index = max(delta)
-    return start_index, end_index + 1
-
-
-cluster_to_topic_to_avg_pattern_organoid = {}
-for cluster in set(pattern_metadata["cluster_sub_cluster"]):
-    cluster_to_topic_to_avg_pattern_organoid[cluster] = {}
-    for topic in all_neuron_topics_organoid:
-        P, O = allign_patterns_of_cluster_for_topic(
-            pattern_to_topic_to_grad=pattern_to_topic_to_grad_organoid,
-            pattern_metadata=pattern_metadata,
-            cluster_id=cluster,
-            topic=topic,
-        )
-        ic_start, ic_end = ic_trim(ic((O.sum(0).T / O.sum(0).sum(1)).T), 0.8)
-        cluster_to_topic_to_avg_pattern_organoid[cluster][topic] = (P * O).mean(0)[
-            ic_start:ic_end
-        ]
-
-cluster_to_topic_to_avg_pattern_embryo = {}
-for cluster in set(pattern_metadata["cluster_sub_cluster"]):
-    cluster_to_topic_to_avg_pattern_embryo[cluster] = {}
-    for topic in all_neuron_topics_embryo:
-        P, O = allign_patterns_of_cluster_for_topic(
-            pattern_to_topic_to_grad=pattern_to_topic_to_grad_embryo,
-            pattern_metadata=pattern_metadata,
-            cluster_id=cluster,
-            topic=topic,
-        )
-        ic_start, ic_end = ic_trim(ic((O.sum(0).T / O.sum(0).sum(1)).T), 0.8)
-        cluster_to_topic_to_avg_pattern_embryo[cluster][topic] = (P * O).mean(0)[
-            ic_start:ic_end
-        ]
-
-selected_clusters = [1.1, 2.1, 8.0, 2.2, 4.0, 5.2, 6.0, 7.3, 3.1, 7.5, 5.1]
-
-cluster_to_name = {
-    1.1: "TEAD1",
-    2.1: "FOX(P1|P2|P4|J3|A2|O1)",
-    2.2: "SOX2",
-    3.1: "ONECUT(1|2|3)",
-    4.0: "(NR2F6)|(NR1D2)",
-    5.1: "ZEB(1|2)",
-    5.2: "(ASCL1)|(NEUROD(1|4))",
-    6.0: "EBF(1|2|3)",
-    7.3: "(NKX2-2)|(ISL1)",
-    7.5: "GATA2",
-    8.0: "RFX(3|4)",
+GRAD_DIRS = {
+    "organoid": ORGANOID_GRAD_DIR,
+    "embryo": EMBRYO_GRAD_DIR
 }
 
-organoid_embryo = [(6, 10), (4, 8), (23, 13), (24, 24), (13, 18), (2, 29)]
+contrib         =   []
+oh              =   []
+class_names     =   []
+region_names    =   []
+model_systems   =   []
 
-from scipy import stats
-
-corrs_patterns = []
-for cluster in selected_clusters:
-    corrs_patterns.append(
-        stats.pearsonr(
-            [
-                cluster_to_topic_to_avg_pattern_organoid[cluster][o].sum() for o, e in organoid_embryo
-                if not (o is None or e is None)
-            ],
-            [
-                cluster_to_topic_to_avg_pattern_embryo[cluster][e].sum() for o, e in organoid_embryo
-                if not (o is None or e is None)
-            ]
-        ).statistic
-    )
-print(np.mean(corrs_patterns))
-
-
-
-motifs = {
-    n: pattern.ppm[range(*pattern.ic_trim(0.2))].T
-    for n, pattern in zip(all_pattern_names, all_patterns)
-    if n in pattern_metadata.index
-}
-
-all_hits_organoid_subset = []
-for topic in neuron_topics_organoid:
-    f = f"gradients_Topic_{topic}.npz"
-    print(f)
-    ohs = np.load(os.path.join(organoid_dl_motif_dir, f))["oh"]
-    attr = np.load(os.path.join(organoid_dl_motif_dir, f))["gradients_integrated"]
-    region_names = np.load(os.path.join(organoid_dl_motif_dir, f))["region_names"]
-    hits = fimo(motifs=motifs, sequences=ohs.swapaxes(1, 2))
-    hits = pd.concat(hits)
-    hits["attribution"] = extract_signal(
-        hits[["sequence_name", "start", "end"]],
-        torch.from_numpy(attr.squeeze().swapaxes(1, 2)),
-        verbose=True,
-    ).sum(dim=1)
-    hits["cluster"] = [
-        pattern_metadata.loc[m, "cluster_sub_cluster"] for m in hits["motif_name"]
+for model_system, grad_dir in GRAD_DIRS.items():
+    gradient_files = [
+        x for x in 
+        os.listdir(grad_dir)
+        if x.startswith("gradients") and x.endswith(".npz")
     ]
-    hits["sequence_name"] = [region_names[x] for x in hits["sequence_name"]]
-    hits["-logp"] = -np.log10(hits["p-value"] + 1e-6)
-    all_hits_organoid_subset.append(hits)
+    for file in tqdm(gradient_files, desc=model_system):
+        class_name = file.replace("gradients_", "").replace(".npz", "")
+        with np.load(os.path.join(grad_dir, file)) as npz_handle:
+            N = npz_handle[KEY_CONTRIB].shape[0]
+            contrib.append(npz_handle[KEY_CONTRIB].squeeze())
+            oh.append(npz_handle[KEY_OH])
+            region_names.append(npz_handle[KEY_REGION_N])
+            class_names.append(np.repeat(class_name, N))
+            model_systems.append(np.repeat(model_system, N))
 
-a = True
-hits_merged_organoid_subset = reduce(
-    lambda left, right: merge_and_max(
-        left[
-            [
-                "motif_name",
-                "cluster",
-                "sequence_name",
-                "start",
-                "end",
-                "strand",
-                "attribution",
-                "p-value",
-                "-logp",
-            ]
-        ],
-        right[
-            [
-                "motif_name",
-                "cluster",
-                "sequence_name",
-                "start",
-                "end",
-                "strand",
-                "attribution",
-                "p-value",
-                "-logp",
-            ]
-        ],
-        on=[
-            "motif_name",
-            "cluster",
-            "sequence_name",
-            "start",
-            "end",
-            "strand",
-            "p-value",
-            "attribution",
-        ],
-        max_on="-logp",
-        l=len(all_hits_organoid_subset),
-    ),
-    all_hits_organoid_subset,
+contrib         =   np.concatenate(contrib)
+oh              =   np.concatenate(oh)
+class_names     =   np.concatenate(class_names)
+region_names    =   np.concatenate(region_names)
+model_systems   =   np.concatenate(model_systems)
+
+zebrafish_contr = np.load(
+    "../../../../ZEBRAFISH_DEV/ZEBRAHUB/CRESTED_CLASSIFICATION/CONTR/base_202578143343_organoid_regions_selected_classes/contr_organoid_regions.npz"
+)["attr"]
+
+common_regions = list(
+    set(seq_organoid.obs["region_name"]) \
+    & set(seq_embryo.obs["region_name"]) \
+    & set(seq_zebrafish_org.obs["region_names"])
 )
 
-hits_merged_organoid_subset_per_seq_and_cluster_max = (
-    hits_merged_organoid_subset.groupby(["sequence_name", "cluster"])["attribution"]
-    .apply(absmax)
-    .reset_index()
-    .pivot(index="sequence_name", columns="cluster", values="attribution")
-    .fillna(0)
-    .astype(float)
-)
+seq_organoid.obs["model_class"] = seq_organoid.obs["model_class"].str.split(",")
+seq_embryo.obs["model_class"] = seq_embryo.obs["model_class"].str.split(",")
 
-hits_merged_organoid_subset_per_seq_and_cluster_max_scaled = (
-    hits_merged_organoid_subset_per_seq_and_cluster_max
-    / hits_merged_organoid_subset_per_seq_and_cluster_max.sum()
-)
+seq_org = seq_organoid.obs.explode("model_class")
+seq_emb = seq_embryo.obs.explode("model_class")
 
 
-region_order_organoid_subset = []
-for x in tqdm(all_hits_organoid_subset):
-    for r in x["sequence_name"]:
-        if r not in region_order_organoid_subset:
-            region_order_organoid_subset.append(r)
+fp_region = "chr19:6066607-6067107"
+nc_region = "chr4:13178567-13179067"
+neu_region = "chr21:29454058-29454558"
 
-hits_organoid_bin = (
-    hits_merged_organoid_subset_per_seq_and_cluster_max_scaled.loc[
-        region_order_organoid_subset, selected_clusters
-    ].abs()
-    > 0.0008
-)
-hits_organoid_bin.columns = [cluster_to_name[x] for x in hits_organoid_bin.columns]
+seq_zebrafish_org.obs.query("region_names == @r").sort_values("start")
+seq_organoid.obs.query("region_name == @r").sort_values("start")[["start", "dbd_per_leiden"]]
+seq_embryo.obs.query("region_name == @r").sort_values("start")[["start", "dbd_per_leiden"]]
 
+region = fp_region
 
-def jaccard(s_a: set[str], s_b: set[str]):
-    return len(s_a & s_b) / len(s_a | s_b)
-
-
-jaccard_organoid = pd.DataFrame(
-    index=hits_organoid_bin.columns, columns=hits_organoid_bin.columns
-).fillna(0)
-
-for tf_1 in jaccard_organoid.columns:
-    for tf_2 in jaccard_organoid.index:
-        jaccard_organoid.loc[tf_1, tf_2] = jaccard(
-            set(hits_organoid_bin.loc[hits_organoid_bin[tf_1]].index),
-            set(hits_organoid_bin.loc[hits_organoid_bin[tf_2]].index),
-        )
-
-
-cell_topic_bin_organoid = pd.read_table(
-    "../data_prep_new/organoid_data/ATAC/cell_bin_topic.tsv"
-)
-
-cell_topic_bin_organoid.cell_barcode = [
-    rename_organoid_atac_cell(x) for x in cell_topic_bin_organoid.cell_barcode
+fig, axs = plt.subplots((6, 6), nrows = 3, sharex = True)
+o = oh[
+    np.where(region_names == region)[0][0]
 ]
-
-exp_organoid = adata_organoid_neuron.to_df(layer="log_cpm")
-
-exp_per_topic_organoid = pd.DataFrame(
-    index=[
-        model_index_to_topic_name_organoid(t - 1)
-        .replace("neuron_", "")
-        .replace("_", "")
-        for t in neuron_topics_organoid
-    ],
-    columns=exp_organoid.columns,
-)
-
-for topic in tqdm(exp_per_topic_organoid.index):
-    cells = list(
-        set(exp_organoid.index)
-        & set(
-            cell_topic_bin_organoid.query(
-                "group == 'neuron' & topic_name == @topic"
-            ).cell_barcode
-        )
-    )
-    exp_per_topic_organoid.loc[topic] = exp_organoid.loc[cells].mean()
-
-cells, scores, thresholds = binarize_topics(
-    embryo_neuron_cell_topic.to_numpy(),
-    embryo_neuron_cell_topic.index,
-    "li",
-)
-
-cell_topic_bin_embryo = dict(cell_barcode=[], topic_name=[], group=[], topic_prob=[])
-for topic_idx in range(len(cells)):
-    cell_topic_bin_embryo["cell_barcode"].extend(cells[topic_idx])
-    cell_topic_bin_embryo["topic_name"].extend(
-        np.repeat(f"Topic{topic_idx + 1}", len(cells[topic_idx]))
-    )
-    cell_topic_bin_embryo["group"].extend(np.repeat("neuron", len(cells[topic_idx])))
-    cell_topic_bin_embryo["topic_prob"].extend(scores[topic_idx])
-
-cell_topic_bin_embryo = pd.DataFrame(cell_topic_bin_embryo)
-
-exp_embryo = adata_embryo_neuron.to_df(layer="log_cpm")
-
-exp_per_topic_embryo = pd.DataFrame(
-    index=[
-        model_index_to_topic_name_embryo(t - 1).replace("neuron_", "").replace("_", "")
-        for t in neuron_topics_embryo
-    ],
-    columns=exp_embryo.columns,
-)
-
-for topic in tqdm(exp_per_topic_embryo.index):
-    cells = list(
-        set(exp_embryo.index)
-        & set(
-            cell_topic_bin_embryo.query(
-                "group == 'neuron' & topic_name == @topic"
-            ).cell_barcode
-        )
-    )
-    exp_per_topic_embryo.loc[topic] = exp_embryo.loc[cells].mean()
-
-
-import re
-
-cluster_to_tf = cluster_to_name
-
-tf_expr_matrix_per_topic_organoid = (
-    pd.DataFrame(exp_per_topic_organoid)
-)
-
-tf_expr_matrix_per_topic_organoid = tf_expr_matrix_per_topic_organoid[
-    [c for c in tf_expr_matrix_per_topic_organoid.columns if any([re.fullmatch(p, c) for p in cluster_to_tf.values() ])]
-]
-
-tf_expr_matrix_per_topic_organoid.index = [
-    topic_name_to_model_index_organoid("neuron_Topic_" + t.replace("Topic", "")) + 1
-    for t in tf_expr_matrix_per_topic_organoid.index
-]
-
-tf_expr_matrix_per_topic_organoid = tf_expr_matrix_per_topic_organoid[
-    tf_expr_matrix_per_topic_organoid.idxmax().sort_values(
-        key = lambda X: [[oe[0] for oe in organoid_embryo].index(x) for x in X]).index
-]
-
-tf_expr_matrix_per_topic_embryo = (
-    pd.DataFrame(exp_per_topic_embryo)
-)
-
-tf_expr_matrix_per_topic_embryo = tf_expr_matrix_per_topic_embryo[
-    [c for c in tf_expr_matrix_per_topic_embryo.columns if any([re.fullmatch(p, c) for p in cluster_to_tf.values() ])]
-]
-
-tf_expr_matrix_per_topic_embryo.index = [
-    topic_name_to_model_index_embryo("neuron_Topic_" + t.replace("Topic", "")) + 1
-    for t in tf_expr_matrix_per_topic_embryo.index
-]
-
-tf_expr_matrix_per_topic_embryo = tf_expr_matrix_per_topic_embryo[
-    tf_expr_matrix_per_topic_organoid.columns
-]
-
-
-N_PIXELS_PER_GRID = 50
-
-plt.style.use("../paper.mplstyle")
-
-fig = plt.figure()
-width, height = fig.get_size_inches()
-n_w_pixels = fig.get_dpi() * width
-n_h_pixels = fig.get_dpi() * height
-ncols = int((n_w_pixels) // N_PIXELS_PER_GRID)
-nrows = int((n_h_pixels) // N_PIXELS_PER_GRID)
-gs = fig.add_gridspec(
-    nrows, ncols, wspace=0.05, hspace=0.1, left=0.05, right=0.97, bottom=0.05, top=0.95
-)
-ax_organoid_umap_1 = fig.add_subplot(gs[0:5, 0:5])
-ax_organoid_umap_2 = fig.add_subplot(gs[5:10, 0:5])
-ax_embryo_umap_1 = fig.add_subplot(gs[11:16, 0:5])
-ax_embryo_umap_2 = fig.add_subplot(gs[16:21, 0:5])
-organoid_cells_both = list(
-    set(organoid_neuron_cell_topic.index) & set(adata_organoid_neuron.obs_names)
-)
-rgb_scatter_plot(
-    x=adata_organoid_neuron[organoid_cells_both].obsm["X_umap"][:, 0],
-    y=adata_organoid_neuron[organoid_cells_both].obsm["X_umap"][:, 1],
-    ax=ax_organoid_umap_1,
-    g_cut=0,
-    r_values=organoid_neuron_cell_topic.loc[
-        organoid_cells_both,
-        model_index_to_topic_name_organoid(neuron_topics_organoid[0] - 1),
-    ].values,
-    g_values=organoid_neuron_cell_topic.loc[
-        organoid_cells_both,
-        model_index_to_topic_name_organoid(neuron_topics_organoid[1] - 1),
-    ].values,
-    b_values=organoid_neuron_cell_topic.loc[
-        organoid_cells_both,
-        model_index_to_topic_name_organoid(neuron_topics_organoid[2] - 1),
-    ].values,
-    r_name=model_index_to_topic_name_organoid(neuron_topics_organoid[0] - 1).replace(
-        "neuron_", ""
+org_contrib = contrib[np.where(np.logical_and(
+    region_names == region, 
+    model_systems == "organoid"
+))[0]].max(0)
+_ = logomaker.Logo(
+    pd.DataFrame(
+        o * org_contrib,
+        columns = list("ACGT")
     ),
-    g_name=model_index_to_topic_name_organoid(neuron_topics_organoid[1] - 1).replace(
-        "neuron_", ""
-    ),
-    b_name=model_index_to_topic_name_organoid(neuron_topics_organoid[2] - 1).replace(
-        "neuron_", ""
-    ),
-    r_vmin=0,
-    r_vmax=0.15,
-    g_vmin=0,
-    g_vmax=0.1,
-)
-rgb_scatter_plot(
-    x=adata_organoid_neuron[organoid_cells_both].obsm["X_umap"][:, 0],
-    y=adata_organoid_neuron[organoid_cells_both].obsm["X_umap"][:, 1],
-    ax=ax_organoid_umap_2,
-    g_cut=0,
-    r_values=organoid_neuron_cell_topic.loc[
-        organoid_cells_both,
-        model_index_to_topic_name_organoid(neuron_topics_organoid[3] - 1),
-    ].values,
-    g_values=organoid_neuron_cell_topic.loc[
-        organoid_cells_both,
-        model_index_to_topic_name_organoid(neuron_topics_organoid[4] - 1),
-    ].values,
-    b_values=organoid_neuron_cell_topic.loc[
-        organoid_cells_both,
-        model_index_to_topic_name_organoid(neuron_topics_organoid[5] - 1),
-    ].values,
-    r_name=model_index_to_topic_name_organoid(neuron_topics_organoid[3] - 1).replace(
-        "neuron_", ""
-    ),
-    g_name=model_index_to_topic_name_organoid(neuron_topics_organoid[4] - 1).replace(
-        "neuron_", ""
-    ),
-    b_name=model_index_to_topic_name_organoid(neuron_topics_organoid[4] - 1).replace(
-        "neuron_", ""
-    ),
-)
-embryo_cells_both = list(
-    set(embryo_neuron_cell_topic.index) & set(adata_embryo_neuron.obs_names)
-)
-rgb_scatter_plot(
-    x=adata_embryo_neuron[embryo_cells_both].obsm["X_umap"][:, 0],
-    y=adata_embryo_neuron[embryo_cells_both].obsm["X_umap"][:, 1],
-    ax=ax_embryo_umap_1,
-    g_cut=0,
-    r_values=embryo_neuron_cell_topic.loc[
-        embryo_cells_both,
-        model_index_to_topic_name_embryo(neuron_topics_embryo[0] - 1),
-    ].values,
-    g_values=embryo_neuron_cell_topic.loc[
-        embryo_cells_both,
-        model_index_to_topic_name_embryo(neuron_topics_embryo[1] - 1),
-    ].values,
-    b_values=embryo_neuron_cell_topic.loc[
-        embryo_cells_both,
-        model_index_to_topic_name_embryo(neuron_topics_embryo[2] - 1),
-    ].values,
-    r_name=model_index_to_topic_name_embryo(neuron_topics_embryo[0] - 1).replace(
-        "neuron_", ""
-    ),
-    g_name=model_index_to_topic_name_embryo(neuron_topics_embryo[1] - 1).replace(
-        "neuron_", ""
-    ),
-    b_name=model_index_to_topic_name_embryo(neuron_topics_embryo[2] - 1).replace(
-        "neuron_", ""
-    ),
-    r_vmin=0,
-    r_vmax=0.1,
-)
-rgb_scatter_plot(
-    x=adata_embryo_neuron[embryo_cells_both].obsm["X_umap"][:, 0],
-    y=adata_embryo_neuron[embryo_cells_both].obsm["X_umap"][:, 1],
-    ax=ax_embryo_umap_2,
-    g_cut=0,
-    r_values=embryo_neuron_cell_topic.loc[
-        embryo_cells_both,
-        model_index_to_topic_name_embryo(neuron_topics_embryo[3] - 1),
-    ].values,
-    g_values=embryo_neuron_cell_topic.loc[
-        embryo_cells_both,
-        model_index_to_topic_name_embryo(neuron_topics_embryo[4] - 1),
-    ].values,
-    b_values=embryo_neuron_cell_topic.loc[
-        embryo_cells_both,
-        model_index_to_topic_name_embryo(neuron_topics_embryo[5] - 1),
-    ].values,
-    r_name=model_index_to_topic_name_embryo(neuron_topics_embryo[3] - 1).replace(
-        "neuron_", ""
-    ),
-    g_name=model_index_to_topic_name_embryo(neuron_topics_embryo[4] - 1).replace(
-        "neuron_", ""
-    ),
-    b_name=model_index_to_topic_name_embryo(neuron_topics_embryo[5] - 1).replace(
-        "neuron_", ""
-    ),
-    g_vmin=0,
-    g_vmax=0.05,
-)
-x_current = 7
-y_current = 0
-pattern_height = 2
-pattern_width = 3
-for i, cluster in enumerate(tqdm(selected_clusters)):
-    YMIN = np.inf
-    YMAX = -np.inf
-    axs = []
-    for j, (topic_org, topic_embr) in enumerate(organoid_embryo):
-        ax = fig.add_subplot(
-            gs[
-                y_current + i * pattern_height : y_current
-                + i * pattern_height
-                + pattern_height,
-                x_current + j * pattern_width : x_current
-                + j * pattern_width
-                + pattern_width,
-            ]
-        )
-        if i == 0:
-            ax.set_title(f"Topic {topic_org} {topic_embr}")
-        if topic_org is not None:
-            pwm = cluster_to_topic_to_avg_pattern_organoid[cluster][topic_org]
-            if cluster == 2.2:
-                pwm = pwm[0:8, :]
-            if cluster == 3.1:
-                pwm = pwm[0:10, :]
-            _ = logomaker.Logo(
-                pd.DataFrame(pwm, columns=["A", "C", "G", "T"]),
-                ax=ax,
-                # alpha=0.5,
-                # color_scheme="red",
-            )
-            ymn, ymx = ax.get_ylim()
-            YMIN = min(ymn, YMIN)
-            YMAX = max(ymx, YMAX)
-        if (topic_embr is not None) and True:
-            pwm = cluster_to_topic_to_avg_pattern_embryo[cluster][topic_embr]
-            if cluster == 2.2:
-                pwm = pwm[0:8, :]
-            if cluster == 3.1:
-                pwm = pwm[0:10]
-            _ = logomaker.Logo(
-                pd.DataFrame(-pwm, columns=["A", "C", "G", "T"]),
-                ax=ax,
-                edgecolor="black",
-                edgewidth=0.4,
-                # alpha=0.5,
-                # color_scheme="blue",
-            )
-            ymn, ymx = ax.get_ylim()
-            YMIN = min(ymn, YMIN)
-            YMAX = max(ymx, YMAX)
-        if j == 0:
-            _ = ax.set_ylabel(f"cluster_{cluster}")
-        axs.append(ax)
-    print(YMIN, YMAX)
-    for ax, (organoid_topic, embryo_topic) in zip(axs, organoid_embryo):
-        _ = ax.set_ylim(YMIN, YMAX)
-        _ = ax.set_axis_off()
-ax_hit_heatmap = fig.add_subplot(gs[0:21, 25:30])
-sns.heatmap(
-    hits_merged_organoid_subset_per_seq_and_cluster_max_scaled.loc[
-        region_order_organoid_subset, selected_clusters
-    ].astype(float),
-    yticklabels=False,
-    xticklabels=[cluster_to_name[x] for x in selected_clusters],
-    ax=ax_hit_heatmap,
-    cmap="bwr",
-    vmin=-0.0008,
-    vmax=0.0008,
-    cbar_kws=dict(shrink=0.5, format=lambda x, _: "{:.0e}".format(x)),
-    cbar=False,
-)
-ax_hit_heatmap.set_ylabel("")
-ax_organoid_expr_heatmap = fig.add_subplot(gs[0:12, 33:36])
-ax_embryo_expr_heatmap = fig.add_subplot(gs[0:12, 36:39])
-sns.heatmap(
-    (
-        (tf_expr_matrix_per_topic_organoid - tf_expr_matrix_per_topic_organoid.min())
-        / (
-            tf_expr_matrix_per_topic_organoid.max()
-            - tf_expr_matrix_per_topic_organoid.min()
-        )
-    )
-    .astype(float)
-    .T,
-    cmap="Greys",
-    ax=ax_organoid_expr_heatmap,
-    xticklabels=True,
-    yticklabels=True,
-    cbar=False,
-    vmin=0,
-    vmax=1,
-    lw=0.5,
-    linecolor="black",
-)
-sns.heatmap(
-    (
-        (tf_expr_matrix_per_topic_embryo - tf_expr_matrix_per_topic_embryo.min())
-        / (
-            tf_expr_matrix_per_topic_embryo.max()
-            - tf_expr_matrix_per_topic_embryo.min()
-        )
-    )
-    .astype(float)
-    .T,
-    cmap="Greys",
-    ax=ax_embryo_expr_heatmap,
-    yticklabels=False,
-    xticklabels=True,
-    cbar=False,
-    vmin=0,
-    vmax=1,
-    lw=0.5,
-    linecolor="black",
-)
-# ax_network = fig.add_subplot(gs[12:20, 31:38])
-ax = fig.add_subplot(gs[13:21, 33:39])
-sns.heatmap(
-    jaccard_organoid,
-    cmap="viridis",
-    vmin=0,
-    vmax=0.2,
-    ax=ax,
-    linecolor="black",
-    lw=0.5,
-    cbar=False,
-    yticklabels=True,
-    xticklabels=True,
+    ax = axs[0]
 )
 fig.tight_layout()
+fig.savefig("test.png")
 
-
-fig.savefig("Figure_6.png", transparent=False)
-fig.savefig("Figure_6.pdf")
+for seq, d_out in zip(
+    [seq_organoid.obs, seq_embryo.obs, seq_zebrafish.obs.rename({"region_names": "region_name"}, axis = 1)],
+    ["organoid_bed", "embryo_bed", "zebrafish_bed"]
+):
+    if not os.path.exists(d_out):
+        os.makedirs(d_out)
+    for dbd in tqdm(seq["dbd_per_leiden"].unique(), desc=d_out):
+        seqlets_to_bed(
+            df=seq.loc[seq["dbd_per_leiden"] == dbd],
+            out_f=os.path.join(d_out, f"{sanitize(dbd)}.bed")
+        )

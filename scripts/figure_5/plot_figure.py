@@ -24,7 +24,6 @@ from pycisTopic.topic_binarization import binarize_topics
 import networkx as nx
 from scipy.stats import binomtest
 import json
-from bs4 import BeautifulSoup
 import requests
 import time
 
@@ -109,7 +108,6 @@ def rgb_scatter_plot(
     if b_vmax is None:
         b_vmax = b_values.max()
     print(f"R: {r_vmin, r_vmax}\nG: {g_vmin, g_vmax}\nB: {b_vmin, b_vmax}")
-
 
 
 def topic_name_to_model_index_organoid(t: str) -> int:
@@ -379,31 +377,6 @@ def merge_and_max(left, right, on, max_on, l):
     return x.drop([f"{max_on}_x", f"{max_on}_y"], axis=1).copy()
 
 
-def fetch_rsid_batched(rsids: list[str], batch_size: int, tries: int) -> list[str]:
-    for i in range(len(rsids) // batch_size + 1):
-        left = i * batch_size
-        right = min(left + batch_size, len(rsids))
-        got_result = False
-        nth_try = 0
-        while not got_result and nth_try < tries:
-            response = requests.get(
-                f"https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=snp&id={','.join(snps[left:right])}&report=DocSet"
-            )
-            if response.ok:
-                got_result = True
-                time.sleep(0.1)
-                break
-            else:
-                nth_try += 1
-                time.sleep(0.25)
-        if got_result:
-            data = response.content.decode().splitlines()
-            for d in data:
-                yield d
-        else:
-            raise ValueError(f"Did not get result after {tries} tries")
-
-
 # load organoid RNA data and subset for ATAC cells
 adata_organoid = sc.read_h5ad("../figure_1/adata_organoid.h5ad")
 
@@ -412,21 +385,19 @@ sample_id_to_num = {
     for s in set(adata_organoid.obs.sample_id)
 }
 
-adata_organoid_neural_crest = sc.read_h5ad("../figure_1/adata_organoid_neural_crest.h5ad")
+adata_organoid_neuron = sc.read_h5ad("../figure_1/adata_organoid_neuron.h5ad")
 
-adata_embryo_neural_crest = sc.read_h5ad("../figure_1/adata_embryo_neural_crest.h5ad")
-
+adata_embryo_neuron = sc.read_h5ad("../figure_1/adata_embryo_neuron.h5ad")
 
 # load cell topic
 
-organoid_neural_crest_cell_topic = pd.read_table(
-    "../data_prep_new/organoid_data/ATAC/neural_crest_cell_topic_contrib.tsv",
+organoid_neuron_cell_topic = pd.read_table(
+    "../data_prep_new/organoid_data/ATAC/neuron_cell_topic_contrib.tsv",
     index_col=0,
 )
 
-organoid_neural_crest_cell_topic.columns = [
-    f"neural_crest_Topic_{c.replace('Topic', '')}"
-    for c in organoid_neural_crest_cell_topic
+organoid_neuron_cell_topic.columns = [
+    f"neuron_Topic_{c.replace('Topic', '')}" for c in organoid_neuron_cell_topic
 ]
 
 
@@ -436,61 +407,73 @@ def rename_organoid_atac_cell(l):
     return bc + "-1" + "-" + sample_id_to_num[sample_id]
 
 
-organoid_neural_crest_cell_topic.index = [
-    rename_organoid_atac_cell(x) for x in organoid_neural_crest_cell_topic.index
+organoid_neuron_cell_topic.index = [
+    rename_organoid_atac_cell(x) for x in organoid_neuron_cell_topic.index
 ]
 
-embryo_neural_crest_cell_topic = pd.read_table(
-    "../data_prep_new/embryo_data/ATAC/neural_crest_cell_topic_contrib.tsv",
+embryo_neuron_cell_topic = pd.read_table(
+    "../data_prep_new/embryo_data/ATAC/neuron_cell_topic_contrib.tsv",
     index_col=0,
 )
 
-embryo_neural_crest_cell_topic.columns = [
-    f"neural_crest_Topic_{c.replace('Topic', '')}"
-    for c in embryo_neural_crest_cell_topic
+embryo_neuron_cell_topic.columns = [
+    f"neuron_Topic_{c.replace('Topic', '')}" for c in embryo_neuron_cell_topic
 ]
 
-embryo_neural_crest_cell_topic.index = [
+embryo_neuron_cell_topic.index = [
     x.split("___")[0] + "-1" + "___" + x.split("___")[1]
-    for x in embryo_neural_crest_cell_topic.index
+    for x in embryo_neuron_cell_topic.index
 ]
 
 # load and score patterns
 
-neural_crest_topics_organoid = [
-    62,
-    60,
-    65,
-    59,
-    58,
+neuron_topics_organoid = [6, 4, 23, 24, 13, 2]
+
+neuron_topics_embryo = [10, 8, 13, 24, 18, 29]
+
+all_neuron_topics_organoid = [
+    1,
+    2,
+    3,
+    4,
+    6,
+    8,
+    10,
+    11,
+    12,
+    13,
+    15,
+    16,
+    18,
+    19,
+    23,
+    24,
+    25,
 ]
 
-neural_crest_topics_embryo = [103, 105, 94, 91]
-
-all_neural_crest_topics_organoid = (np.array([1, 3, 4, 5, 7, 9, 10]) + 55).tolist()
-
-all_neural_crest_topics_embryo = (
-    np.array(
-        [
-            1,
-            4,
-            7,
-            8,
-            9,
-            10,
-            11,
-            12,
-            13,
-            15,
-            19,
-            20,
-            21,
-            22,
-            29,
-        ]
-    )
-    + 90
-).tolist()
+all_neuron_topics_embryo = [
+    1,
+    3,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    15,
+    17,
+    18,
+    19,
+    22,
+    24,
+    26,
+    27,
+    29,
+    30,
+]
 
 
 path_to_organoid_model = "../data_prep_new/organoid_data/MODELS/"
@@ -517,7 +500,7 @@ organoid_dl_motif_dir = "../data_prep_new/organoid_data/MODELS/modisco/"
 
 patterns_dl_organoid = []
 pattern_names_dl_organoid = []
-for topic in tqdm(all_neural_crest_topics_organoid):
+for topic in tqdm(all_neuron_topics_organoid):
     ohs = np.load(os.path.join(organoid_dl_motif_dir, f"gradients_Topic_{topic}.npz"))[
         "oh"
     ]
@@ -539,7 +522,7 @@ embryo_dl_motif_dir = "../data_prep_new/embryo_data/MODELS/modisco/"
 
 patterns_dl_embryo = []
 pattern_names_dl_embryo = []
-for topic in tqdm(all_neural_crest_topics_embryo):
+for topic in tqdm(all_neuron_topics_embryo):
     ohs = np.load(os.path.join(embryo_dl_motif_dir, f"gradients_Topic_{topic}.npz"))[
         "oh"
     ]
@@ -571,7 +554,7 @@ if not os.path.exists("pattern_to_topic_to_grad_organoid.pkl"):
         )  # .astype(np.int8)
         pattern_ohs = list(get_value_seqlets(pattern.seqlets, oh_sequences))
         pattern_to_topic_to_grad_organoid[pattern_name] = {}
-        for topic in tqdm(all_neural_crest_topics_organoid, leave=False):
+        for topic in tqdm(all_neuron_topics_organoid, leave=False):
             class_idx = topic - 1
             explainer = Explainer(model=organoid_model, class_index=int(class_idx))
             # gradients_integrated = explainer.integrated_grad(X = oh_sequences) change to this for real fig
@@ -601,7 +584,7 @@ if not os.path.exists("pattern_to_topic_to_grad_embryo.pkl"):
         )  # .astype(np.int8)
         pattern_ohs = list(get_value_seqlets(pattern.seqlets, oh_sequences))
         pattern_to_topic_to_grad_embryo[pattern_name] = {}
-        for topic in tqdm(all_neural_crest_topics_embryo, leave=False):
+        for topic in tqdm(all_neuron_topics_embryo, leave=False):
             class_idx = topic - 1
             explainer = Explainer(model=embryo_model, class_index=int(class_idx))
             # gradients_integrated = explainer.integrated_grad(X = oh_sequences) change to this for real fig
@@ -642,14 +625,14 @@ def ic_trim(ic, min_v: float) -> tuple[int, int]:
 cluster_to_topic_to_avg_pattern_organoid = {}
 for cluster in set(pattern_metadata["cluster_sub_cluster"]):
     cluster_to_topic_to_avg_pattern_organoid[cluster] = {}
-    for topic in all_neural_crest_topics_organoid:
+    for topic in all_neuron_topics_organoid:
         P, O = allign_patterns_of_cluster_for_topic(
             pattern_to_topic_to_grad=pattern_to_topic_to_grad_organoid,
             pattern_metadata=pattern_metadata,
             cluster_id=cluster,
             topic=topic,
         )
-        ic_start, ic_end = ic_trim(ic((O.sum(0).T / O.sum(0).sum(1)).T), 0.2)
+        ic_start, ic_end = ic_trim(ic((O.sum(0).T / O.sum(0).sum(1)).T), 0.8)
         cluster_to_topic_to_avg_pattern_organoid[cluster][topic] = (P * O).mean(0)[
             ic_start:ic_end
         ]
@@ -657,34 +640,35 @@ for cluster in set(pattern_metadata["cluster_sub_cluster"]):
 cluster_to_topic_to_avg_pattern_embryo = {}
 for cluster in set(pattern_metadata["cluster_sub_cluster"]):
     cluster_to_topic_to_avg_pattern_embryo[cluster] = {}
-    for topic in all_neural_crest_topics_embryo:
+    for topic in all_neuron_topics_embryo:
         P, O = allign_patterns_of_cluster_for_topic(
             pattern_to_topic_to_grad=pattern_to_topic_to_grad_embryo,
             pattern_metadata=pattern_metadata,
             cluster_id=cluster,
             topic=topic,
         )
-        ic_start, ic_end = ic_trim(ic((O.sum(0).T / O.sum(0).sum(1)).T), 0.2)
+        ic_start, ic_end = ic_trim(ic((O.sum(0).T / O.sum(0).sum(1)).T), 0.8)
         cluster_to_topic_to_avg_pattern_embryo[cluster][topic] = (P * O).mean(0)[
             ic_start:ic_end
         ]
 
-selected_clusters = [3.0, 13.1, 9.2, 14.0, 11.1, 9.1, 10.2, 2.2, 2.1, 13.2]
+selected_clusters = [1.1, 2.1, 8.0, 2.2, 4.0, 5.2, 6.0, 7.3, 3.1, 7.5, 5.1]
 
 cluster_to_name = {
-    3.0: "TEAD(3|4)",
-    13.1: "GRHL(1|2)",
-    9.2: "ZEB(1|2)",
-    14.0: "RFX(3|4)",
-    11.1: "NR2(C|F)2",
-    9.1: "TFAP2(A|B|C)",
-    10.2: "ZIC(1|2|4|5)",
-    2.2: "SOX(5|10)",
-    2.1: "FOX(P1|P2|C1|C2|D1)",
-    13.2: "(TWIST1)|(ALX(1|4))|(MSX1)|(PRRX1)",
+    1.1: "TEAD1",
+    2.1: "FOX(P1|P2|P4|J3|A2|O1)",
+    2.2: "SOX2",
+    3.1: "ONECUT(1|2|3)",
+    4.0: "(NR2F6)|(NR1D2)",
+    5.1: "ZEB(1|2)",
+    5.2: "(ASCL1)|(NEUROD(1|4))",
+    6.0: "EBF(1|2|3)",
+    7.3: "(NKX2-2)|(ISL1)",
+    7.5: "GATA2",
+    8.0: "RFX(3|4)",
 }
 
-organoid_embryo = [(62, 103), (60, 105), (65, 94), (59, None), (58, 91)]
+organoid_embryo = [(6, 10), (4, 8), (23, 13), (24, 24), (13, 18), (2, 29)]
 
 from scipy import stats
 
@@ -713,7 +697,7 @@ motifs = {
 }
 
 all_hits_organoid_subset = []
-for topic in neural_crest_topics_organoid:
+for topic in neuron_topics_organoid:
     f = f"gradients_Topic_{topic}.npz"
     print(f)
     ohs = np.load(os.path.join(organoid_dl_motif_dir, f))["oh"]
@@ -792,6 +776,7 @@ hits_merged_organoid_subset_per_seq_and_cluster_max_scaled = (
     / hits_merged_organoid_subset_per_seq_and_cluster_max.sum()
 )
 
+
 region_order_organoid_subset = []
 for x in tqdm(all_hits_organoid_subset):
     for r in x["sequence_name"]:
@@ -822,6 +807,7 @@ for tf_1 in jaccard_organoid.columns:
             set(hits_organoid_bin.loc[hits_organoid_bin[tf_2]].index),
         )
 
+
 cell_topic_bin_organoid = pd.read_table(
     "../data_prep_new/organoid_data/ATAC/cell_bin_topic.tsv"
 )
@@ -830,14 +816,14 @@ cell_topic_bin_organoid.cell_barcode = [
     rename_organoid_atac_cell(x) for x in cell_topic_bin_organoid.cell_barcode
 ]
 
-exp_organoid = adata_organoid_neural_crest.to_df(layer="log_cpm")
+exp_organoid = adata_organoid_neuron.to_df(layer="log_cpm")
 
 exp_per_topic_organoid = pd.DataFrame(
     index=[
         model_index_to_topic_name_organoid(t - 1)
-        .replace("neural_crest_", "")
+        .replace("neuron_", "")
         .replace("_", "")
-        for t in neural_crest_topics_organoid
+        for t in neuron_topics_organoid
     ],
     columns=exp_organoid.columns,
 )
@@ -847,15 +833,15 @@ for topic in tqdm(exp_per_topic_organoid.index):
         set(exp_organoid.index)
         & set(
             cell_topic_bin_organoid.query(
-                "group == 'neural_crest' & topic_name == @topic"
+                "group == 'neuron' & topic_name == @topic"
             ).cell_barcode
         )
     )
     exp_per_topic_organoid.loc[topic] = exp_organoid.loc[cells].mean()
 
 cells, scores, thresholds = binarize_topics(
-    embryo_neural_crest_cell_topic.to_numpy(),
-    embryo_neural_crest_cell_topic.index,
+    embryo_neuron_cell_topic.to_numpy(),
+    embryo_neuron_cell_topic.index,
     "li",
 )
 
@@ -865,21 +851,17 @@ for topic_idx in range(len(cells)):
     cell_topic_bin_embryo["topic_name"].extend(
         np.repeat(f"Topic{topic_idx + 1}", len(cells[topic_idx]))
     )
-    cell_topic_bin_embryo["group"].extend(
-        np.repeat("neural_crest", len(cells[topic_idx]))
-    )
+    cell_topic_bin_embryo["group"].extend(np.repeat("neuron", len(cells[topic_idx])))
     cell_topic_bin_embryo["topic_prob"].extend(scores[topic_idx])
 
 cell_topic_bin_embryo = pd.DataFrame(cell_topic_bin_embryo)
 
-exp_embryo = adata_embryo_neural_crest.to_df(layer="log_cpm")
+exp_embryo = adata_embryo_neuron.to_df(layer="log_cpm")
 
 exp_per_topic_embryo = pd.DataFrame(
     index=[
-        model_index_to_topic_name_embryo(t - 1)
-        .replace("neural_crest_", "")
-        .replace("_", "")
-        for t in neural_crest_topics_embryo
+        model_index_to_topic_name_embryo(t - 1).replace("neuron_", "").replace("_", "")
+        for t in neuron_topics_embryo
     ],
     columns=exp_embryo.columns,
 )
@@ -889,11 +871,12 @@ for topic in tqdm(exp_per_topic_embryo.index):
         set(exp_embryo.index)
         & set(
             cell_topic_bin_embryo.query(
-                "group == 'neural_crest' & topic_name == @topic"
+                "group == 'neuron' & topic_name == @topic"
             ).cell_barcode
         )
     )
     exp_per_topic_embryo.loc[topic] = exp_embryo.loc[cells].mean()
+
 
 import re
 
@@ -908,7 +891,7 @@ tf_expr_matrix_per_topic_organoid = tf_expr_matrix_per_topic_organoid[
 ]
 
 tf_expr_matrix_per_topic_organoid.index = [
-    topic_name_to_model_index_organoid("neural_crest_Topic_" + t.replace("Topic", "")) + 1
+    topic_name_to_model_index_organoid("neuron_Topic_" + t.replace("Topic", "")) + 1
     for t in tf_expr_matrix_per_topic_organoid.index
 ]
 
@@ -926,334 +909,13 @@ tf_expr_matrix_per_topic_embryo = tf_expr_matrix_per_topic_embryo[
 ]
 
 tf_expr_matrix_per_topic_embryo.index = [
-    topic_name_to_model_index_embryo("neural_crest_Topic_" + t.replace("Topic", "")) + 1
+    topic_name_to_model_index_embryo("neuron_Topic_" + t.replace("Topic", "")) + 1
     for t in tf_expr_matrix_per_topic_embryo.index
 ]
 
 tf_expr_matrix_per_topic_embryo = tf_expr_matrix_per_topic_embryo[
     tf_expr_matrix_per_topic_organoid.columns
 ]
-
-
-data = (
-    hits_merged_organoid_subset_per_seq_and_cluster_max_scaled.loc[
-        region_order_organoid_subset, selected_clusters
-    ].abs()
-    > 0.0008
-) * 1
-cooc = data.T @ data
-for cluster in selected_clusters:
-    cooc.loc[cluster, cluster] = 0
-
-cooc_perc = (cooc / cooc.sum()).T
-
-norm = matplotlib.colors.Normalize(vmin=0, vmax=len(selected_clusters), clip=True)
-mapper = plt.cm.ScalarMappable(norm=norm, cmap=plt.cm.Set3)
-
-cluster_to_color = {
-    cluster_to_name[c]: mapper.to_rgba(i) for i, c in enumerate(selected_clusters)
-}
-
-G_organoid = nx.DiGraph()
-
-p = 1 / (len(selected_clusters) - 1)
-for y, cluster in enumerate(selected_clusters):
-    left = 0.0
-    _sorted_vals = cooc_perc.loc[cluster]
-    n = sum(cooc.loc[cluster])
-    for _cluster, _width in zip(_sorted_vals.index, _sorted_vals.values):
-        k = cooc.loc[cluster, _cluster]
-        t = binomtest(k, n, p, alternative="greater")
-        stat, pval = t.statistic, t.pvalue
-        if pval < (0.01 / 100) and (_cluster != cluster):
-            G_organoid.add_edge(
-                cluster_to_name[cluster], cluster_to_name[_cluster], weight=_width
-            )
-
-pos = nx.forceatlas2_layout(G_organoid, seed=12)
-
-
-@dataclass
-class SequenceRefAlt:
-    rsid: str
-    ref: str
-    alts: list[str]
-
-
-seq_ref_alts = []
-for x in json.load(
-    open("../data_prep_new/facial_gwas/white/ref_alt_all_sign_snps.json")
-):
-    seq_ref_alts.append(SequenceRefAlt(rsid=x["rsid"], ref=x["ref"], alts=x["alts"]))
-
-
-@dataclass
-class PredictionRefAlt:
-    rsid: str
-    ref: np.ndarray
-    alts: np.ndarray
-
-
-refs = np.concatenate(
-    [one_hot_encode_sequence(variant.ref) for variant in seq_ref_alts]
-)
-
-alts = np.concatenate(
-    [
-        np.concatenate([one_hot_encode_sequence(a) for a in variant.alts])
-        for variant in seq_ref_alts
-    ]
-)
-
-pred_ref_organoid = organoid_model.predict(refs)
-pred_alt_organoid = organoid_model.predict(alts)
-
-pred_ref_alts_organoid = []
-alt_id = 0
-for ref_id, variant in tqdm(enumerate(seq_ref_alts), total=len(seq_ref_alts)):
-    n_alts = len(variant.alts)
-    pred_ref_alts_organoid.append(
-        PredictionRefAlt(
-            rsid=variant.rsid,
-            ref=pred_ref_organoid[ref_id : ref_id + 1, :],
-            alts=pred_alt_organoid[alt_id : alt_id + n_alts, :],
-        )
-    )
-    alt_id = alt_id + n_alts
-
-pred_ref_embryo = embryo_model.predict(refs)
-pred_alt_embryo = embryo_model.predict(alts)
-
-pred_ref_alts_embryo = []
-alt_id = 0
-for ref_id, variant in tqdm(enumerate(seq_ref_alts), total=len(seq_ref_alts)):
-    n_alts = len(variant.alts)
-    pred_ref_alts_embryo.append(
-        PredictionRefAlt(
-            rsid=variant.rsid,
-            ref=pred_ref_embryo[ref_id : ref_id + 1, :],
-            alts=pred_alt_embryo[alt_id : alt_id + n_alts, :],
-        )
-    )
-    alt_id = alt_id + n_alts
-
-
-@dataclass
-class DeltaPredRefAlt:
-    rsid: str
-    deltas: np.ndarray
-
-
-delta_ref_alt_organoid = []
-for variant in pred_ref_alts_organoid:
-    delta = np.zeros_like(variant.alts)
-    for i in range(variant.alts.shape[0]):
-        delta[i] = variant.alts[i] - variant.ref[0]
-    delta_ref_alt_organoid.append(DeltaPredRefAlt(rsid=variant.rsid, deltas=delta))
-
-delta_ref_alt_embryo = []
-for variant in pred_ref_alts_embryo:
-    delta = np.zeros_like(variant.alts)
-    for i in range(variant.alts.shape[0]):
-        delta[i] = variant.alts[i] - variant.ref[0]
-    delta_ref_alt_embryo.append(DeltaPredRefAlt(rsid=variant.rsid, deltas=delta))
-
-
-chrom_alias = (
-    pd.read_table(
-        "https://hgdownload.cse.ucsc.edu/goldenPath/hg38/database/chromAlias.txt.gz",
-        header=None,
-    )
-    .set_index(0)[1]
-    .to_dict()
-)
-
-with open("../data_prep_new/facial_gwas/white/all_sign_snps.rs.uniq.txt") as f:
-    snps = f.read().splitlines()
-
-data = []
-for d in tqdm(fetch_rsid_batched(rsids=snps, batch_size=100, tries=5), total=len(snps)):
-    data.append(d)
-
-
-def decode_data(d: str):
-    soup = BeautifulSoup(d)
-    return ("rs" + soup.snp_id.string, soup.spdi.string)
-
-
-rsid_to_spdi = dict(
-    decode_data(d) for d in tqdm(data, total=len(data)) if "error" not in d
-)
-missing_snps = set(snps) - set(rsid_to_spdi.keys())
-# these are indeed missing from db snp, in total 631
-
-
-@dataclass
-class Variant:
-    rsid: str
-    chrom: str
-    pos: int
-    ref: str
-    alts: list[str]
-
-
-def decode_spdi(spdi: str, rsid) -> Variant:
-    variants_spdi = spdi.split(",")
-    chrom, pos, ref, _ = variants_spdi[0].split(":")
-    alts = []
-    for s in variants_spdi:
-        c, p, r, alt = s.split(":")
-        if c != chrom or p != pos or r != ref:
-            raise ValueError("Multiple chroms, pos, ref")
-        alts.append(alt)
-    return Variant(rsid=rsid, chrom=chrom, pos=int(pos), ref=ref, alts=alts)
-
-
-variants = []
-nones = 0
-for rsid in rsid_to_spdi:
-    if rsid_to_spdi[rsid] is not None:
-        variants.append(decode_spdi(rsid_to_spdi[rsid], rsid))
-    else:
-        nones += 1
-
-# one None
-
-variants_ucsc = []
-for variant in variants:
-    variants_ucsc.append(
-        Variant(
-            rsid=variant.rsid,
-            chrom=chrom_alias[variant.chrom],
-            pos=variant.pos,
-            ref=variant.ref,
-            alts=variant.alts,
-        )
-    )
-
-
-rs_to_pval = {}
-for f in os.listdir("../data_prep_new/facial_gwas/white/suggestive_snps"):
-    if not f.endswith(".tsv"):
-        continue
-    with open(
-        os.path.join("../data_prep_new/facial_gwas/white/suggestive_snps", f)
-    ) as sum:
-        for l in sum:
-            rs, _, _, _, _, p = l.split()
-            if p == "P":
-                continue
-            p = float(p)
-            if rs not in rs_to_pval:
-                rs_to_pval[rs] = p
-            else:
-                rs_to_pval[rs] = min(p, rs_to_pval[rs])
-
-rs_to_max_delta_organoid = {}
-for var in delta_ref_alt_organoid:
-    abs_max = np.abs(var.deltas).max()
-    if var.rsid not in rs_to_max_delta_organoid:
-        rs_to_max_delta_organoid[var.rsid] = abs_max
-    else:
-        rs_to_max_delta_organoid[var.rsid] = max(
-            abs_max, rs_to_max_delta_organoid[var.rsid]
-        )
-
-rs_to_max_delta_embryo = {}
-for var in delta_ref_alt_embryo:
-    abs_max = np.abs(var.deltas).max()
-    if var.rsid not in rs_to_max_delta_embryo:
-        rs_to_max_delta_embryo[var.rsid] = abs_max
-    else:
-        rs_to_max_delta_embryo[var.rsid] = max(
-            abs_max, rs_to_max_delta_embryo[var.rsid]
-        )
-
-for var in variants_ucsc:
-    var.pval = rs_to_pval.get(var.rsid, None)
-    var.max_delta_organoid = rs_to_max_delta_organoid.get(var.rsid, None)
-    var.max_delta_embryo = rs_to_max_delta_embryo.get(var.rsid, None)
-
-lead_snps = []
-with open("../data_prep_new/facial_gwas/white/203_lead_facial_snps.txt") as f:
-    for l in f:
-        lead_snps.append(l.strip())
-
-rsid_to_var = {}
-for var in variants_ucsc:
-    rsid_to_var[var.rsid] = var
-
-rsid_to_seq_ref_alt = {}
-for var in seq_ref_alts:
-    rsid_to_seq_ref_alt[var.rsid] = var
-
-contrib_var_hit_organoid = []
-for var, model_idc, deltas in tqdm(
-    [
-        (rsid_to_var[v.rsid], abs(v.deltas).argmax(1), abs(v.deltas).max(1))
-        for v in delta_ref_alt_organoid
-        if abs(v.deltas).max() > 0.5
-    ]
-):
-    model_idx = model_idc[np.argmax(deltas)]
-    ref_sequence = rsid_to_seq_ref_alt[var.rsid].ref
-    alt_sequence = rsid_to_seq_ref_alt[var.rsid].alts[np.argmax(deltas)]
-    seq_oh = np.concatenate(
-        [one_hot_encode_sequence(ref_sequence), one_hot_encode_sequence(alt_sequence)]
-    )
-    explainer = Explainer(model=organoid_model, class_index=model_idx)
-    contrib = explainer.integrated_grad(seq_oh)
-    ism = explainer.mutagenesis(seq_oh)
-    contrib_var_hit_organoid.append(
-        (var, model_idx, deltas.max(), seq_oh, contrib, ism)
-    )
-
-contrib_var_hit_embryo = []
-for var, model_idc, deltas in tqdm(
-    [
-        (rsid_to_var[v.rsid], abs(v.deltas).argmax(1), abs(v.deltas).max(1))
-        for v in delta_ref_alt_embryo
-        if abs(v.deltas).max() > 0.5
-    ]
-):
-    model_idx = model_idc[np.argmax(deltas)]
-    ref_sequence = rsid_to_seq_ref_alt[var.rsid].ref
-    alt_sequence = rsid_to_seq_ref_alt[var.rsid].alts[np.argmax(deltas)]
-    seq_oh = np.concatenate(
-        [one_hot_encode_sequence(ref_sequence), one_hot_encode_sequence(alt_sequence)]
-    )
-    explainer = Explainer(model=embryo_model, class_index=model_idx)
-    contrib = explainer.integrated_grad(seq_oh)
-    ism = explainer.mutagenesis(seq_oh)
-    contrib_var_hit_embryo.append((var, model_idx, deltas.max(), seq_oh, contrib, ism))
-
-
-for var, model_idx, delta, seq_oh, contrib, ism in tqdm(contrib_var_hit_organoid):
-    fig, axs = plt.subplots(figsize=(20, 6), nrows=3, sharex=True)
-    _ = logomaker.Logo(
-        df=pd.DataFrame((contrib * seq_oh)[0], columns=["A", "C", "G", "T"]), ax=axs[0]
-    )
-    _ = logomaker.Logo(
-        df=pd.DataFrame((contrib * seq_oh)[1], columns=["A", "C", "G", "T"]), ax=axs[1]
-    )
-    for nuc_idx, c in zip(range(4), ["#008001", "#1c00ff", "#ffab10", "#ff0000"]):
-        axs[2].scatter(np.arange(500), ism[0][:, nuc_idx], color=c)
-    fig.tight_layout()
-    fig.savefig(f"draft/{var.rsid}_organoid.pdf")
-
-
-for var, model_idx, delta, seq_oh, contrib, ism in tqdm(contrib_var_hit_embryo):
-    fig, axs = plt.subplots(figsize=(20, 6), nrows=3, sharex=True)
-    _ = logomaker.Logo(
-        df=pd.DataFrame((contrib * seq_oh)[0], columns=["A", "C", "G", "T"]), ax=axs[0]
-    )
-    _ = logomaker.Logo(
-        df=pd.DataFrame((contrib * seq_oh)[1], columns=["A", "C", "G", "T"]), ax=axs[1]
-    )
-    for nuc_idx, c in zip(range(4), ["#008001", "#1c00ff", "#ffab10", "#ff0000"]):
-        axs[2].scatter(np.arange(500), ism[0][:, nuc_idx], color=c)
-    fig.tight_layout()
-    fig.savefig(f"draft/{var.rsid}_embryo.pdf")
 
 
 N_PIXELS_PER_GRID = 50
@@ -1271,112 +933,129 @@ gs = fig.add_gridspec(
 )
 ax_organoid_umap_1 = fig.add_subplot(gs[0:5, 0:5])
 ax_organoid_umap_2 = fig.add_subplot(gs[5:10, 0:5])
-ax_embryo_umap_1 = fig.add_subplot(gs[10:15, 0:5])
-ax_embryo_umap_2 = fig.add_subplot(gs[15:20, 0:5])
+ax_embryo_umap_1 = fig.add_subplot(gs[11:16, 0:5])
+ax_embryo_umap_2 = fig.add_subplot(gs[16:21, 0:5])
 organoid_cells_both = list(
-    set(organoid_neural_crest_cell_topic.index)
-    & set(adata_organoid_neural_crest.obs_names)
+    set(organoid_neuron_cell_topic.index) & set(adata_organoid_neuron.obs_names)
 )
 rgb_scatter_plot(
-    x=adata_organoid_neural_crest[organoid_cells_both].obsm["X_umap"][:, 0],
-    y=adata_organoid_neural_crest[organoid_cells_both].obsm["X_umap"][:, 1],
+    x=adata_organoid_neuron[organoid_cells_both].obsm["X_umap"][:, 0],
+    y=adata_organoid_neuron[organoid_cells_both].obsm["X_umap"][:, 1],
     ax=ax_organoid_umap_1,
     g_cut=0,
-    r_values=organoid_neural_crest_cell_topic.loc[
+    r_values=organoid_neuron_cell_topic.loc[
         organoid_cells_both,
-        model_index_to_topic_name_organoid(neural_crest_topics_organoid[0] - 1),
+        model_index_to_topic_name_organoid(neuron_topics_organoid[0] - 1),
     ].values,
-    g_values=organoid_neural_crest_cell_topic.loc[
+    g_values=organoid_neuron_cell_topic.loc[
         organoid_cells_both,
-        model_index_to_topic_name_organoid(neural_crest_topics_organoid[1] - 1),
+        model_index_to_topic_name_organoid(neuron_topics_organoid[1] - 1),
     ].values,
-    b_values=organoid_neural_crest_cell_topic.loc[
+    b_values=organoid_neuron_cell_topic.loc[
         organoid_cells_both,
-        model_index_to_topic_name_organoid(neural_crest_topics_organoid[2] - 1),
+        model_index_to_topic_name_organoid(neuron_topics_organoid[2] - 1),
     ].values,
-    r_name=model_index_to_topic_name_organoid(
-        neural_crest_topics_organoid[0] - 1
-    ).replace("neural_crest_", ""),
-    g_name=model_index_to_topic_name_organoid(
-        neural_crest_topics_organoid[1] - 1
-    ).replace("neural_crest_", ""),
-    b_name=model_index_to_topic_name_organoid(
-        neural_crest_topics_organoid[2] - 1
-    ).replace("neural_crest_", ""),
-    g_vmin=0,
-    g_vmax=0.25,
-)
-rgb_scatter_plot(
-    x=adata_organoid_neural_crest[organoid_cells_both].obsm["X_umap"][:, 0],
-    y=adata_organoid_neural_crest[organoid_cells_both].obsm["X_umap"][:, 1],
-    ax=ax_organoid_umap_2,
-    g_cut=0,
-    r_values=organoid_neural_crest_cell_topic.loc[
-        organoid_cells_both,
-        model_index_to_topic_name_organoid(neural_crest_topics_organoid[3] - 1),
-    ].values,
-    g_values=organoid_neural_crest_cell_topic.loc[
-        organoid_cells_both,
-        model_index_to_topic_name_organoid(neural_crest_topics_organoid[4] - 1),
-    ].values,
-    b_values=np.zeros(len(organoid_cells_both)),
-    r_name=model_index_to_topic_name_organoid(
-        neural_crest_topics_organoid[3] - 1
-    ).replace("neural_crest_", ""),
-    g_name=model_index_to_topic_name_organoid(
-        neural_crest_topics_organoid[4] - 1
-    ).replace("neural_crest_", ""),
-)
-embryo_cells_both = list(
-    set(embryo_neural_crest_cell_topic.index) & set(adata_embryo_neural_crest.obs_names)
-)
-rgb_scatter_plot(
-    x=adata_embryo_neural_crest[embryo_cells_both].obsm["X_umap"][:, 0],
-    y=adata_embryo_neural_crest[embryo_cells_both].obsm["X_umap"][:, 1],
-    ax=ax_embryo_umap_1,
-    g_cut=0,
-    r_values=embryo_neural_crest_cell_topic.loc[
-        embryo_cells_both,
-        model_index_to_topic_name_embryo(neural_crest_topics_embryo[0] - 1),
-    ].values,
-    g_values=embryo_neural_crest_cell_topic.loc[
-        embryo_cells_both,
-        model_index_to_topic_name_embryo(neural_crest_topics_embryo[1] - 1),
-    ].values,
-    b_values=embryo_neural_crest_cell_topic.loc[
-        embryo_cells_both,
-        model_index_to_topic_name_embryo(neural_crest_topics_embryo[2] - 1),
-    ].values,
-    r_name=model_index_to_topic_name_embryo(neural_crest_topics_embryo[0] - 1).replace(
-        "neural_crest_", ""
+    r_name=model_index_to_topic_name_organoid(neuron_topics_organoid[0] - 1).replace(
+        "neuron_", ""
     ),
-    g_name=model_index_to_topic_name_embryo(neural_crest_topics_embryo[1] - 1).replace(
-        "neural_crest_", ""
+    g_name=model_index_to_topic_name_organoid(neuron_topics_organoid[1] - 1).replace(
+        "neuron_", ""
     ),
-    b_name=model_index_to_topic_name_embryo(neural_crest_topics_embryo[2] - 1).replace(
-        "neural_crest_", ""
+    b_name=model_index_to_topic_name_organoid(neuron_topics_organoid[2] - 1).replace(
+        "neuron_", ""
     ),
     r_vmin=0,
-    r_vmax=0.25,
+    r_vmax=0.15,
     g_vmin=0,
-    g_vmax=0.3,
-    b_vmin=0,
-    b_vmax=0.25,
+    g_vmax=0.1,
 )
 rgb_scatter_plot(
-    x=adata_embryo_neural_crest[embryo_cells_both].obsm["X_umap"][:, 0],
-    y=adata_embryo_neural_crest[embryo_cells_both].obsm["X_umap"][:, 1],
+    x=adata_organoid_neuron[organoid_cells_both].obsm["X_umap"][:, 0],
+    y=adata_organoid_neuron[organoid_cells_both].obsm["X_umap"][:, 1],
+    ax=ax_organoid_umap_2,
+    g_cut=0,
+    r_values=organoid_neuron_cell_topic.loc[
+        organoid_cells_both,
+        model_index_to_topic_name_organoid(neuron_topics_organoid[3] - 1),
+    ].values,
+    g_values=organoid_neuron_cell_topic.loc[
+        organoid_cells_both,
+        model_index_to_topic_name_organoid(neuron_topics_organoid[4] - 1),
+    ].values,
+    b_values=organoid_neuron_cell_topic.loc[
+        organoid_cells_both,
+        model_index_to_topic_name_organoid(neuron_topics_organoid[5] - 1),
+    ].values,
+    r_name=model_index_to_topic_name_organoid(neuron_topics_organoid[3] - 1).replace(
+        "neuron_", ""
+    ),
+    g_name=model_index_to_topic_name_organoid(neuron_topics_organoid[4] - 1).replace(
+        "neuron_", ""
+    ),
+    b_name=model_index_to_topic_name_organoid(neuron_topics_organoid[4] - 1).replace(
+        "neuron_", ""
+    ),
+)
+embryo_cells_both = list(
+    set(embryo_neuron_cell_topic.index) & set(adata_embryo_neuron.obs_names)
+)
+rgb_scatter_plot(
+    x=adata_embryo_neuron[embryo_cells_both].obsm["X_umap"][:, 0],
+    y=adata_embryo_neuron[embryo_cells_both].obsm["X_umap"][:, 1],
+    ax=ax_embryo_umap_1,
+    g_cut=0,
+    r_values=embryo_neuron_cell_topic.loc[
+        embryo_cells_both,
+        model_index_to_topic_name_embryo(neuron_topics_embryo[0] - 1),
+    ].values,
+    g_values=embryo_neuron_cell_topic.loc[
+        embryo_cells_both,
+        model_index_to_topic_name_embryo(neuron_topics_embryo[1] - 1),
+    ].values,
+    b_values=embryo_neuron_cell_topic.loc[
+        embryo_cells_both,
+        model_index_to_topic_name_embryo(neuron_topics_embryo[2] - 1),
+    ].values,
+    r_name=model_index_to_topic_name_embryo(neuron_topics_embryo[0] - 1).replace(
+        "neuron_", ""
+    ),
+    g_name=model_index_to_topic_name_embryo(neuron_topics_embryo[1] - 1).replace(
+        "neuron_", ""
+    ),
+    b_name=model_index_to_topic_name_embryo(neuron_topics_embryo[2] - 1).replace(
+        "neuron_", ""
+    ),
+    r_vmin=0,
+    r_vmax=0.1,
+)
+rgb_scatter_plot(
+    x=adata_embryo_neuron[embryo_cells_both].obsm["X_umap"][:, 0],
+    y=adata_embryo_neuron[embryo_cells_both].obsm["X_umap"][:, 1],
     ax=ax_embryo_umap_2,
     g_cut=0,
-    r_values=np.zeros(len(embryo_cells_both)),
-    g_values=embryo_neural_crest_cell_topic.loc[
+    r_values=embryo_neuron_cell_topic.loc[
         embryo_cells_both,
-        model_index_to_topic_name_embryo(neural_crest_topics_embryo[3] - 1),
+        model_index_to_topic_name_embryo(neuron_topics_embryo[3] - 1),
     ].values,
-    b_values=np.zeros(len(embryo_cells_both)),
-    g_name=model_index_to_topic_name_embryo(neural_crest_topics_embryo[3] - 1).replace(
-        "neural_crest_", ""
+    g_values=embryo_neuron_cell_topic.loc[
+        embryo_cells_both,
+        model_index_to_topic_name_embryo(neuron_topics_embryo[4] - 1),
+    ].values,
+    b_values=embryo_neuron_cell_topic.loc[
+        embryo_cells_both,
+        model_index_to_topic_name_embryo(neuron_topics_embryo[5] - 1),
+    ].values,
+    r_name=model_index_to_topic_name_embryo(neuron_topics_embryo[3] - 1).replace(
+        "neuron_", ""
     ),
+    g_name=model_index_to_topic_name_embryo(neuron_topics_embryo[4] - 1).replace(
+        "neuron_", ""
+    ),
+    b_name=model_index_to_topic_name_embryo(neuron_topics_embryo[5] - 1).replace(
+        "neuron_", ""
+    ),
+    g_vmin=0,
+    g_vmax=0.05,
 )
 x_current = 7
 y_current = 0
@@ -1401,6 +1080,10 @@ for i, cluster in enumerate(tqdm(selected_clusters)):
             ax.set_title(f"Topic {topic_org} {topic_embr}")
         if topic_org is not None:
             pwm = cluster_to_topic_to_avg_pattern_organoid[cluster][topic_org]
+            if cluster == 2.2:
+                pwm = pwm[0:8, :]
+            if cluster == 3.1:
+                pwm = pwm[0:10, :]
             _ = logomaker.Logo(
                 pd.DataFrame(pwm, columns=["A", "C", "G", "T"]),
                 ax=ax,
@@ -1412,6 +1095,10 @@ for i, cluster in enumerate(tqdm(selected_clusters)):
             YMAX = max(ymx, YMAX)
         if (topic_embr is not None) and True:
             pwm = cluster_to_topic_to_avg_pattern_embryo[cluster][topic_embr]
+            if cluster == 2.2:
+                pwm = pwm[0:8, :]
+            if cluster == 3.1:
+                pwm = pwm[0:10]
             _ = logomaker.Logo(
                 pd.DataFrame(-pwm, columns=["A", "C", "G", "T"]),
                 ax=ax,
@@ -1426,12 +1113,11 @@ for i, cluster in enumerate(tqdm(selected_clusters)):
         if j == 0:
             _ = ax.set_ylabel(f"cluster_{cluster}")
         axs.append(ax)
-    print(f"{YMIN}, {YMAX}")
+    print(YMIN, YMAX)
     for ax, (organoid_topic, embryo_topic) in zip(axs, organoid_embryo):
         _ = ax.set_ylim(YMIN, YMAX)
         _ = ax.set_axis_off()
-
-ax_hit_heatmap = fig.add_subplot(gs[0:16, 23:29])
+ax_hit_heatmap = fig.add_subplot(gs[0:21, 25:30])
 sns.heatmap(
     hits_merged_organoid_subset_per_seq_and_cluster_max_scaled.loc[
         region_order_organoid_subset, selected_clusters
@@ -1445,7 +1131,8 @@ sns.heatmap(
     cbar_kws=dict(shrink=0.5, format=lambda x, _: "{:.0e}".format(x)),
     cbar=False,
 )
-ax_organoid_expr_heatmap = fig.add_subplot(gs[0:12, 32:36])
+ax_hit_heatmap.set_ylabel("")
+ax_organoid_expr_heatmap = fig.add_subplot(gs[0:12, 33:36])
 ax_embryo_expr_heatmap = fig.add_subplot(gs[0:12, 36:39])
 sns.heatmap(
     (
@@ -1487,190 +1174,22 @@ sns.heatmap(
     lw=0.5,
     linecolor="black",
 )
-ax_network = fig.add_subplot(gs[12 + 2:19, 33:39])
+# ax_network = fig.add_subplot(gs[12:20, 31:38])
+ax = fig.add_subplot(gs[13:21, 33:39])
 sns.heatmap(
     jaccard_organoid,
     cmap="viridis",
-    vmin=0.05,
+    vmin=0,
     vmax=0.2,
-    ax=ax_network,
+    ax=ax,
     linecolor="black",
     lw=0.5,
     cbar=False,
     yticklabels=True,
     xticklabels=True,
 )
-ax_manhattan_all_chrom = fig.add_subplot(gs[22:27, 0:39])
-prev = 0
-chroms = [*range(1, 23), "X"]
-for chrom in chroms:
-    var_chrom = sorted(
-        [
-            var
-            for var in variants_ucsc
-            if var.chrom == "chr" + str(chrom)
-            and var.pval is not None
-            and var.max_delta_organoid is not None
-        ],
-        key=lambda var: var.pos,
-    )
-    ax_manhattan_all_chrom.scatter(
-        x=[var.pos + prev for var in var_chrom],
-        y=[-np.log10(var.pval) for var in var_chrom],
-        color=plt.cm.gnuplot(chroms.index(chrom) / len(chroms)),
-        s=[0.5 if var.rsid not in lead_snps else 5 for var in var_chrom],
-        zorder=2,
-    )
-    ax_manhattan_all_chrom.scatter(
-        x=[var.pos + prev for var in var_chrom],
-        y=[-var.max_delta_organoid * 100 for var in var_chrom],
-        color=plt.cm.gnuplot(chroms.index(chrom) / len(chroms)),
-        s=[0.5 if var.rsid not in lead_snps else 5 for var in var_chrom],
-        alpha=0.7,
-        zorder=2,
-    )
-    ax_manhattan_all_chrom.scatter(
-        x=[var.pos + prev for var in var_chrom],
-        y=[-var.max_delta_embryo * 100 for var in var_chrom],
-        color=plt.cm.gnuplot(chroms.index(chrom) / len(chroms)),
-        s=[5 if var.rsid not in lead_snps else 10 for var in var_chrom],
-        marker="x",
-        alpha=0.7,
-        zorder=2,
-    )
-    ax_manhattan_all_chrom.text(
-        x=np.mean([var.pos + prev for var in var_chrom]), y=80, s=chrom
-    )
-    prev += var_chrom[-1].pos + 1_000
-    ax_manhattan_all_chrom.axvline(prev, color="gray", zorder=1)
-ax_manhattan_all_chrom.spines[["bottom", "top", "right"]].set_visible(False)
-ax_manhattan_all_chrom.set_xticks([])
-ax_manhattan_all_chrom.grid(True)
-ax_manhattan_all_chrom.set_ylim(-100, 100)
-ax_manhattan_all_chrom.set_yticks(
-    (-100, -50, 0, 50, 100), labels=["-1", "-0.5", "0", "50", "100"]
-)
-ax_manhattan_all_chrom.set_ylabel("delta prediction\n-log10(pval)")
-ax_manhattan_chrom_1 = fig.add_subplot(gs[28:33, 0:15])
-var, _, delta, seq_oh, contrib, ism = [
-    (var, model_idx, delta, seq_oh, contrib, ism)
-    for var, model_idx, delta, seq_oh, contrib, ism in contrib_var_hit_organoid
-    if var.rsid == "rs1555067"
-][0]
-chrom = 1
-var_chrom = sorted(
-    [
-        var
-        for var in variants_ucsc
-        if var.chrom == "chr" + str(chrom)
-        and var.pval is not None
-        and var.max_delta_organoid is not None
-    ],
-    key=lambda var: var.pos,
-)
-ax_manhattan_chrom_1.scatter(
-    x=[var.pos for var in var_chrom],
-    y=[-np.log10(var.pval) for var in var_chrom],
-    color=plt.cm.gnuplot(chroms.index(chrom) / len(chroms)),
-    s=[0.5 if var.rsid not in lead_snps else 5 for var in var_chrom],
-)
-ax_manhattan_chrom_1.scatter(
-    x=[var.pos for var in var_chrom],
-    y=[-var.max_delta_organoid * 100 for var in var_chrom],
-    color=plt.cm.gnuplot(chroms.index(chrom) / len(chroms)),
-    s=[0.5 if var.rsid not in lead_snps else 5 for var in var_chrom],
-)
-ax_manhattan_chrom_1.scatter(
-    x=[var.pos for var in var_chrom],
-    y=[-var.max_delta_embryo * 100 for var in var_chrom],
-    color=plt.cm.gnuplot(chroms.index(chrom) / len(chroms)),
-    s=[5 if var.rsid not in lead_snps else 10 for var in var_chrom],
-    marker="x",
-)
-ax_manhattan_chrom_1.grid(True)
-ax_manhattan_chrom_1.set_ylim(-100, 100)
-# ax.set_axis_off()
-ax_manhattan_chrom_1.set_title(chrom)
-xmin_in, xmax_in = var.pos - 350_000, var.pos + 350_000
-axins = ax_manhattan_chrom_1.inset_axes(
-    [0.5, 0.05, 0.1, 0.6],
-    xlim=(xmin_in, xmax_in),
-    ylim=(-75, 70),
-    xticklabels=[],
-    yticklabels=[],
-)
-axins.scatter(
-    x=[var.pos for var in var_chrom if var.pos > xmin_in and var.pos < xmax_in],
-    y=[
-        -np.log10(var.pval)
-        for var in var_chrom
-        if var.pos > xmin_in and var.pos < xmax_in
-    ],
-    color=plt.cm.gnuplot(chroms.index(chrom) / len(chroms)),
-    s=[
-        0.5 if var.rsid not in lead_snps else 5
-        for var in var_chrom
-        if var.pos > xmin_in and var.pos < xmax_in
-    ],
-)
-axins.scatter(
-    x=[var.pos for var in var_chrom if var.pos > xmin_in and var.pos < xmax_in],
-    y=[
-        -var.max_delta_organoid * 100
-        for var in var_chrom
-        if var.pos > xmin_in and var.pos < xmax_in
-    ],
-    color=plt.cm.gnuplot(chroms.index(chrom) / len(chroms)),
-    s=[
-        0.5 if var.rsid not in lead_snps else 5
-        for var in var_chrom
-        if var.pos > xmin_in and var.pos < xmax_in
-    ],
-)
-axins.scatter(
-    x=[var.pos for var in var_chrom if var.pos > xmin_in and var.pos < xmax_in],
-    y=[
-        -var.max_delta_embryo * 100
-        for var in var_chrom
-        if var.pos > xmin_in and var.pos < xmax_in
-    ],
-    color=plt.cm.gnuplot(chroms.index(chrom) / len(chroms)),
-    s=[
-        5 if var.rsid not in lead_snps else 10
-        for var in var_chrom
-        if var.pos > xmin_in and var.pos < xmax_in
-    ],
-    marker="x",
-)
-axins.scatter(x=[var.pos], y=[-delta * 100], color="red", s=5)
-axins.set_title(f"{int(xmax_in - xmin_in)}bps")
-axins.grid(True)
-axins.set_axisbelow(True)
-ax_manhattan_chrom_1.indicate_inset_zoom(axins, edgecolor="red")
-ax_manhattan_chrom_1.set_yticks(
-    (-100, -50, 0, 50, 100), labels=["-1", "-0.5", "0", "50", "100"]
-)
-ax_manhattan_chrom_1.set_ylabel("delta prediction\n-log10(pval)")
-ax_contrib_ref = fig.add_subplot(gs[28:30, 16:39])
-ax_contrib_alt = fig.add_subplot(gs[31:33, 16:39])
-# ax_ism_ref = fig.add_subplot(
-#    gs[32: 33, 16: 39]
-# )
-_ = logomaker.Logo(
-    df=pd.DataFrame((contrib * seq_oh)[0], columns=["A", "C", "G", "T"]),
-    ax=ax_contrib_ref,
-    zorder=2,
-)
-_ = logomaker.Logo(
-    df=pd.DataFrame((contrib * seq_oh)[1], columns=["A", "C", "G", "T"]),
-    ax=ax_contrib_alt,
-    zorder=2,
-)
-for ax in [ax_contrib_alt, ax_contrib_ref]:
-    ax.axvline(250, ls="dashed", color="black", lw=0.5, zorder=1)
-    ax.set_xlim(150, 350)
 fig.tight_layout()
 
 
-fig.savefig("Figure_5_v2.png", transparent=False)
-fig.savefig("Figure_5_v2.pdf")
+fig.savefig("Figure_6.png", transparent=False)
+fig.savefig("Figure_6.pdf")

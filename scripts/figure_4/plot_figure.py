@@ -1,29 +1,32 @@
-import matplotlib
+import os
+
+os.environ["CUDA_VISIBALE_DEVICES"] = "0"
 import matplotlib.pyplot as plt
+import matplotlib
 import scanpy as sc
 import pandas as pd
 import numpy as np
-import seaborn as sns
-from crested.utils._seq_utils import one_hot_encode_sequence
-import pysam
-import tensorflow as tf
-import os
 from dataclasses import dataclass
 import h5py
-import logomaker
 from typing import Self
+import tensorflow as tf
 from tqdm import tqdm
-import torch
-from tangermeme.tools.tomtom import tomtom
-from tangermeme.tools.fimo import fimo
-from scipy.spatial import distance
-from scipy.cluster import hierarchy
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import precision_recall_curve, roc_curve
+from crested.tl._explainer_tf import Explainer
+from crested.utils._seq_utils import one_hot_encode_sequence
 import pickle
-import random
+import logomaker
+from functools import reduce
+from tangermeme.tools.fimo import fimo
+from tangermeme.utils import extract_signal
+import torch
+import seaborn as sns
 from pycisTopic.topic_binarization import binarize_topics
+import networkx as nx
+from scipy.stats import binomtest
+import json
+from bs4 import BeautifulSoup
+import requests
+import time
 
 ###############################################################################################################
 #                                                                                                             #
@@ -107,6 +110,49 @@ def rgb_scatter_plot(
         b_vmax = b_values.max()
     print(f"R: {r_vmin, r_vmax}\nG: {g_vmin, g_vmax}\nB: {b_vmin, b_vmax}")
 
+
+
+def topic_name_to_model_index_organoid(t: str) -> int:
+    cell_type = t.split("_Topic")[0]
+    topic = int(t.split("_")[-1])
+    if cell_type == "neuron":
+        return topic - 1
+    elif cell_type == "progenitor":
+        return topic - 1 + 25
+    elif cell_type == "neural_crest":
+        return topic - 1 + 55
+    else:
+        raise ValueError(f"{t} unknown.")
+
+
+def model_index_to_topic_name_organoid(i: int) -> str:
+    if i >= 0 and i < 25:
+        cell_type = "neuron"
+        topic_number = i + 1
+    elif i >= 25 and i < 55:
+        cell_type = "progenitor"
+        topic_number = i + 1 - 25
+    elif i >= 55 and i < 65:
+        cell_type = "neural_crest"
+        topic_number = i + 1 - 55
+    elif i >= 65 and i < 75:
+        cell_type = "pluripotent"
+        index_to_topic_mapping = {
+            65: 4,
+            66: 5,
+            67: 12,
+            68: 18,
+            69: 20,
+            70: 23,
+            71: 35,
+            72: 37,
+            73: 45,
+            74: 47,
+        }
+        topic_number = index_to_topic_mapping[i]
+    else:
+        raise ValueError("Unknown index")
+    return f"{cell_type}_Topic_{topic_number}"
 
 
 def topic_name_to_model_index_embryo(t) -> int:
@@ -254,183 +300,246 @@ def load_pattern_from_modisco(filename, ohs, region_names):
                 )
 
 
-COMPLEMENT = {
-    "A": "T",
-    "T": "A",
-    "C": "G",
-    "G": "C",
-    "a": "t",
-    "t": "a",
-    "c": "g",
-    "g": "c",
-    "N": "N",
-    "n": "n",
+def get_value_seqlets(seqlets: list[Seqlet], v: np.ndarray):
+    if v.shape[0] != len(seqlets):
+        raise ValueError(f"{v.shape[0]} != {len(seqlets)}")
+    for i, seqlet in enumerate(seqlets):
+        if seqlet.is_revcomp:
+            yield v[i, seqlet.start : seqlet.end, :][::-1, ::-1]
+        else:
+            yield v[i, seqlet.start : seqlet.end, :]
+
+
+def allign_patterns_of_cluster_for_topic(
+    pattern_to_topic_to_grad: dict[str, dict[int, np.ndarray]],
+    pattern_metadata: pd.DataFrame,
+    cluster_id: int,
+    topic: int,
+):
+    P = []
+    O = []
+    cluster_patterns = pattern_metadata.query(
+        "cluster_sub_cluster == @cluster_id"
+    ).index.to_list()
+    for pattern_name in cluster_patterns:
+        pattern_grads, pattern_ohs = pattern_to_topic_to_grad[pattern_name][topic]
+        ic_start, ic_end, is_rc_to_root, offset_to_root = pattern_metadata.loc[
+            pattern_name, ["ic_start", "ic_stop", "is_rc_to_root", "offset_to_root"]
+        ]
+        pattern_grads_ic = [p[ic_start:ic_end] for p in pattern_grads]
+        pattern_ohs_ic = [o[ic_start:ic_end] for o in pattern_ohs]
+        if is_rc_to_root:
+            pattern_grads_ic = [p[::-1, ::-1] for p in pattern_grads_ic]
+            pattern_ohs_ic = [o[::-1, ::-1] for o in pattern_ohs_ic]
+        if offset_to_root > 0:
+            pattern_grads_ic = [
+                np.concatenate([np.zeros((offset_to_root, 4)), p_ic])
+                for p_ic in pattern_grads_ic
+            ]
+            pattern_ohs_ic = [
+                np.concatenate([np.zeros((offset_to_root, 4)), o_ic])
+                for o_ic in pattern_ohs_ic
+            ]
+        elif offset_to_root < 0:
+            pattern_grads_ic = [p[abs(offset_to_root) :, :] for p in pattern_grads_ic]
+            pattern_ohs_ic = [o[abs(offset_to_root) :, :] for o in pattern_ohs_ic]
+        P.extend(pattern_grads_ic)
+        O.extend(pattern_ohs_ic)
+    max_len = max([p.shape[0] for p in P])
+    P = [np.concatenate([p, np.zeros((max_len - p.shape[0], 4))]) for p in P]
+    O = [np.concatenate([o, np.zeros((max_len - o.shape[0], 4))]) for o in O]
+    return np.array(P), np.array(O)
+
+
+def absmax(a, axis=None):
+    amax = a.max(axis)
+    amin = a.min(axis)
+    return np.where(-amin > amax, amin, amax)
+
+
+def merge_and_absmax(left, right, on, max_on, l):
+    global a
+    if a:
+        print(" " * (l - 1) + "|", end="\r", flush=True)
+        a = False
+    print("x", end="", flush=True)
+    x = pd.merge(left, right, on=on, how="outer")
+    x[max_on] = x[[f"{max_on}_x", f"{max_on}_y"]].fillna(0).T.apply(absmax)
+    return x.drop([f"{max_on}_x", f"{max_on}_y"], axis=1).copy()
+
+
+def merge_and_max(left, right, on, max_on, l):
+    global a
+    if a:
+        print(" " * (l - 1) + "|", end="\r", flush=True)
+        a = False
+    print("x", end="", flush=True)
+    x = pd.merge(left, right, on=on, how="outer")
+    x[max_on] = x[[f"{max_on}_x", f"{max_on}_y"]].fillna(0).max(1)
+    return x.drop([f"{max_on}_x", f"{max_on}_y"], axis=1).copy()
+
+
+def fetch_rsid_batched(rsids: list[str], batch_size: int, tries: int) -> list[str]:
+    for i in range(len(rsids) // batch_size + 1):
+        left = i * batch_size
+        right = min(left + batch_size, len(rsids))
+        got_result = False
+        nth_try = 0
+        while not got_result and nth_try < tries:
+            response = requests.get(
+                f"https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=snp&id={','.join(snps[left:right])}&report=DocSet"
+            )
+            if response.ok:
+                got_result = True
+                time.sleep(0.1)
+                break
+            else:
+                nth_try += 1
+                time.sleep(0.25)
+        if got_result:
+            data = response.content.decode().splitlines()
+            for d in data:
+                yield d
+        else:
+            raise ValueError(f"Did not get result after {tries} tries")
+
+
+# load organoid RNA data and subset for ATAC cells
+adata_organoid = sc.read_h5ad("../figure_1/adata_organoid.h5ad")
+
+sample_id_to_num = {
+    s: adata_organoid.obs.query("sample_id == @s").index[0].split("-")[-1]
+    for s in set(adata_organoid.obs.sample_id)
 }
 
+adata_organoid_neural_crest = sc.read_h5ad("../figure_1/adata_organoid_neural_crest.h5ad")
 
-def reverse_complement(s):
-    return "".join(map(COMPLEMENT.get, s[::-1]))
+adata_embryo_neural_crest = sc.read_h5ad("../figure_1/adata_embryo_neural_crest.h5ad")
 
-
-def replace_hit(
-    hit, alignment_info, genome, replace_to, verbose=False, add_extra_to_start=False
-):
-    chrom, region_start, region_end = hit.sequence_name.replace(":", "-").split("-")
-    region_start = int(region_start)
-    region_end = int(region_end)
-    hit_start = hit.start
-    hit_end = hit.end
-    hit_strand = hit.strand
-    is_rc_hit = hit_strand == "-"
-    is_rc_to_root = alignment_info.is_rc_to_root
-    offset_to_root = alignment_info.offset_to_root
-    is_root = alignment_info.is_root_motif
-    if is_rc_to_root and not is_root:
-        offset_to_root -= 1
-    if not is_rc_to_root and not is_root:
-        offset_to_root += 1
-    if is_rc_to_root ^ is_rc_hit:
-        # align end position
-        hit_start = region_start + hit_start
-        hit_end = region_start + hit_end - offset_to_root
-    else:
-        # align start
-        hit_start = region_start + hit_start + offset_to_root
-        hit_end = region_start + hit_end
-    orig_pattern = genome.fetch(chrom, hit_start, hit_end)
-    delta = len(orig_pattern) - len(replace_to)
-    if delta < 0:
-        raise ValueError("replace_to is shorter than orig_pattern")
-    if is_rc_hit:
-        if not add_extra_to_start:
-            replace_to += "".join(
-                [COMPLEMENT.get(n, "") for n in orig_pattern[0:delta]]
-            ).lower()
-        else:
-            replace_to = (
-                "".join(
-                    [COMPLEMENT.get(n, "") for n in orig_pattern[::-1][0:delta]]
-                ).lower()
-                + replace_to
-            )
-        replace_to = reverse_complement(replace_to)
-    else:
-        if not add_extra_to_start:
-            replace_to += orig_pattern[::-1][0:delta].lower()
-        else:
-            replace_to = orig_pattern[0:delta].lower() + replace_to
-    hit_start_relative = hit_start - region_start
-    hit_end_relative = hit_end - region_start
-    if verbose:
-        print(
-            f">{chrom}:{region_start}-{region_end}\t"
-            + f"[{hit_start_relative}, {hit_end_relative}]\t{is_rc_hit}\n\t{orig_pattern}\n\t{replace_to}"
-        )
-    return (
-        f"{chrom}:{region_start}-{region_end}",
-        [hit_start_relative, hit_end_relative],
-        replace_to,
-    )
-
-
-def get_non_overlapping_start_end_w_max_score(df, max_overlap, score_col):
-    df = df.sort_values("start")
-    delta = np.diff(df["start"])
-    delta_loc = [0, *np.where(delta > max_overlap)[0] + 1]
-    groups = [
-        slice(delta_loc[i], delta_loc[i + 1] if (i + 1) < len(delta_loc) else None)
-        for i in range(len(delta_loc))
-    ]
-    return pd.DataFrame(
-        [df.iloc[group].iloc[df.iloc[group][score_col].argmax()] for group in groups]
-    ).reset_index(drop=True)
-
-
-# load embryo data and subset for ATAC cells
-
-adata_embryo_progenitor = sc.read_h5ad("../figure_1/adata_embryo_progenitor.h5ad")
 
 # load cell topic
 
-embryo_progenitor_cell_topic = pd.read_table(
-    "../data_prep_new/embryo_data/ATAC/progenitor_cell_topic_contrib.tsv",
+organoid_neural_crest_cell_topic = pd.read_table(
+    "../data_prep_new/organoid_data/ATAC/neural_crest_cell_topic_contrib.tsv",
     index_col=0,
 )
 
-embryo_progenitor_cell_topic.columns = [
-    f"progenitor_Topic_{c.replace('Topic', '')}" for c in embryo_progenitor_cell_topic
+organoid_neural_crest_cell_topic.columns = [
+    f"neural_crest_Topic_{c.replace('Topic', '')}"
+    for c in organoid_neural_crest_cell_topic
 ]
 
-embryo_progenitor_cell_topic.index = [
-    x.split("___")[0] + "-1" + "___" + x.split("___")[1]
-    for x in embryo_progenitor_cell_topic.index
+
+def rename_organoid_atac_cell(l):
+    bc, sample_id = l.strip().split("-1", 1)
+    sample_id = sample_id.split("___")[-1]
+    return bc + "-1" + "-" + sample_id_to_num[sample_id]
+
+
+organoid_neural_crest_cell_topic.index = [
+    rename_organoid_atac_cell(x) for x in organoid_neural_crest_cell_topic.index
 ]
 
-ap_topics = np.array([31, 29, 1, 32, 40, 22, 41]) + 30
-
-dv_topics = np.array([4, 44, 57, 8, 49, 21, 58, 28]) + 30
-
-region_topic = pd.read_table(
-    "../data_prep_new/embryo_data/ATAC/progenitor_region_topic_contrib.tsv", index_col=0
+embryo_neural_crest_cell_topic = pd.read_table(
+    "../data_prep_new/embryo_data/ATAC/neural_crest_cell_topic_contrib.tsv",
+    index_col=0,
 )
 
-selected_regions = set()
-top_n = 1_000
-for topic in [*ap_topics, *dv_topics]:
-    print(topic)
-    topic_name = model_index_to_topic_name_embryo(topic - 1).replace("progenitor_", "")
-    selected_regions = selected_regions | set(
-        region_topic[topic_name].sort_values(ascending=False).head(top_n).index
-    )
-
-ap_dv_topics_names = [
-    model_index_to_topic_name_embryo(topic - 1).replace("progenitor_", "")
-    for topic in [*ap_topics, *dv_topics]
+embryo_neural_crest_cell_topic.columns = [
+    f"neural_crest_Topic_{c.replace('Topic', '')}"
+    for c in embryo_neural_crest_cell_topic
 ]
 
-corr_region_topic = region_topic.loc[list(selected_regions), ap_dv_topics_names].corr()
-corr_region_topic.index = [x.replace("Topic_", "") for x in corr_region_topic.index]
-corr_region_topic.columns = [x.replace("Topic_", "") for x in corr_region_topic.columns]
+embryo_neural_crest_cell_topic.index = [
+    x.split("___")[0] + "-1" + "___" + x.split("___")[1]
+    for x in embryo_neural_crest_cell_topic.index
+]
 
-# load human model
-path_to_human_model = "../data_prep_new/embryo_data/MODELS/"
+# load and score patterns
 
-model = tf.keras.models.model_from_json(
-    open(os.path.join(path_to_human_model, "model.json")).read(),
+neural_crest_topics_organoid = [
+    62,
+    60,
+    65,
+    59,
+    58,
+]
+
+neural_crest_topics_embryo = [103, 105, 94, 91]
+
+all_neural_crest_topics_organoid = (np.array([1, 3, 4, 5, 7, 9, 10]) + 55).tolist()
+
+all_neural_crest_topics_embryo = (
+    np.array(
+        [
+            1,
+            4,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            15,
+            19,
+            20,
+            21,
+            22,
+            29,
+        ]
+    )
+    + 90
+).tolist()
+
+
+path_to_organoid_model = "../data_prep_new/organoid_data/MODELS/"
+
+organoid_model = tf.keras.models.model_from_json(
+    open(os.path.join(path_to_organoid_model, "model.json")).read(),
     custom_objects={"Functional": tf.keras.models.Model},
 )
 
-model.load_weights(os.path.join(path_to_human_model, "model_epoch_36.hdf5"))
+organoid_model.load_weights(os.path.join(path_to_organoid_model, "model_epoch_23.hdf5"))
 
-selected_regions_ap = []
-top_n = 3_000
-for topic in ap_topics:
-    print(topic)
-    topic_name = model_index_to_topic_name_embryo(topic - 1).replace("progenitor_", "")
-    for r in region_topic[topic_name].sort_values(ascending=False).head(top_n).index:
-        if r not in selected_regions_ap:
-            selected_regions_ap.append(r)
+##
 
-hg38 = pysam.FastaFile("../../../../../resources/hg38/hg38.fa")
+path_to_embryo_model = "../data_prep_new/embryo_data/MODELS/"
 
-selected_regions_ap_onehot = np.array(
-    [
-        one_hot_encode_sequence(
-            hg38.fetch(*region_to_chrom_start_end(r)), expand_dim=False
-        )
-        for r in tqdm(selected_regions_ap)
+embryo_model = tf.keras.models.model_from_json(
+    open(os.path.join(path_to_embryo_model, "model.json")).read(),
+    custom_objects={"Functional": tf.keras.models.Model},
+)
+
+embryo_model.load_weights(os.path.join(path_to_embryo_model, "model_epoch_36.hdf5"))
+
+organoid_dl_motif_dir = "../data_prep_new/organoid_data/MODELS/modisco/"
+
+patterns_dl_organoid = []
+pattern_names_dl_organoid = []
+for topic in tqdm(all_neural_crest_topics_organoid):
+    ohs = np.load(os.path.join(organoid_dl_motif_dir, f"gradients_Topic_{topic}.npz"))[
+        "oh"
     ]
-)
-
-selected_regions_ap_prediction_score = model.predict(
-    selected_regions_ap_onehot, verbose=1
-)
+    region_names = np.load(
+        os.path.join(organoid_dl_motif_dir, f"gradients_Topic_{topic}.npz")
+    )["region_names"]
+    for name, pattern in load_pattern_from_modisco(
+        filename=os.path.join(
+            organoid_dl_motif_dir,
+            f"patterns_Topic_{topic}.hdf5",
+        ),
+        ohs=ohs,
+        region_names=region_names,
+    ):
+        pattern_names_dl_organoid.append("organoid_" + name)
+        patterns_dl_organoid.append(pattern)
 
 embryo_dl_motif_dir = "../data_prep_new/embryo_data/MODELS/modisco/"
 
 patterns_dl_embryo = []
 pattern_names_dl_embryo = []
-for topic in tqdm(ap_topics):
+for topic in tqdm(all_neural_crest_topics_embryo):
     ohs = np.load(os.path.join(embryo_dl_motif_dir, f"gradients_Topic_{topic}.npz"))[
         "oh"
     ]
@@ -448,621 +557,306 @@ for topic in tqdm(ap_topics):
         pattern_names_dl_embryo.append("embryo_" + name)
         patterns_dl_embryo.append(pattern)
 
-pattern_topic = np.array([x.split("_")[3] for x in pattern_names_dl_embryo])
+all_patterns = [*patterns_dl_organoid, *patterns_dl_embryo]
+all_pattern_names = [*pattern_names_dl_organoid, *pattern_names_dl_embryo]
 
-patterns_to_cluster = []
-patterns_to_cluster_names = []
-avg_ic_thr = 0.6
+pattern_metadata = pd.read_table("draft/pattern_metadata.tsv", index_col=0)
 
-for pattern, pattern_name in zip(patterns_dl_embryo, pattern_names_dl_embryo):
-    if not pattern.is_pos:
-        continue
-    avg_ic = pattern.ic()[range(*pattern.ic_trim(0.2))].mean()
-    if avg_ic > avg_ic_thr:
-        patterns_to_cluster.append(pattern)
-        patterns_to_cluster_names.append(pattern_name)
-
-ppm_patterns_to_cluster = [
-    torch.from_numpy(pattern.ppm[range(*pattern.ic_trim(0.2))]).T
-    for pattern in patterns_to_cluster
-]
-
-pvals, scores, offsets, overlaps, strands = tomtom(
-    ppm_patterns_to_cluster, ppm_patterns_to_cluster
-)
-
-evals = pvals.numpy() * len(patterns_to_cluster)
-
-dat = 1 - np.corrcoef(evals)
-
-linkage = hierarchy.linkage(distance.pdist(dat), method="average")
-
-clusters = hierarchy.fcluster(linkage, t=10, criterion="maxclust")
-
-clusters_to_show = np.array([1, 4, 8, 7, 6])
-
-seqlet_count_per_cluster = np.zeros((10, len(ap_topics)))
-for pattern, cluster, name in zip(
-    patterns_to_cluster, clusters, patterns_to_cluster_names
-):
-    topic = int(name.split("_")[3])
-    j = np.where(ap_topics == topic)[0][0]
-    seqlet_count_per_cluster[cluster - 1, j] += len(pattern.seqlets)
-
-motif_metadata = pd.DataFrame(index=patterns_to_cluster_names)
-
-motif_metadata["hier_cluster"] = clusters
-
-motif_metadata["ic_start"] = [
-    pattern.ic_trim(0.2)[0] for pattern in patterns_to_cluster
-]
-motif_metadata["ic_stop"] = [pattern.ic_trim(0.2)[1] for pattern in patterns_to_cluster]
-motif_metadata["is_root_motif"] = False
-motif_metadata["is_rc_to_root"] = False
-motif_metadata["offset_to_root"] = 0
-
-for cluster in set(clusters):
-    cluster_idc = np.where(clusters == cluster)[0]
-    print(f"cluster: {cluster}")
-    _, _, o, _, s = tomtom(
-        [torch.from_numpy(patterns_to_cluster[m].ppm).T for m in cluster_idc],
-        [torch.from_numpy(patterns_to_cluster[m].ppm).T for m in cluster_idc],
+if not os.path.exists("pattern_to_topic_to_grad_organoid.pkl"):
+    pattern_to_topic_to_grad_organoid = {}
+    for pattern_name in tqdm(pattern_metadata.index):
+        pattern = all_patterns[all_pattern_names.index(pattern_name)]
+        oh_sequences = np.array(
+            [x.region_one_hot for x in pattern.seqlets]
+        )  # .astype(np.int8)
+        pattern_ohs = list(get_value_seqlets(pattern.seqlets, oh_sequences))
+        pattern_to_topic_to_grad_organoid[pattern_name] = {}
+        for topic in tqdm(all_neural_crest_topics_organoid, leave=False):
+            class_idx = topic - 1
+            explainer = Explainer(model=organoid_model, class_index=int(class_idx))
+            # gradients_integrated = explainer.integrated_grad(X = oh_sequences) change to this for real fig
+            gradients_integrated = explainer.saliency_maps(X=oh_sequences)
+            pattern_grads = list(
+                get_value_seqlets(pattern.seqlets, gradients_integrated.squeeze())
+            )
+            pattern_to_topic_to_grad_organoid[pattern_name][topic] = (
+                pattern_grads,
+                pattern_ohs,
+            )
+    pickle.dump(
+        pattern_to_topic_to_grad_organoid,
+        open("pattern_to_topic_to_grad_organoid.pkl", "wb"),
     )
-    for i, m in enumerate(cluster_idc):
-        print(i)
-        rel = np.argmax([np.mean(patterns_to_cluster[m].ic()) for m in cluster_idc])
-        motif_metadata.loc[
-            patterns_to_cluster_names[cluster_idc[rel]], "is_root_motif"
-        ] = True
-        is_rc = s[i, rel] == 1
-        offset = int(o[i, rel].numpy())
-        motif_metadata.loc[patterns_to_cluster_names[m], "is_rc_to_root"] = bool(is_rc)
-        motif_metadata.loc[patterns_to_cluster_names[m], "offset_to_root"] = offset
+else:
+    pattern_to_topic_to_grad_organoid = pickle.load(
+        open("pattern_to_topic_to_grad_organoid.pkl", "rb")
+    )
 
-selected_regions_topic_31_1 = list(
-    set(region_topic["Topic_1"].sort_values(ascending=False).head(3_000).index)
-    | set(region_topic["Topic_31"].sort_values(ascending=False).head(3_000).index)
-)
+if not os.path.exists("pattern_to_topic_to_grad_embryo.pkl"):
+    pattern_to_topic_to_grad_embryo = {}
+    for pattern_name in tqdm(pattern_metadata.index):
+        pattern = all_patterns[all_pattern_names.index(pattern_name)]
+        oh_sequences = np.array(
+            [x.region_one_hot for x in pattern.seqlets]
+        )  # .astype(np.int8)
+        pattern_ohs = list(get_value_seqlets(pattern.seqlets, oh_sequences))
+        pattern_to_topic_to_grad_embryo[pattern_name] = {}
+        for topic in tqdm(all_neural_crest_topics_embryo, leave=False):
+            class_idx = topic - 1
+            explainer = Explainer(model=embryo_model, class_index=int(class_idx))
+            # gradients_integrated = explainer.integrated_grad(X = oh_sequences) change to this for real fig
+            gradients_integrated = explainer.saliency_maps(X=oh_sequences)
+            pattern_grads = list(
+                get_value_seqlets(pattern.seqlets, gradients_integrated.squeeze())
+            )
+            pattern_to_topic_to_grad_embryo[pattern_name][topic] = (
+                pattern_grads,
+                pattern_ohs,
+            )
+    pickle.dump(
+        pattern_to_topic_to_grad_embryo,
+        open("pattern_to_topic_to_grad_embryo.pkl", "wb"),
+    )
+else:
+    pattern_to_topic_to_grad_embryo = pickle.load(
+        open("pattern_to_topic_to_grad_embryo.pkl", "rb")
+    )
 
-ohs_topic_31_1 = np.array(
-    [
-        one_hot_encode_sequence(
-            hg38.fetch(r.split(":")[0], *map(int, r.split(":")[1].split("-"))),
-            expand_dim=False,
+pattern_metadata["ic_start"] = 0
+pattern_metadata["ic_stop"] = 30
+
+
+def ic(ppm, bg=np.array([0.27, 0.23, 0.23, 0.27]), eps=1e-3) -> np.ndarray:
+    return (ppm * np.log(ppm + eps) / np.log(2) - bg * np.log(bg) / np.log(2)).sum(1)
+
+
+def ic_trim(ic, min_v: float) -> tuple[int, int]:
+    delta = np.where(np.diff((ic > min_v) * 1))[0]
+    if len(delta) == 0:
+        return 0, 0
+    start_index = min(delta)
+    end_index = max(delta)
+    return start_index, end_index + 1
+
+
+cluster_to_topic_to_avg_pattern_organoid = {}
+for cluster in set(pattern_metadata["cluster_sub_cluster"]):
+    cluster_to_topic_to_avg_pattern_organoid[cluster] = {}
+    for topic in all_neural_crest_topics_organoid:
+        P, O = allign_patterns_of_cluster_for_topic(
+            pattern_to_topic_to_grad=pattern_to_topic_to_grad_organoid,
+            pattern_metadata=pattern_metadata,
+            cluster_id=cluster,
+            topic=topic,
         )
-        for r in selected_regions_topic_31_1
-    ]
-)
+        ic_start, ic_end = ic_trim(ic((O.sum(0).T / O.sum(0).sum(1)).T), 0.2)
+        cluster_to_topic_to_avg_pattern_organoid[cluster][topic] = (P * O).mean(0)[
+            ic_start:ic_end
+        ]
 
-motifs = {
-    **{
-        patterns_to_cluster_names[pattern_idx]: patterns_to_cluster[pattern_idx]
-        .ppm[range(*patterns_to_cluster[pattern_idx].ic_trim(0.1))]
-        .T
-        for pattern_idx in np.where(clusters == 4)[0]
-    },
-    **{
-        patterns_to_cluster_names[pattern_idx]: patterns_to_cluster[pattern_idx]
-        .ppm[range(*patterns_to_cluster[pattern_idx].ic_trim(0.1))]
-        .T
-        for pattern_idx in np.where(clusters == 8)[0]
-    },
+cluster_to_topic_to_avg_pattern_embryo = {}
+for cluster in set(pattern_metadata["cluster_sub_cluster"]):
+    cluster_to_topic_to_avg_pattern_embryo[cluster] = {}
+    for topic in all_neural_crest_topics_embryo:
+        P, O = allign_patterns_of_cluster_for_topic(
+            pattern_to_topic_to_grad=pattern_to_topic_to_grad_embryo,
+            pattern_metadata=pattern_metadata,
+            cluster_id=cluster,
+            topic=topic,
+        )
+        ic_start, ic_end = ic_trim(ic((O.sum(0).T / O.sum(0).sum(1)).T), 0.2)
+        cluster_to_topic_to_avg_pattern_embryo[cluster][topic] = (P * O).mean(0)[
+            ic_start:ic_end
+        ]
+
+selected_clusters = [3.0, 13.1, 9.2, 14.0, 11.1, 9.1, 10.2, 2.2, 2.1, 13.2]
+
+cluster_to_name = {
+    3.0: "TEAD(3|4)",
+    13.1: "GRHL(1|2)",
+    9.2: "ZEB(1|2)",
+    14.0: "RFX(3|4)",
+    11.1: "NR2(C|F)2",
+    9.1: "TFAP2(A|B|C)",
+    10.2: "ZIC(1|2|4|5)",
+    2.2: "SOX(5|10)",
+    2.1: "FOX(P1|P2|C1|C2|D1)",
+    13.2: "(TWIST1)|(ALX(1|4))|(MSX1)|(PRRX1)",
 }
 
-hits = pd.concat(
-    fimo(motifs=motifs, sequences=ohs_topic_31_1.swapaxes(1, 2), threshold=0.0001)
-)
+organoid_embryo = [(62, 103), (60, 105), (65, 94), (59, None), (58, 91)]
 
-hits["cluster"] = [motif_metadata.loc[n, "hier_cluster"] for n in hits["motif_name"]]
-hits["-log(p-value)"] = -np.log(hits["p-value"] + 1e-6)
-hits["sequence_name"] = [selected_regions_topic_31_1[x] for x in hits["sequence_name"]]
+from scipy import stats
 
-hits_non_overlap = (
-    hits.groupby(["sequence_name", "cluster"])
-    .apply(
-        lambda hit_region_cluster: get_non_overlapping_start_end_w_max_score(
-            hit_region_cluster, 10, "-log(p-value)"
-        )
+corrs_patterns = []
+for cluster in selected_clusters:
+    corrs_patterns.append(
+        stats.pearsonr(
+            [
+                cluster_to_topic_to_avg_pattern_organoid[cluster][o].sum() for o, e in organoid_embryo
+                if not (o is None or e is None)
+            ],
+            [
+                cluster_to_topic_to_avg_pattern_embryo[cluster][e].sum() for o, e in organoid_embryo
+                if not (o is None or e is None)
+            ]
+        ).statistic
     )
-    .reset_index(drop=True)
-)
+print(np.mean(corrs_patterns))
 
-modifications_per_sequence_4 = {}
-for _, hit in (
-    hits_non_overlap.query("cluster == 4").sort_values("sequence_name").iterrows()
-):
-    region_name, start_end, replace_to = replace_hit(
-        hit, motif_metadata.loc[hit.motif_name], hg38, "AGGGATTAG", verbose=True
-    )
-    if region_name not in modifications_per_sequence_4:
-        modifications_per_sequence_4[region_name] = []
-    modifications_per_sequence_4[region_name].append((start_end, replace_to))
 
-modifications_per_sequence_8 = {}
-for _, hit in (
-    hits_non_overlap.query("cluster == 8").sort_values("sequence_name").iterrows()
-):
-    region_name, start_end, replace_to = replace_hit(
-        hit,
-        motif_metadata.loc[hit.motif_name],
-        hg38,
-        "CTAATTAG",
+
+motifs = {
+    n: pattern.ppm[range(*pattern.ic_trim(0.2))].T
+    for n, pattern in zip(all_pattern_names, all_patterns)
+    if n in pattern_metadata.index
+}
+
+all_hits_organoid_subset = []
+for topic in neural_crest_topics_organoid:
+    f = f"gradients_Topic_{topic}.npz"
+    print(f)
+    ohs = np.load(os.path.join(organoid_dl_motif_dir, f))["oh"]
+    attr = np.load(os.path.join(organoid_dl_motif_dir, f))["gradients_integrated"]
+    region_names = np.load(os.path.join(organoid_dl_motif_dir, f))["region_names"]
+    hits = fimo(motifs=motifs, sequences=ohs.swapaxes(1, 2))
+    hits = pd.concat(hits)
+    hits["attribution"] = extract_signal(
+        hits[["sequence_name", "start", "end"]],
+        torch.from_numpy(attr.squeeze().swapaxes(1, 2)),
         verbose=True,
-        add_extra_to_start=True,
-    )
-    if region_name not in modifications_per_sequence_8:
-        modifications_per_sequence_8[region_name] = []
-    modifications_per_sequence_8[region_name].append((start_end, replace_to))
+    ).sum(dim=1)
+    hits["cluster"] = [
+        pattern_metadata.loc[m, "cluster_sub_cluster"] for m in hits["motif_name"]
+    ]
+    hits["sequence_name"] = [region_names[x] for x in hits["sequence_name"]]
+    hits["-logp"] = -np.log10(hits["p-value"] + 1e-6)
+    all_hits_organoid_subset.append(hits)
 
-cluster_4_seq_orig = []
-cluster_4_seq_modi = []
-for region in modifications_per_sequence_4:
-    print(region)
-    chrom, start, end = region.replace(":", "-").split("-")
-    start = int(start)
-    end = int(end)
-    orig_seq = hg38.fetch(chrom, start, end)
-    modi_seq = list(orig_seq)
-    for (start, end), new_tfbs in modifications_per_sequence_4[region]:
-        print(f"Replacing:\n\t{orig_seq[start: end]}")
-        if end - start != len(new_tfbs):
-            raise ValueError("Start end is not length of new tfbs")
-        for nuc in range(len(new_tfbs)):
-            modi_seq[nuc + start] = new_tfbs[nuc]
-        tmp_modi_seq = "".join(modi_seq)
-        print(f"\t{tmp_modi_seq[start:end]}")
-    cluster_4_seq_orig.append(orig_seq)
-    cluster_4_seq_modi.append("".join(modi_seq))
-
-cluster_8_seq_orig = []
-cluster_8_seq_modi = []
-for region in modifications_per_sequence_8:
-    print(region)
-    chrom, start, end = region.replace(":", "-").split("-")
-    start = int(start)
-    end = int(end)
-    orig_seq = hg38.fetch(chrom, start, end)
-    modi_seq = list(orig_seq)
-    for (start, end), new_tfbs in modifications_per_sequence_8[region]:
-        print(f"Replacing:\n\t{orig_seq[start: end]}")
-        if end - start != len(new_tfbs):
-            raise ValueError("Start end is not length of new tfbs")
-        for nuc in range(len(new_tfbs)):
-            modi_seq[nuc + start] = new_tfbs[nuc]
-        tmp_modi_seq = "".join(modi_seq)
-        print(f"\t{tmp_modi_seq[start:end]}")
-    cluster_8_seq_orig.append(orig_seq)
-    cluster_8_seq_modi.append("".join(modi_seq))
-
-prediction_score_cluster_4_orig = model.predict(
-    np.array(
-        [one_hot_encode_sequence(s, expand_dim=False) for s in cluster_4_seq_orig]
+a = True
+hits_merged_organoid_subset = reduce(
+    lambda left, right: merge_and_max(
+        left[
+            [
+                "motif_name",
+                "cluster",
+                "sequence_name",
+                "start",
+                "end",
+                "strand",
+                "attribution",
+                "p-value",
+                "-logp",
+            ]
+        ],
+        right[
+            [
+                "motif_name",
+                "cluster",
+                "sequence_name",
+                "start",
+                "end",
+                "strand",
+                "attribution",
+                "p-value",
+                "-logp",
+            ]
+        ],
+        on=[
+            "motif_name",
+            "cluster",
+            "sequence_name",
+            "start",
+            "end",
+            "strand",
+            "p-value",
+            "attribution",
+        ],
+        max_on="-logp",
+        l=len(all_hits_organoid_subset),
     ),
-    verbose=True,
+    all_hits_organoid_subset,
 )
 
-prediction_score_cluster_4_modi = model.predict(
-    np.array(
-        [one_hot_encode_sequence(s, expand_dim=False) for s in cluster_4_seq_modi]
-    ),
-    verbose=True,
-)
-
-prediction_score_cluster_8_orig = model.predict(
-    np.array(
-        [one_hot_encode_sequence(s, expand_dim=False) for s in cluster_8_seq_orig]
-    ),
-    verbose=True,
-)
-
-prediction_score_cluster_8_modi = model.predict(
-    np.array(
-        [one_hot_encode_sequence(s, expand_dim=False) for s in cluster_8_seq_modi]
-    ),
-    verbose=True,
-)
-
-data_4 = (
-    pd.concat(
-        [
-            pd.DataFrame(
-                np.concatenate(
-                    [
-                        prediction_score_cluster_4_orig[:, ap_topics - 1],
-                        np.repeat("wt", prediction_score_cluster_4_orig.shape[0])[
-                            :, None
-                        ],
-                    ],
-                    axis=1,
-                ),
-                columns=[
-                    *[
-                        model_index_to_topic_name_embryo(x - 1).replace(
-                            "progenitor_", ""
-                        )
-                        for x in ap_topics
-                    ],
-                    "condition",
-                ],
-                index=modifications_per_sequence_4.keys(),
-            ),
-            pd.DataFrame(
-                np.concatenate(
-                    [
-                        prediction_score_cluster_4_modi[:, ap_topics - 1],
-                        np.repeat("alt", prediction_score_cluster_4_modi.shape[0])[
-                            :, None
-                        ],
-                    ],
-                    axis=1,
-                ),
-                columns=[
-                    *[
-                        model_index_to_topic_name_embryo(x - 1).replace(
-                            "progenitor_", ""
-                        )
-                        for x in ap_topics
-                    ],
-                    "condition",
-                ],
-                index=modifications_per_sequence_4.keys(),
-            ),
-        ]
-    )
-    .melt(id_vars="condition", ignore_index=False)
-    .rename({"variable": "Topic", "value": "prediction score"}, axis=1)
-)
-
-data_8 = (
-    pd.concat(
-        [
-            pd.DataFrame(
-                np.concatenate(
-                    [
-                        prediction_score_cluster_8_orig[:, ap_topics - 1],
-                        np.repeat("wt", prediction_score_cluster_8_orig.shape[0])[
-                            :, None
-                        ],
-                    ],
-                    axis=1,
-                ),
-                columns=[
-                    *[
-                        model_index_to_topic_name_embryo(x - 1).replace(
-                            "progenitor_", ""
-                        )
-                        for x in ap_topics
-                    ],
-                    "condition",
-                ],
-                index=modifications_per_sequence_8,
-            ),
-            pd.DataFrame(
-                np.concatenate(
-                    [
-                        prediction_score_cluster_8_modi[:, ap_topics - 1],
-                        np.repeat("alt", prediction_score_cluster_8_modi.shape[0])[
-                            :, None
-                        ],
-                    ],
-                    axis=1,
-                ),
-                columns=[
-                    *[
-                        model_index_to_topic_name_embryo(x - 1).replace(
-                            "progenitor_", ""
-                        )
-                        for x in ap_topics
-                    ],
-                    "condition",
-                ],
-                index=modifications_per_sequence_8,
-            ),
-        ]
-    )
-    .melt(id_vars="condition", ignore_index=False)
-    .rename({"variable": "Topic", "value": "prediction score"}, axis=1)
-)
-
-data_4["prediction score"] = data_4["prediction score"].astype(float)
-data_8["prediction score"] = data_8["prediction score"].astype(float)
-
-
-hits_no_thr = pd.concat(
-    fimo(motifs=motifs, sequences=ohs_topic_31_1.swapaxes(1, 2), threshold=0.5)
-)
-
-hits_no_thr["cluster"] = [
-    clusters[patterns_to_cluster_names.index(name)]
-    for name in tqdm(hits_no_thr["motif_name"])
-]
-
-hits_no_thr["-log(p-value)"] = -np.log(hits_no_thr["p-value"] + 1e-6)
-max_hits_no_thr_per_seq = (
-    hits_no_thr.groupby(["sequence_name", "cluster"])[["score", "-log(p-value)"]]
-    .max()
+hits_merged_organoid_subset_per_seq_and_cluster_max = (
+    hits_merged_organoid_subset.groupby(["sequence_name", "cluster"])["attribution"]
+    .apply(absmax)
     .reset_index()
+    .pivot(index="sequence_name", columns="cluster", values="attribution")
+    .fillna(0)
+    .astype(float)
 )
 
-hits_no_thr["sequence_name"] = [
-    selected_regions_topic_31_1[x] for x in hits_no_thr["sequence_name"]
+hits_merged_organoid_subset_per_seq_and_cluster_max_scaled = (
+    hits_merged_organoid_subset_per_seq_and_cluster_max
+    / hits_merged_organoid_subset_per_seq_and_cluster_max.sum()
+)
+
+region_order_organoid_subset = []
+for x in tqdm(all_hits_organoid_subset):
+    for r in x["sequence_name"]:
+        if r not in region_order_organoid_subset:
+            region_order_organoid_subset.append(r)
+
+hits_organoid_bin = (
+    hits_merged_organoid_subset_per_seq_and_cluster_max_scaled.loc[
+        region_order_organoid_subset, selected_clusters
+    ].abs()
+    > 0.0008
+)
+hits_organoid_bin.columns = [cluster_to_name[x] for x in hits_organoid_bin.columns]
+
+
+def jaccard(s_a: set[str], s_b: set[str]):
+    return len(s_a & s_b) / len(s_a | s_b)
+
+
+jaccard_organoid = pd.DataFrame(
+    index=hits_organoid_bin.columns, columns=hits_organoid_bin.columns
+).fillna(0)
+
+for tf_1 in jaccard_organoid.columns:
+    for tf_2 in jaccard_organoid.index:
+        jaccard_organoid.loc[tf_1, tf_2] = jaccard(
+            set(hits_organoid_bin.loc[hits_organoid_bin[tf_1]].index),
+            set(hits_organoid_bin.loc[hits_organoid_bin[tf_2]].index),
+        )
+
+cell_topic_bin_organoid = pd.read_table(
+    "../data_prep_new/organoid_data/ATAC/cell_bin_topic.tsv"
+)
+
+cell_topic_bin_organoid.cell_barcode = [
+    rename_organoid_atac_cell(x) for x in cell_topic_bin_organoid.cell_barcode
 ]
 
-y = (
-    np.log(region_topic.loc[selected_regions_topic_31_1, "Topic_1"].values + 1e-6)
-    - np.log(region_topic.loc[selected_regions_topic_31_1, "Topic_31"].values + 1e-6)
-).reshape(-1, 1)
+exp_organoid = adata_organoid_neural_crest.to_df(layer="log_cpm")
 
-cluster_4_score = (
-    max_hits_no_thr_per_seq.set_index("cluster")
-    .loc[4]
-    .reset_index(drop=True)
-    .set_index("sequence_name")
-    .iloc[np.arange(len(y))]["-log(p-value)"]
-    .values
-)
-cluster_8_score = (
-    max_hits_no_thr_per_seq.set_index("cluster")
-    .loc[8]
-    .reset_index(drop=True)
-    .set_index("sequence_name")
-    .iloc[np.arange(len(y))]["-log(p-value)"]
-    .values
+exp_per_topic_organoid = pd.DataFrame(
+    index=[
+        model_index_to_topic_name_organoid(t - 1)
+        .replace("neural_crest_", "")
+        .replace("_", "")
+        for t in neural_crest_topics_organoid
+    ],
+    columns=exp_organoid.columns,
 )
 
-X = np.array([cluster_4_score, cluster_8_score]).T
-
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.33, random_state=42
-)
-
-reg = LogisticRegression().fit(X_train, (y_train > 0).ravel())
-reg.score(X_test, (y_test > 0).ravel())
-
-precision, recall, threshold = precision_recall_curve(
-    (y_test > 0).ravel(), reg.predict_proba(X_test)[:, 1]
-)
-
-fpr, tpr, thresholds = roc_curve((y_test > 0).ravel(), reg.predict_proba(X_test)[:, 1])
-
-
-from sklearn.metrics import auc
-
-auc(recall, precision)
-auc(fpr, tpr)
-
-motif_embedding_results = pickle.load(open("draft/motif_embedding.pkl", "rb"))
-
-n_seq = 200
-data_motif_embedding = (
-    pd.concat(
-        [
-            pd.DataFrame(
-                np.concatenate(
-                    [
-                        np.array(
-                            [
-                                motif_embedding_results[experiment][0][i][
-                                    "predictions"
-                                ][iter][ap_topics - 1]
-                                for i in range(n_seq)
-                            ]
-                        ),
-                        np.repeat(experiment, n_seq)[:, None],
-                        np.repeat(iter, n_seq)[:, None],
-                    ],
-                    axis=1,
-                ),
-                columns=[
-                    *[
-                        model_index_to_topic_name_embryo(x - 1).replace(
-                            "progenitor_", ""
-                        )
-                        for x in ap_topics
-                    ],
-                    "condition",
-                    "iter",
-                ],
-            )
-            for experiment in motif_embedding_results
-            for iter in range(6)
-        ]
-    )
-    .melt(id_vars=["condition", "iter"])
-    .rename({"variable": "Topic", "value": "prediction score"}, axis=1)
-)
-
-
-data_motif_embedding["iter"] = data_motif_embedding["iter"].astype(int)
-data_motif_embedding["prediction score"] = data_motif_embedding[
-    "prediction score"
-].astype(float)
-
-random.seed(123)
-motif_to_put = "CTAATTAG"
-ctaag_rand_prediction_scores = np.empty((n_seq, 6, model.output.shape[1]))
-for i in tqdm(range(n_seq)):
-    seqs = np.empty((6, 500, 4))
-    seqs[0] = one_hot_encode_sequence(
-        motif_embedding_results["CTAATTAG_Topic_31_5"][0][i]["initial_sequence"],
-        expand_dim=False,
-    )
-    locations = np.zeros(5) + np.inf
-    for j in range(1, 6):
-        if j == 1:
-            loc = random.randint(200, 300)
-        else:
-            loc = random.randint(200, 300)
-            while abs((locations - loc)).min() <= len(motif_to_put):
-                loc = random.randint(200, 300)
-        locations[j - 1] = loc
-        seqs[j] = seqs[j - 1].copy()
-        seqs[j][loc : loc + len(motif_to_put)] = one_hot_encode_sequence(
-            motif_to_put, expand_dim=False
+for topic in tqdm(exp_per_topic_organoid.index):
+    cells = list(
+        set(exp_organoid.index)
+        & set(
+            cell_topic_bin_organoid.query(
+                "group == 'neural_crest' & topic_name == @topic"
+            ).cell_barcode
         )
-    ctaag_rand_prediction_scores[i] = model.predict(seqs, verbose=0)
-
-random.seed(123)
-motif_to_put = "GGATTAG"
-ggattag_rand_prediction_scores = np.empty((n_seq, 6, model.output.shape[1]))
-for i in tqdm(range(n_seq)):
-    seqs = np.empty((6, 500, 4))
-    seqs[0] = one_hot_encode_sequence(
-        motif_embedding_results["GGATTAG_Topic_1_5"][0][i]["initial_sequence"],
-        expand_dim=False,
     )
-    locations = np.zeros(5) + np.inf
-    for j in range(1, 6):
-        if j == 1:
-            loc = random.randint(200, 300)
-        else:
-            loc = random.randint(200, 300)
-            while abs((locations - loc)).min() <= len(motif_to_put):
-                loc = random.randint(200, 300)
-        locations[j - 1] = loc
-        seqs[j] = seqs[j - 1].copy()
-        seqs[j][loc : loc + len(motif_to_put)] = one_hot_encode_sequence(
-            motif_to_put, expand_dim=False
-        )
-    ggattag_rand_prediction_scores[i] = model.predict(seqs, verbose=0)
-
-data_ctaag = (
-    pd.concat(
-        [
-            pd.DataFrame(
-                np.concatenate(
-                    [
-                        ctaag_rand_prediction_scores[:, i, ap_topics - 1],
-                        np.repeat(i, n_seq)[:, None],
-                    ],
-                    axis=1,
-                ),
-                columns=[
-                    *[
-                        model_index_to_topic_name_embryo(x - 1).replace(
-                            "progenitor_", ""
-                        )
-                        for x in ap_topics
-                    ],
-                    "iter",
-                ],
-            )
-            for i in range(6)
-        ]
-    )
-    .melt(id_vars="iter")
-    .rename({"variable": "Topic", "value": "prediction score"}, axis=1)
-)
-
-data_ggattag = (
-    pd.concat(
-        [
-            pd.DataFrame(
-                np.concatenate(
-                    [
-                        ggattag_rand_prediction_scores[:, i, ap_topics - 1],
-                        np.repeat(i, n_seq)[:, None],
-                    ],
-                    axis=1,
-                ),
-                columns=[
-                    *[
-                        model_index_to_topic_name_embryo(x - 1).replace(
-                            "progenitor_", ""
-                        )
-                        for x in ap_topics
-                    ],
-                    "iter",
-                ],
-            )
-            for i in range(6)
-        ]
-    )
-    .melt(id_vars="iter")
-    .rename({"variable": "Topic", "value": "prediction score"}, axis=1)
-)
-
-
-fig, ax = plt.subplots(figsize=(8, 4))
-sns.boxplot(
-    data=data_ctaag,
-    x="iter",
-    y="prediction score",
-    hue="Topic",
-    ax=ax,
-    palette="Spectral",
-    legend=False,
-)
-fig.savefig(f"plots/motif_embedding_random_CTAATTAG.pdf")
-
-
-fig, ax = plt.subplots(figsize=(15, 10))
-sns.heatmap(
-    [
-        motif_embedding_results["CTAATTAG_Topic_31_5"][0][i]["predictions"][-1]
-        for i in range(200)
-    ],
-    ax=ax,
-    xticklabels=True,
-    yticklabels=False,
-    vmin=0,
-    vmax=1,
-)
-fig.savefig("CTAATAG_all_pred_test.pdf")
-
-fig, ax = plt.subplots(figsize=(15, 10))
-sns.heatmap(
-    [
-        motif_embedding_results["GGATTAG_Topic_1_5"][0][i]["predictions"][-1]
-        for i in range(200)
-    ],
-    ax=ax,
-    vmin=0,
-    vmax=1,
-    xticklabels=True,
-    yticklabels=False,
-)
-fig.savefig("GGATTAG_all_pred_test.pdf")
-
-fig, ax = plt.subplots(figsize=(15, 10))
-sns.heatmap(
-    [
-        motif_embedding_results["SOX_GGATTAG_Topic_1_5"][0][i]["predictions"][-1]
-        for i in range(200)
-    ],
-    ax=ax,
-    vmin=0,
-    vmax=1,
-    xticklabels=True,
-    yticklabels=False,
-)
-fig.savefig("SOX_GGATTAG_all_pred_test.pdf")
-
-fig, ax = plt.subplots(figsize=(15, 10))
-sns.heatmap(
-    ctaag_rand_prediction_scores[:, -1, :],
-    ax=ax,
-    vmin=0,
-    vmax=0.7,
-    xticklabels=True,
-    yticklabels=False,
-)
-fig.savefig("CTAATAG_all_pred_randon_test.pdf")
-
-fig, ax = plt.subplots(figsize=(15, 10))
-sns.heatmap(
-    ggattag_rand_prediction_scores[:, -1, :],
-    ax=ax,
-    vmin=0,
-    vmax=0.7,
-    xticklabels=True,
-    yticklabels=False,
-)
-fig.savefig("GGATTAG_all_pred_randon_test.pdf")
-
+    exp_per_topic_organoid.loc[topic] = exp_organoid.loc[cells].mean()
 
 cells, scores, thresholds = binarize_topics(
-    embryo_progenitor_cell_topic.to_numpy(), embryo_progenitor_cell_topic.index, "li"
+    embryo_neural_crest_cell_topic.to_numpy(),
+    embryo_neural_crest_cell_topic.index,
+    "li",
 )
 
 cell_topic_bin_embryo = dict(cell_barcode=[], topic_name=[], group=[], topic_prob=[])
@@ -1072,56 +866,394 @@ for topic_idx in range(len(cells)):
         np.repeat(f"Topic{topic_idx + 1}", len(cells[topic_idx]))
     )
     cell_topic_bin_embryo["group"].extend(
-        np.repeat("progenitor", len(cells[topic_idx]))
+        np.repeat("neural_crest", len(cells[topic_idx]))
     )
     cell_topic_bin_embryo["topic_prob"].extend(scores[topic_idx])
 
 cell_topic_bin_embryo = pd.DataFrame(cell_topic_bin_embryo)
 
+exp_embryo = adata_embryo_neural_crest.to_df(layer="log_cpm")
 
+exp_per_topic_embryo = pd.DataFrame(
+    index=[
+        model_index_to_topic_name_embryo(t - 1)
+        .replace("neural_crest_", "")
+        .replace("_", "")
+        for t in neural_crest_topics_embryo
+    ],
+    columns=exp_embryo.columns,
+)
 
-exp_embryo = adata_embryo_progenitor.to_df(layer="log_cpm")
-
-avg_expr_embryo_per_topic = {}
-for topic in ap_topics:
-    cell_names = list(
-        set(
-            cell_topic_bin_embryo.set_index("topic_name")
-            .loc[
-                model_index_to_topic_name_embryo(topic - 1)
-                .replace("progenitor", "")
-                .replace("_", ""),
-                "cell_barcode",
-            ]
-            .values
+for topic in tqdm(exp_per_topic_embryo.index):
+    cells = list(
+        set(exp_embryo.index)
+        & set(
+            cell_topic_bin_embryo.query(
+                "group == 'neural_crest' & topic_name == @topic"
+            ).cell_barcode
         )
-        & set(adata_embryo_progenitor.obs_names)
     )
-    avg_expr_embryo_per_topic[topic] = exp_embryo.loc[cell_names].mean()
+    exp_per_topic_embryo.loc[topic] = exp_embryo.loc[cells].mean()
 
 import re
 
-cluster_to_TF = {
-    1: "SOX(2|3)",
-    4: "(LHX(2|9))|(RAX)|(SIX(3|6))",
-    8: "(OTX(1|2))|(EMX2)|(DMBX1)|(LMX1A)",
-    7: "(PAX(5|8))|(EN(1|2))",
-    6: "(MEIS(1|2))|(PBX(1|3))|(HOXB3)"
-}
+cluster_to_tf = cluster_to_name
+
+tf_expr_matrix_per_topic_organoid = (
+    pd.DataFrame(exp_per_topic_organoid)
+)
+
+tf_expr_matrix_per_topic_organoid = tf_expr_matrix_per_topic_organoid[
+    [c for c in tf_expr_matrix_per_topic_organoid.columns if any([re.fullmatch(p, c) for p in cluster_to_tf.values() ])]
+]
+
+tf_expr_matrix_per_topic_organoid.index = [
+    topic_name_to_model_index_organoid("neural_crest_Topic_" + t.replace("Topic", "")) + 1
+    for t in tf_expr_matrix_per_topic_organoid.index
+]
+
+tf_expr_matrix_per_topic_organoid = tf_expr_matrix_per_topic_organoid[
+    tf_expr_matrix_per_topic_organoid.idxmax().sort_values(
+        key = lambda X: [[oe[0] for oe in organoid_embryo].index(x) for x in X]).index
+]
 
 tf_expr_matrix_per_topic_embryo = (
-    pd.DataFrame(avg_expr_embryo_per_topic).T
+    pd.DataFrame(exp_per_topic_embryo)
 )
 
 tf_expr_matrix_per_topic_embryo = tf_expr_matrix_per_topic_embryo[
-    [
-        "SOX2", "SOX3", "LHX2", "LHX9", "RAX", "SIX3", "SIX6",
-        "OTX1", "OTX2", "EMX2", "DMBX1", "LMX1A",
-        "PAX5", "PAX8", "EN1", "EN2",
-        "MEIS1", "MEIS2", "PBX1", "PBX3", "HOXB3"
-    ]
+    [c for c in tf_expr_matrix_per_topic_embryo.columns if any([re.fullmatch(p, c) for p in cluster_to_tf.values() ])]
 ]
 
+tf_expr_matrix_per_topic_embryo.index = [
+    topic_name_to_model_index_embryo("neural_crest_Topic_" + t.replace("Topic", "")) + 1
+    for t in tf_expr_matrix_per_topic_embryo.index
+]
+
+tf_expr_matrix_per_topic_embryo = tf_expr_matrix_per_topic_embryo[
+    tf_expr_matrix_per_topic_organoid.columns
+]
+
+
+data = (
+    hits_merged_organoid_subset_per_seq_and_cluster_max_scaled.loc[
+        region_order_organoid_subset, selected_clusters
+    ].abs()
+    > 0.0008
+) * 1
+cooc = data.T @ data
+for cluster in selected_clusters:
+    cooc.loc[cluster, cluster] = 0
+
+cooc_perc = (cooc / cooc.sum()).T
+
+norm = matplotlib.colors.Normalize(vmin=0, vmax=len(selected_clusters), clip=True)
+mapper = plt.cm.ScalarMappable(norm=norm, cmap=plt.cm.Set3)
+
+cluster_to_color = {
+    cluster_to_name[c]: mapper.to_rgba(i) for i, c in enumerate(selected_clusters)
+}
+
+G_organoid = nx.DiGraph()
+
+p = 1 / (len(selected_clusters) - 1)
+for y, cluster in enumerate(selected_clusters):
+    left = 0.0
+    _sorted_vals = cooc_perc.loc[cluster]
+    n = sum(cooc.loc[cluster])
+    for _cluster, _width in zip(_sorted_vals.index, _sorted_vals.values):
+        k = cooc.loc[cluster, _cluster]
+        t = binomtest(k, n, p, alternative="greater")
+        stat, pval = t.statistic, t.pvalue
+        if pval < (0.01 / 100) and (_cluster != cluster):
+            G_organoid.add_edge(
+                cluster_to_name[cluster], cluster_to_name[_cluster], weight=_width
+            )
+
+pos = nx.forceatlas2_layout(G_organoid, seed=12)
+
+
+@dataclass
+class SequenceRefAlt:
+    rsid: str
+    ref: str
+    alts: list[str]
+
+
+seq_ref_alts = []
+for x in json.load(
+    open("../data_prep_new/facial_gwas/white/ref_alt_all_sign_snps.json")
+):
+    seq_ref_alts.append(SequenceRefAlt(rsid=x["rsid"], ref=x["ref"], alts=x["alts"]))
+
+
+@dataclass
+class PredictionRefAlt:
+    rsid: str
+    ref: np.ndarray
+    alts: np.ndarray
+
+
+refs = np.concatenate(
+    [one_hot_encode_sequence(variant.ref) for variant in seq_ref_alts]
+)
+
+alts = np.concatenate(
+    [
+        np.concatenate([one_hot_encode_sequence(a) for a in variant.alts])
+        for variant in seq_ref_alts
+    ]
+)
+
+pred_ref_organoid = organoid_model.predict(refs)
+pred_alt_organoid = organoid_model.predict(alts)
+
+pred_ref_alts_organoid = []
+alt_id = 0
+for ref_id, variant in tqdm(enumerate(seq_ref_alts), total=len(seq_ref_alts)):
+    n_alts = len(variant.alts)
+    pred_ref_alts_organoid.append(
+        PredictionRefAlt(
+            rsid=variant.rsid,
+            ref=pred_ref_organoid[ref_id : ref_id + 1, :],
+            alts=pred_alt_organoid[alt_id : alt_id + n_alts, :],
+        )
+    )
+    alt_id = alt_id + n_alts
+
+pred_ref_embryo = embryo_model.predict(refs)
+pred_alt_embryo = embryo_model.predict(alts)
+
+pred_ref_alts_embryo = []
+alt_id = 0
+for ref_id, variant in tqdm(enumerate(seq_ref_alts), total=len(seq_ref_alts)):
+    n_alts = len(variant.alts)
+    pred_ref_alts_embryo.append(
+        PredictionRefAlt(
+            rsid=variant.rsid,
+            ref=pred_ref_embryo[ref_id : ref_id + 1, :],
+            alts=pred_alt_embryo[alt_id : alt_id + n_alts, :],
+        )
+    )
+    alt_id = alt_id + n_alts
+
+
+@dataclass
+class DeltaPredRefAlt:
+    rsid: str
+    deltas: np.ndarray
+
+
+delta_ref_alt_organoid = []
+for variant in pred_ref_alts_organoid:
+    delta = np.zeros_like(variant.alts)
+    for i in range(variant.alts.shape[0]):
+        delta[i] = variant.alts[i] - variant.ref[0]
+    delta_ref_alt_organoid.append(DeltaPredRefAlt(rsid=variant.rsid, deltas=delta))
+
+delta_ref_alt_embryo = []
+for variant in pred_ref_alts_embryo:
+    delta = np.zeros_like(variant.alts)
+    for i in range(variant.alts.shape[0]):
+        delta[i] = variant.alts[i] - variant.ref[0]
+    delta_ref_alt_embryo.append(DeltaPredRefAlt(rsid=variant.rsid, deltas=delta))
+
+
+chrom_alias = (
+    pd.read_table(
+        "https://hgdownload.cse.ucsc.edu/goldenPath/hg38/database/chromAlias.txt.gz",
+        header=None,
+    )
+    .set_index(0)[1]
+    .to_dict()
+)
+
+with open("../data_prep_new/facial_gwas/white/all_sign_snps.rs.uniq.txt") as f:
+    snps = f.read().splitlines()
+
+data = []
+for d in tqdm(fetch_rsid_batched(rsids=snps, batch_size=100, tries=5), total=len(snps)):
+    data.append(d)
+
+
+def decode_data(d: str):
+    soup = BeautifulSoup(d)
+    return ("rs" + soup.snp_id.string, soup.spdi.string)
+
+
+rsid_to_spdi = dict(
+    decode_data(d) for d in tqdm(data, total=len(data)) if "error" not in d
+)
+missing_snps = set(snps) - set(rsid_to_spdi.keys())
+# these are indeed missing from db snp, in total 631
+
+
+@dataclass
+class Variant:
+    rsid: str
+    chrom: str
+    pos: int
+    ref: str
+    alts: list[str]
+
+
+def decode_spdi(spdi: str, rsid) -> Variant:
+    variants_spdi = spdi.split(",")
+    chrom, pos, ref, _ = variants_spdi[0].split(":")
+    alts = []
+    for s in variants_spdi:
+        c, p, r, alt = s.split(":")
+        if c != chrom or p != pos or r != ref:
+            raise ValueError("Multiple chroms, pos, ref")
+        alts.append(alt)
+    return Variant(rsid=rsid, chrom=chrom, pos=int(pos), ref=ref, alts=alts)
+
+
+variants = []
+nones = 0
+for rsid in rsid_to_spdi:
+    if rsid_to_spdi[rsid] is not None:
+        variants.append(decode_spdi(rsid_to_spdi[rsid], rsid))
+    else:
+        nones += 1
+
+# one None
+
+variants_ucsc = []
+for variant in variants:
+    variants_ucsc.append(
+        Variant(
+            rsid=variant.rsid,
+            chrom=chrom_alias[variant.chrom],
+            pos=variant.pos,
+            ref=variant.ref,
+            alts=variant.alts,
+        )
+    )
+
+
+rs_to_pval = {}
+for f in os.listdir("../data_prep_new/facial_gwas/white/suggestive_snps"):
+    if not f.endswith(".tsv"):
+        continue
+    with open(
+        os.path.join("../data_prep_new/facial_gwas/white/suggestive_snps", f)
+    ) as sum:
+        for l in sum:
+            rs, _, _, _, _, p = l.split()
+            if p == "P":
+                continue
+            p = float(p)
+            if rs not in rs_to_pval:
+                rs_to_pval[rs] = p
+            else:
+                rs_to_pval[rs] = min(p, rs_to_pval[rs])
+
+rs_to_max_delta_organoid = {}
+for var in delta_ref_alt_organoid:
+    abs_max = np.abs(var.deltas).max()
+    if var.rsid not in rs_to_max_delta_organoid:
+        rs_to_max_delta_organoid[var.rsid] = abs_max
+    else:
+        rs_to_max_delta_organoid[var.rsid] = max(
+            abs_max, rs_to_max_delta_organoid[var.rsid]
+        )
+
+rs_to_max_delta_embryo = {}
+for var in delta_ref_alt_embryo:
+    abs_max = np.abs(var.deltas).max()
+    if var.rsid not in rs_to_max_delta_embryo:
+        rs_to_max_delta_embryo[var.rsid] = abs_max
+    else:
+        rs_to_max_delta_embryo[var.rsid] = max(
+            abs_max, rs_to_max_delta_embryo[var.rsid]
+        )
+
+for var in variants_ucsc:
+    var.pval = rs_to_pval.get(var.rsid, None)
+    var.max_delta_organoid = rs_to_max_delta_organoid.get(var.rsid, None)
+    var.max_delta_embryo = rs_to_max_delta_embryo.get(var.rsid, None)
+
+lead_snps = []
+with open("../data_prep_new/facial_gwas/white/203_lead_facial_snps.txt") as f:
+    for l in f:
+        lead_snps.append(l.strip())
+
+rsid_to_var = {}
+for var in variants_ucsc:
+    rsid_to_var[var.rsid] = var
+
+rsid_to_seq_ref_alt = {}
+for var in seq_ref_alts:
+    rsid_to_seq_ref_alt[var.rsid] = var
+
+contrib_var_hit_organoid = []
+for var, model_idc, deltas in tqdm(
+    [
+        (rsid_to_var[v.rsid], abs(v.deltas).argmax(1), abs(v.deltas).max(1))
+        for v in delta_ref_alt_organoid
+        if abs(v.deltas).max() > 0.5
+    ]
+):
+    model_idx = model_idc[np.argmax(deltas)]
+    ref_sequence = rsid_to_seq_ref_alt[var.rsid].ref
+    alt_sequence = rsid_to_seq_ref_alt[var.rsid].alts[np.argmax(deltas)]
+    seq_oh = np.concatenate(
+        [one_hot_encode_sequence(ref_sequence), one_hot_encode_sequence(alt_sequence)]
+    )
+    explainer = Explainer(model=organoid_model, class_index=model_idx)
+    contrib = explainer.integrated_grad(seq_oh)
+    ism = explainer.mutagenesis(seq_oh)
+    contrib_var_hit_organoid.append(
+        (var, model_idx, deltas.max(), seq_oh, contrib, ism)
+    )
+
+contrib_var_hit_embryo = []
+for var, model_idc, deltas in tqdm(
+    [
+        (rsid_to_var[v.rsid], abs(v.deltas).argmax(1), abs(v.deltas).max(1))
+        for v in delta_ref_alt_embryo
+        if abs(v.deltas).max() > 0.5
+    ]
+):
+    model_idx = model_idc[np.argmax(deltas)]
+    ref_sequence = rsid_to_seq_ref_alt[var.rsid].ref
+    alt_sequence = rsid_to_seq_ref_alt[var.rsid].alts[np.argmax(deltas)]
+    seq_oh = np.concatenate(
+        [one_hot_encode_sequence(ref_sequence), one_hot_encode_sequence(alt_sequence)]
+    )
+    explainer = Explainer(model=embryo_model, class_index=model_idx)
+    contrib = explainer.integrated_grad(seq_oh)
+    ism = explainer.mutagenesis(seq_oh)
+    contrib_var_hit_embryo.append((var, model_idx, deltas.max(), seq_oh, contrib, ism))
+
+
+for var, model_idx, delta, seq_oh, contrib, ism in tqdm(contrib_var_hit_organoid):
+    fig, axs = plt.subplots(figsize=(20, 6), nrows=3, sharex=True)
+    _ = logomaker.Logo(
+        df=pd.DataFrame((contrib * seq_oh)[0], columns=["A", "C", "G", "T"]), ax=axs[0]
+    )
+    _ = logomaker.Logo(
+        df=pd.DataFrame((contrib * seq_oh)[1], columns=["A", "C", "G", "T"]), ax=axs[1]
+    )
+    for nuc_idx, c in zip(range(4), ["#008001", "#1c00ff", "#ffab10", "#ff0000"]):
+        axs[2].scatter(np.arange(500), ism[0][:, nuc_idx], color=c)
+    fig.tight_layout()
+    fig.savefig(f"draft/{var.rsid}_organoid.pdf")
+
+
+for var, model_idx, delta, seq_oh, contrib, ism in tqdm(contrib_var_hit_embryo):
+    fig, axs = plt.subplots(figsize=(20, 6), nrows=3, sharex=True)
+    _ = logomaker.Logo(
+        df=pd.DataFrame((contrib * seq_oh)[0], columns=["A", "C", "G", "T"]), ax=axs[0]
+    )
+    _ = logomaker.Logo(
+        df=pd.DataFrame((contrib * seq_oh)[1], columns=["A", "C", "G", "T"]), ax=axs[1]
+    )
+    for nuc_idx, c in zip(range(4), ["#008001", "#1c00ff", "#ffab10", "#ff0000"]):
+        axs[2].scatter(np.arange(500), ism[0][:, nuc_idx], color=c)
+    fig.tight_layout()
+    fig.savefig(f"draft/{var.rsid}_embryo.pdf")
 
 
 N_PIXELS_PER_GRID = 50
@@ -1137,142 +1269,204 @@ nrows = int((n_h_pixels) // N_PIXELS_PER_GRID)
 gs = fig.add_gridspec(
     nrows, ncols, wspace=0.05, hspace=0.1, left=0.05, right=0.97, bottom=0.05, top=0.95
 )
-# Cell topic UMAP
-ax_topic_umap_embryo_1 = fig.add_subplot(gs[0:5, 0:5])
-ax_topic_umap_embryo_2 = fig.add_subplot(gs[6:11, 0:5])
+ax_organoid_umap_1 = fig.add_subplot(gs[0:5, 0:5])
+ax_organoid_umap_2 = fig.add_subplot(gs[5:10, 0:5])
+ax_embryo_umap_1 = fig.add_subplot(gs[10:15, 0:5])
+ax_embryo_umap_2 = fig.add_subplot(gs[15:20, 0:5])
+organoid_cells_both = list(
+    set(organoid_neural_crest_cell_topic.index)
+    & set(adata_organoid_neural_crest.obs_names)
+)
+rgb_scatter_plot(
+    x=adata_organoid_neural_crest[organoid_cells_both].obsm["X_umap"][:, 0],
+    y=adata_organoid_neural_crest[organoid_cells_both].obsm["X_umap"][:, 1],
+    ax=ax_organoid_umap_1,
+    g_cut=0,
+    r_values=organoid_neural_crest_cell_topic.loc[
+        organoid_cells_both,
+        model_index_to_topic_name_organoid(neural_crest_topics_organoid[0] - 1),
+    ].values,
+    g_values=organoid_neural_crest_cell_topic.loc[
+        organoid_cells_both,
+        model_index_to_topic_name_organoid(neural_crest_topics_organoid[1] - 1),
+    ].values,
+    b_values=organoid_neural_crest_cell_topic.loc[
+        organoid_cells_both,
+        model_index_to_topic_name_organoid(neural_crest_topics_organoid[2] - 1),
+    ].values,
+    r_name=model_index_to_topic_name_organoid(
+        neural_crest_topics_organoid[0] - 1
+    ).replace("neural_crest_", ""),
+    g_name=model_index_to_topic_name_organoid(
+        neural_crest_topics_organoid[1] - 1
+    ).replace("neural_crest_", ""),
+    b_name=model_index_to_topic_name_organoid(
+        neural_crest_topics_organoid[2] - 1
+    ).replace("neural_crest_", ""),
+    g_vmin=0,
+    g_vmax=0.25,
+)
+rgb_scatter_plot(
+    x=adata_organoid_neural_crest[organoid_cells_both].obsm["X_umap"][:, 0],
+    y=adata_organoid_neural_crest[organoid_cells_both].obsm["X_umap"][:, 1],
+    ax=ax_organoid_umap_2,
+    g_cut=0,
+    r_values=organoid_neural_crest_cell_topic.loc[
+        organoid_cells_both,
+        model_index_to_topic_name_organoid(neural_crest_topics_organoid[3] - 1),
+    ].values,
+    g_values=organoid_neural_crest_cell_topic.loc[
+        organoid_cells_both,
+        model_index_to_topic_name_organoid(neural_crest_topics_organoid[4] - 1),
+    ].values,
+    b_values=np.zeros(len(organoid_cells_both)),
+    r_name=model_index_to_topic_name_organoid(
+        neural_crest_topics_organoid[3] - 1
+    ).replace("neural_crest_", ""),
+    g_name=model_index_to_topic_name_organoid(
+        neural_crest_topics_organoid[4] - 1
+    ).replace("neural_crest_", ""),
+)
 embryo_cells_both = list(
-    set(embryo_progenitor_cell_topic.index) & set(adata_embryo_progenitor.obs_names)
+    set(embryo_neural_crest_cell_topic.index) & set(adata_embryo_neural_crest.obs_names)
 )
 rgb_scatter_plot(
-    x=adata_embryo_progenitor[embryo_cells_both].obsm["X_umap"][:, 0],
-    y=adata_embryo_progenitor[embryo_cells_both].obsm["X_umap"][:, 1],
-    ax=ax_topic_umap_embryo_1,
+    x=adata_embryo_neural_crest[embryo_cells_both].obsm["X_umap"][:, 0],
+    y=adata_embryo_neural_crest[embryo_cells_both].obsm["X_umap"][:, 1],
+    ax=ax_embryo_umap_1,
     g_cut=0,
-    r_values=embryo_progenitor_cell_topic.loc[
-        embryo_cells_both, model_index_to_topic_name_embryo(ap_topics[0] - 1)
+    r_values=embryo_neural_crest_cell_topic.loc[
+        embryo_cells_both,
+        model_index_to_topic_name_embryo(neural_crest_topics_embryo[0] - 1),
     ].values,
-    g_values=embryo_progenitor_cell_topic.loc[
-        embryo_cells_both, model_index_to_topic_name_embryo(ap_topics[1] - 1)
+    g_values=embryo_neural_crest_cell_topic.loc[
+        embryo_cells_both,
+        model_index_to_topic_name_embryo(neural_crest_topics_embryo[1] - 1),
     ].values,
-    b_values=embryo_progenitor_cell_topic.loc[
-        embryo_cells_both, model_index_to_topic_name_embryo(ap_topics[2] - 1)
+    b_values=embryo_neural_crest_cell_topic.loc[
+        embryo_cells_both,
+        model_index_to_topic_name_embryo(neural_crest_topics_embryo[2] - 1),
     ].values,
-    r_name=model_index_to_topic_name_embryo(ap_topics[0] - 1).replace(
-        "progenitor_", ""
+    r_name=model_index_to_topic_name_embryo(neural_crest_topics_embryo[0] - 1).replace(
+        "neural_crest_", ""
     ),
-    g_name=model_index_to_topic_name_embryo(ap_topics[1] - 1).replace(
-        "progenitor_", ""
+    g_name=model_index_to_topic_name_embryo(neural_crest_topics_embryo[1] - 1).replace(
+        "neural_crest_", ""
     ),
-    b_name=model_index_to_topic_name_embryo(ap_topics[2] - 1).replace(
-        "progenitor_", ""
+    b_name=model_index_to_topic_name_embryo(neural_crest_topics_embryo[2] - 1).replace(
+        "neural_crest_", ""
     ),
+    r_vmin=0,
+    r_vmax=0.25,
+    g_vmin=0,
+    g_vmax=0.3,
+    b_vmin=0,
+    b_vmax=0.25,
 )
 rgb_scatter_plot(
-    x=adata_embryo_progenitor[embryo_cells_both].obsm["X_umap"][:, 0],
-    y=adata_embryo_progenitor[embryo_cells_both].obsm["X_umap"][:, 1],
-    ax=ax_topic_umap_embryo_2,
+    x=adata_embryo_neural_crest[embryo_cells_both].obsm["X_umap"][:, 0],
+    y=adata_embryo_neural_crest[embryo_cells_both].obsm["X_umap"][:, 1],
+    ax=ax_embryo_umap_2,
     g_cut=0,
-    r_values=embryo_progenitor_cell_topic.loc[
-        embryo_cells_both, model_index_to_topic_name_embryo(ap_topics[3] - 1)
+    r_values=np.zeros(len(embryo_cells_both)),
+    g_values=embryo_neural_crest_cell_topic.loc[
+        embryo_cells_both,
+        model_index_to_topic_name_embryo(neural_crest_topics_embryo[3] - 1),
     ].values,
-    g_values=embryo_progenitor_cell_topic.loc[
-        embryo_cells_both, model_index_to_topic_name_embryo(ap_topics[4] - 1)
-    ].values,
-    b_values=embryo_progenitor_cell_topic.loc[
-        embryo_cells_both, model_index_to_topic_name_embryo(ap_topics[6] - 1)
-    ].values,
-    r_name=model_index_to_topic_name_embryo(ap_topics[3] - 1).replace(
-        "progenitor_", ""
-    ),
-    g_name=model_index_to_topic_name_embryo(ap_topics[4] - 1).replace(
-        "progenitor_", ""
-    ),
-    b_name=model_index_to_topic_name_embryo(ap_topics[6] - 1).replace(
-        "progenitor_", ""
+    b_values=np.zeros(len(embryo_cells_both)),
+    g_name=model_index_to_topic_name_embryo(neural_crest_topics_embryo[3] - 1).replace(
+        "neural_crest_", ""
     ),
 )
-# Region topic corr
-ax_rt_colors = fig.add_subplot(gs[0, 8:18])
+x_current = 7
+y_current = 0
+pattern_height = 2
+pattern_width = 3
+for i, cluster in enumerate(tqdm(selected_clusters)):
+    YMIN = np.inf
+    YMAX = -np.inf
+    axs = []
+    for j, (topic_org, topic_embr) in enumerate(organoid_embryo):
+        ax = fig.add_subplot(
+            gs[
+                y_current + i * pattern_height : y_current
+                + i * pattern_height
+                + pattern_height,
+                x_current + j * pattern_width : x_current
+                + j * pattern_width
+                + pattern_width,
+            ]
+        )
+        if i == 0:
+            ax.set_title(f"Topic {topic_org} {topic_embr}")
+        if topic_org is not None:
+            pwm = cluster_to_topic_to_avg_pattern_organoid[cluster][topic_org]
+            _ = logomaker.Logo(
+                pd.DataFrame(pwm, columns=["A", "C", "G", "T"]),
+                ax=ax,
+                # alpha=0.5,
+                # color_scheme="red",
+            )
+            ymn, ymx = ax.get_ylim()
+            YMIN = min(ymn, YMIN)
+            YMAX = max(ymx, YMAX)
+        if (topic_embr is not None) and True:
+            pwm = cluster_to_topic_to_avg_pattern_embryo[cluster][topic_embr]
+            _ = logomaker.Logo(
+                pd.DataFrame(-pwm, columns=["A", "C", "G", "T"]),
+                ax=ax,
+                edgecolor="black",
+                edgewidth=0.4,
+                # alpha=0.5,
+                # color_scheme="blue",
+            )
+            ymn, ymx = ax.get_ylim()
+            YMIN = min(ymn, YMIN)
+            YMAX = max(ymx, YMAX)
+        if j == 0:
+            _ = ax.set_ylabel(f"cluster_{cluster}")
+        axs.append(ax)
+    print(f"{YMIN}, {YMAX}")
+    for ax, (organoid_topic, embryo_topic) in zip(axs, organoid_embryo):
+        _ = ax.set_ylim(YMIN, YMAX)
+        _ = ax.set_axis_off()
+
+ax_hit_heatmap = fig.add_subplot(gs[0:16, 23:29])
 sns.heatmap(
-    np.array([*np.repeat(1, len(ap_topics)), *np.repeat(2, len(dv_topics))])[None, :],
-    cmap="Set1",
-    xticklabels=False,
+    hits_merged_organoid_subset_per_seq_and_cluster_max_scaled.loc[
+        region_order_organoid_subset, selected_clusters
+    ].astype(float),
     yticklabels=False,
-    ax=ax_rt_colors,
-    vmin=1,
-    vmax=10,
+    xticklabels=[cluster_to_name[x] for x in selected_clusters],
+    ax=ax_hit_heatmap,
+    cmap="bwr",
+    vmin=-0.0008,
+    vmax=0.0008,
+    cbar_kws=dict(shrink=0.5, format=lambda x, _: "{:.0e}".format(x)),
+    cbar=False,
 )
-ax_rt_corr = fig.add_subplot(gs[1:10, 8:18], sharex=ax_rt_colors)
+ax_organoid_expr_heatmap = fig.add_subplot(gs[0:12, 32:36])
+ax_embryo_expr_heatmap = fig.add_subplot(gs[0:12, 36:39])
 sns.heatmap(
-    corr_region_topic,
-    annot=np.round(corr_region_topic, 1).mask(corr_region_topic < 0.15).fillna(""),
-    fmt="",
-    cmap="Spectral_r",
-    vmin=0,
-    vmax=0.6,
-    linewidths=1,
-    linecolor="black",
+    (
+        (tf_expr_matrix_per_topic_organoid - tf_expr_matrix_per_topic_organoid.min())
+        / (
+            tf_expr_matrix_per_topic_organoid.max()
+            - tf_expr_matrix_per_topic_organoid.min()
+        )
+    )
+    .astype(float)
+    .T,
+    cmap="Greys",
+    ax=ax_organoid_expr_heatmap,
     xticklabels=True,
     yticklabels=True,
-    cbar_kws=dict(shrink=0.5, ticks=[0, 0.3, 0.6]),
-    annot_kws=dict(fontsize=5),
-)
-# region topic hm
-#ax_hm_rt_contrib = fig.add_subplot(gs[0:10, 19:23])
-tmp = region_topic.loc[
-    selected_regions_ap,
-    [
-        model_index_to_topic_name_embryo(x - 1).replace("progenitor_", "")
-        for x in ap_topics
-    ],
-]
-tmp.columns = [x.replace("Topic_", "") for x in tmp.columns]
-ax_hm_rt_pred = fig.add_subplot(gs[0:10, 25 - 6:29 - 6])
-sns.heatmap(
-    selected_regions_ap_prediction_score[:, ap_topics - 1],
-    ax=ax_hm_rt_pred,
-    yticklabels=False,
-    xticklabels=tmp.columns,
-    cbar_kws=dict(
-        shrink=0.5,
-        format=lambda x, pos: "{:.0e}".format(x),
-        ticks=[0, 0.25, 0.5],
-    ),
-    cmap="binary_r",
-    vmin=0,
-    vmax=0.5,
-)
-#
-ax_n_seqlets = fig.add_subplot(gs[0:10, 31-6:34-6])
-sns.heatmap(
-    np.log10(seqlet_count_per_cluster[np.array(clusters_to_show) - 1] + 1),
-    ax=ax_n_seqlets,
-    yticklabels=False,
-    xticklabels=tmp.columns,
-    cmap="magma",
     cbar=False,
-    robust=True,
-    vmax=2.8,
     vmin=0,
+    vmax=1,
+    lw=0.5,
+    linecolor="black",
 )
-for i, cluster in enumerate(clusters_to_show):
-    ax_pattern = fig.add_subplot(gs[2 * i : 2 * i + 2, 35-6:39-6])
-    ppm = patterns_to_cluster[np.where(clusters == cluster)[0].min()].ppm
-    ic = patterns_to_cluster[np.where(clusters == cluster)[0].min()].ic()
-    ic_range = range(
-        *patterns_to_cluster[np.where(clusters == cluster)[0].min()].ic_trim(0.2)
-    )
-    _ = logomaker.Logo(
-        pd.DataFrame((ppm * ic[:, None])[ic_range], columns=["A", "C", "G", "T"]),
-        ax=ax_pattern,
-    )
-    ax_pattern.set_ylim(0, 2)
-    ax_pattern.spines[["right", "top", "left", "bottom"]].set_visible(False)
-    ax_pattern.set_xticks([])
-    ax_pattern.set_yticks([])
-#
-
-ax_tf_gex = fig.add_subplot(gs[0:10, 39-3:])
 sns.heatmap(
     (
         (tf_expr_matrix_per_topic_embryo - tf_expr_matrix_per_topic_embryo.min())
@@ -1284,108 +1478,199 @@ sns.heatmap(
     .astype(float)
     .T,
     cmap="Greys",
-    ax=ax_tf_gex,
+    ax=ax_embryo_expr_heatmap,
+    yticklabels=False,
     xticklabels=True,
-    yticklabels=True,
     cbar=False,
     vmin=0,
     vmax=1,
     lw=0.5,
     linecolor="black",
 )
-ax_mod_box_1 = fig.add_subplot(gs[13:18, 0:9])
-ax_mod_box_2 = fig.add_subplot(gs[20:25, 0:9], sharex=ax_mod_box_1)
-data = data_4
-regions = data.loc[data["prediction score"] >= 0.4].index.drop_duplicates()
-sns.boxplot(
-    data=data.loc[regions],
-    x="condition",
-    y="prediction score",
-    hue="Topic",
-    ax=ax_mod_box_1,
-    palette="Spectral",
-    legend=False,
-    flierprops=dict(markersize=3, marker="."),
+ax_network = fig.add_subplot(gs[12 + 2:19, 33:39])
+sns.heatmap(
+    jaccard_organoid,
+    cmap="viridis",
+    vmin=0.05,
+    vmax=0.2,
+    ax=ax_network,
+    linecolor="black",
+    lw=0.5,
+    cbar=False,
+    yticklabels=True,
+    xticklabels=True,
 )
-ax_mod_box_1.grid(True)
-ax_mod_box_1.set_title("CTAATTAG -> AGGGATTAG")
-data = data_8
-regions = data.loc[data["prediction score"] >= 0.4].index.drop_duplicates()
-sns.boxplot(
-    data=data.loc[regions],
-    x="condition",
-    y="prediction score",
-    hue="Topic",
-    ax=ax_mod_box_2,
-    palette="Spectral",
-    legend=False,
-    flierprops=dict(markersize=3, marker="."),
-)
-ax_mod_box_2.grid(True)
-ax_mod_box_2.set_title("CTAATTAG -> AGGGATTAG")
-#
-ax_ROC = fig.add_subplot(gs[13:18, 11:16])
-ax_PR = fig.add_subplot(gs[20:25, 11:16])
-_ = ax_ROC.plot(fpr, tpr, color="black")
-_ = ax_PR.plot(recall, precision, color="black")
-_ = ax_ROC.set_xlabel("FPR")
-_ = ax_ROC.set_ylabel("TPR")
-_ = ax_PR.set_xlabel("Recall")
-_ = ax_PR.set_ylabel("Precision")
-for ax in [ax_ROC, ax_PR]:
-    ax.set_xlim(0, 1)
-    ax.set_ylim(0, 1)
-    ax.grid(True)
-    ax.set_axisbelow(True)
-    ax.set_xticks([0, 0.25, 0.5, 0.75, 1], labels=[0, "", "", "", 1])
-    ax.set_yticks([0, 0.25, 0.5, 0.75, 1], labels=[0, "", "", "", 1])
-#
-ax_motif_embedding_1 = fig.add_subplot(gs[13:18, 17:27])
-ax_motif_embedding_2 = fig.add_subplot(gs[20:25, 17:27])
-for experiment, ax in zip(
-    ["CTAATTAG_Topic_31_5", "GGATTAG_Topic_1_5"],
-    [ax_motif_embedding_1, ax_motif_embedding_2],
-):
-    print(experiment)
-    sns.boxplot(
-        data=data_motif_embedding.query("condition == @experiment"),
-        x="iter",
-        y="prediction score",
-        hue="Topic",
-        ax=ax,
-        palette="Spectral",
-        legend=False,
-        flierprops=dict(markersize=3, marker="."),
+ax_manhattan_all_chrom = fig.add_subplot(gs[22:27, 0:39])
+prev = 0
+chroms = [*range(1, 23), "X"]
+for chrom in chroms:
+    var_chrom = sorted(
+        [
+            var
+            for var in variants_ucsc
+            if var.chrom == "chr" + str(chrom)
+            and var.pval is not None
+            and var.max_delta_organoid is not None
+        ],
+        key=lambda var: var.pos,
     )
-    ax.grid(True)
-    ax.set_yticks([0, 0.25, 0.5, 0.75, 1])
-#
-ax_motif_embedding_random_1 = fig.add_subplot(gs[13:18, 29:39])
-ax_motif_embedding_random_2 = fig.add_subplot(gs[20:25, 29:39])
-sns.boxplot(
-    data=data_ctaag,
-    x="iter",
-    y="prediction score",
-    hue="Topic",
-    ax=ax_motif_embedding_random_1,
-    palette="Spectral",
-    legend=False,
-    flierprops=dict(markersize=3, marker="."),
+    ax_manhattan_all_chrom.scatter(
+        x=[var.pos + prev for var in var_chrom],
+        y=[-np.log10(var.pval) for var in var_chrom],
+        color=plt.cm.gnuplot(chroms.index(chrom) / len(chroms)),
+        s=[0.5 if var.rsid not in lead_snps else 5 for var in var_chrom],
+        zorder=2,
+    )
+    ax_manhattan_all_chrom.scatter(
+        x=[var.pos + prev for var in var_chrom],
+        y=[-var.max_delta_organoid * 100 for var in var_chrom],
+        color=plt.cm.gnuplot(chroms.index(chrom) / len(chroms)),
+        s=[0.5 if var.rsid not in lead_snps else 5 for var in var_chrom],
+        alpha=0.7,
+        zorder=2,
+    )
+    ax_manhattan_all_chrom.scatter(
+        x=[var.pos + prev for var in var_chrom],
+        y=[-var.max_delta_embryo * 100 for var in var_chrom],
+        color=plt.cm.gnuplot(chroms.index(chrom) / len(chroms)),
+        s=[5 if var.rsid not in lead_snps else 10 for var in var_chrom],
+        marker="x",
+        alpha=0.7,
+        zorder=2,
+    )
+    ax_manhattan_all_chrom.text(
+        x=np.mean([var.pos + prev for var in var_chrom]), y=80, s=chrom
+    )
+    prev += var_chrom[-1].pos + 1_000
+    ax_manhattan_all_chrom.axvline(prev, color="gray", zorder=1)
+ax_manhattan_all_chrom.spines[["bottom", "top", "right"]].set_visible(False)
+ax_manhattan_all_chrom.set_xticks([])
+ax_manhattan_all_chrom.grid(True)
+ax_manhattan_all_chrom.set_ylim(-100, 100)
+ax_manhattan_all_chrom.set_yticks(
+    (-100, -50, 0, 50, 100), labels=["-1", "-0.5", "0", "50", "100"]
 )
-ax_motif_embedding_random_1.set_yticks([0, 0.25, 0.5, 0.75, 1])
-ax_motif_embedding_random_1.grid(True)
-sns.boxplot(
-    data=data_ggattag,
-    x="iter",
-    y="prediction score",
-    hue="Topic",
-    ax=ax_motif_embedding_random_2,
-    palette="Spectral",
-    legend=False,
-    flierprops=dict(markersize=3, marker="."),
+ax_manhattan_all_chrom.set_ylabel("delta prediction\n-log10(pval)")
+ax_manhattan_chrom_1 = fig.add_subplot(gs[28:33, 0:15])
+var, _, delta, seq_oh, contrib, ism = [
+    (var, model_idx, delta, seq_oh, contrib, ism)
+    for var, model_idx, delta, seq_oh, contrib, ism in contrib_var_hit_organoid
+    if var.rsid == "rs1555067"
+][0]
+chrom = 1
+var_chrom = sorted(
+    [
+        var
+        for var in variants_ucsc
+        if var.chrom == "chr" + str(chrom)
+        and var.pval is not None
+        and var.max_delta_organoid is not None
+    ],
+    key=lambda var: var.pos,
 )
-ax_motif_embedding_random_2.grid(True)
-ax_motif_embedding_random_2.set_ylim(0, 1)
+ax_manhattan_chrom_1.scatter(
+    x=[var.pos for var in var_chrom],
+    y=[-np.log10(var.pval) for var in var_chrom],
+    color=plt.cm.gnuplot(chroms.index(chrom) / len(chroms)),
+    s=[0.5 if var.rsid not in lead_snps else 5 for var in var_chrom],
+)
+ax_manhattan_chrom_1.scatter(
+    x=[var.pos for var in var_chrom],
+    y=[-var.max_delta_organoid * 100 for var in var_chrom],
+    color=plt.cm.gnuplot(chroms.index(chrom) / len(chroms)),
+    s=[0.5 if var.rsid not in lead_snps else 5 for var in var_chrom],
+)
+ax_manhattan_chrom_1.scatter(
+    x=[var.pos for var in var_chrom],
+    y=[-var.max_delta_embryo * 100 for var in var_chrom],
+    color=plt.cm.gnuplot(chroms.index(chrom) / len(chroms)),
+    s=[5 if var.rsid not in lead_snps else 10 for var in var_chrom],
+    marker="x",
+)
+ax_manhattan_chrom_1.grid(True)
+ax_manhattan_chrom_1.set_ylim(-100, 100)
+# ax.set_axis_off()
+ax_manhattan_chrom_1.set_title(chrom)
+xmin_in, xmax_in = var.pos - 350_000, var.pos + 350_000
+axins = ax_manhattan_chrom_1.inset_axes(
+    [0.5, 0.05, 0.1, 0.6],
+    xlim=(xmin_in, xmax_in),
+    ylim=(-75, 70),
+    xticklabels=[],
+    yticklabels=[],
+)
+axins.scatter(
+    x=[var.pos for var in var_chrom if var.pos > xmin_in and var.pos < xmax_in],
+    y=[
+        -np.log10(var.pval)
+        for var in var_chrom
+        if var.pos > xmin_in and var.pos < xmax_in
+    ],
+    color=plt.cm.gnuplot(chroms.index(chrom) / len(chroms)),
+    s=[
+        0.5 if var.rsid not in lead_snps else 5
+        for var in var_chrom
+        if var.pos > xmin_in and var.pos < xmax_in
+    ],
+)
+axins.scatter(
+    x=[var.pos for var in var_chrom if var.pos > xmin_in and var.pos < xmax_in],
+    y=[
+        -var.max_delta_organoid * 100
+        for var in var_chrom
+        if var.pos > xmin_in and var.pos < xmax_in
+    ],
+    color=plt.cm.gnuplot(chroms.index(chrom) / len(chroms)),
+    s=[
+        0.5 if var.rsid not in lead_snps else 5
+        for var in var_chrom
+        if var.pos > xmin_in and var.pos < xmax_in
+    ],
+)
+axins.scatter(
+    x=[var.pos for var in var_chrom if var.pos > xmin_in and var.pos < xmax_in],
+    y=[
+        -var.max_delta_embryo * 100
+        for var in var_chrom
+        if var.pos > xmin_in and var.pos < xmax_in
+    ],
+    color=plt.cm.gnuplot(chroms.index(chrom) / len(chroms)),
+    s=[
+        5 if var.rsid not in lead_snps else 10
+        for var in var_chrom
+        if var.pos > xmin_in and var.pos < xmax_in
+    ],
+    marker="x",
+)
+axins.scatter(x=[var.pos], y=[-delta * 100], color="red", s=5)
+axins.set_title(f"{int(xmax_in - xmin_in)}bps")
+axins.grid(True)
+axins.set_axisbelow(True)
+ax_manhattan_chrom_1.indicate_inset_zoom(axins, edgecolor="red")
+ax_manhattan_chrom_1.set_yticks(
+    (-100, -50, 0, 50, 100), labels=["-1", "-0.5", "0", "50", "100"]
+)
+ax_manhattan_chrom_1.set_ylabel("delta prediction\n-log10(pval)")
+ax_contrib_ref = fig.add_subplot(gs[28:30, 16:39])
+ax_contrib_alt = fig.add_subplot(gs[31:33, 16:39])
+# ax_ism_ref = fig.add_subplot(
+#    gs[32: 33, 16: 39]
+# )
+_ = logomaker.Logo(
+    df=pd.DataFrame((contrib * seq_oh)[0], columns=["A", "C", "G", "T"]),
+    ax=ax_contrib_ref,
+    zorder=2,
+)
+_ = logomaker.Logo(
+    df=pd.DataFrame((contrib * seq_oh)[1], columns=["A", "C", "G", "T"]),
+    ax=ax_contrib_alt,
+    zorder=2,
+)
+for ax in [ax_contrib_alt, ax_contrib_ref]:
+    ax.axvline(250, ls="dashed", color="black", lw=0.5, zorder=1)
+    ax.set_xlim(150, 350)
 fig.tight_layout()
-fig.savefig("Figure_4.png", transparent=False)
-fig.savefig("Figure_4.pdf")
+
+
+fig.savefig("Figure_5_v2.png", transparent=False)
+fig.savefig("Figure_5_v2.pdf")
